@@ -17,5 +17,11 @@ exports.blogsRepositories = {
             const filtered = {};
             return db_1.blogsCollection.find(filtered, { projection: { _id: 0 } }).toArray();
         });
+    },
+    createNewBlogs(newBlog) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield db_1.blogsCollection.insertOne(Object.assign({}, newBlog));
+            return newBlog;
+        });
     }
 };

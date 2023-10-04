@@ -12,9 +12,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsService = void 0;
 const blogs_db_repositories_1 = require("./../repositories/blogs-db-repositories");
 exports.blogsService = {
-    findBlogs() {
+    createNewBlog(name, description, websiteUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            return blogs_db_repositories_1.blogsRepositories.findBlogs();
+            const newBlog = {
+                id: new Date().toISOString(),
+                name,
+                description,
+                websiteUrl,
+                createdAt: new Date().toISOString(),
+                isMembership: false
+            };
+            const createBlog = yield blogs_db_repositories_1.blogsRepositories.createNewBlogs(newBlog);
+            return createBlog;
         });
     }
 };
