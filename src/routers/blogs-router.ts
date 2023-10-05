@@ -7,7 +7,6 @@ import {
 } from "./../middleware/input-value-blogs-middleware";
 import { authorization } from "./../middleware/authorizatin";
 import { valueMiddleware } from "./../middleware/validatorMiddleware";
-import { blogsRepositories } from "./../repositories/blogs-db-repositories";
 import { QueryBlogsModel } from "../models/queryBlogsModel";
 import { blogsService } from "./../domain/blogsService";
 import { Router, Request, Response } from "express";
@@ -31,7 +30,7 @@ blogsRouter.get(
       sortBy = "createdAt",
       sortDirection = "desc",
     } = req.query;
-    const getAllBlogs: BlogsType[] = await blogsQueryRepositories.findBlogs(
+    const getAllBlogs: BlogsType[] = await blogsQueryRepositories.findAllBlogs(
       serchNameTerm,
       pageNumber,
       pageSize,
@@ -51,8 +50,8 @@ blogsRouter.post(
   inputBlogNameValidator,
   inputBlogDescription,
   inputBlogWebsiteUrl,
-  async function (req: Request, res: Response) {
-    const createBlog = await blogsService.createNewBlog(
+  async function (req: Request, res: Response): Promise<BlogsType> {
+    const createBlog: BlogsType = await blogsService.createNewBlog(
       req.body.name,
       req.body.description,
       req.body.websiteUrl
@@ -63,7 +62,7 @@ blogsRouter.post(
 
 /********************************** get{blogId} **********************************/
 
-blogsRouter.get("/:blogId/posts", async function (req: Request, res: Response) {
+blogsRouter.get("/:blogId/posts", async function (req: Request, res: Response): Promise<PostsType> {
   const {
     pageNumber = "1",
     pageSize = "10",
@@ -92,7 +91,7 @@ blogsRouter.post(
   inputPostContentValidator,
   inputPostTitleValidator,
   inputPostShortDescriptionValidator,
-  async function (req: Request, res: Response) {
+  async function (req: Request, res: Response): Promise<BlogsType> {
     const isCreatePost = await postsService.createPost(
       req.params.blogId,
       req.body.title,
@@ -104,7 +103,7 @@ blogsRouter.post(
 
 /********************************** get{id} *********************************/
 
-blogsRouter.get("/:id", async function (req: Request, res: Response) {
+blogsRouter.get("/:id", async function (req: Request, res: Response): Promise<BlogsType[]> {
   const blogById = await blogsQueryRepositories.findBlogById(req.params.id);
   if (!blogById) {
     res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
@@ -122,8 +121,8 @@ blogsRouter.put(
   inputBlogNameValidator,
   inputBlogDescription,
   inputBlogWebsiteUrl,
-  async function (req: Request, res: Response) {
-    const isUpdateBlog = await blogsService.updateBlog(
+  async function (req: Request, res: Response): Promise<boolean> {
+    const isUpdateBlog: boolean = await blogsService.updateBlog(
       req.params.id,
       req.body.name,
       req.body.description,
@@ -142,8 +141,8 @@ blogsRouter.put(
 blogsRouter.delete(
   "/:id",
   authorization,
-  async function (req: Request, res: Response) {
-    const isDeleted = await blogsService.deletedBlog(req.params.id);
+  async function (req: Request, res: Response): Promise<boolean> {
+    const isDeleted: boolean = await blogsService.deletedBlog(req.params.id);
     if (!isDeleted) {
       res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {

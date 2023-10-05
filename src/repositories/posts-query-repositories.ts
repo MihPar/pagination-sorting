@@ -10,5 +10,19 @@ export const postsQueryRepositories = {
 		.limit(+pageSize)
 		.toArray()
 		return posts
-	}
+	},
+	async findAllPosts(pageNumber: string, pageSize: string,
+		sortBy: string, sortDirection: string): Promise<PostsType[]> {
+			const filter: any = {}
+			return await postsCollection
+			.find(filter, {projection: {_id: 0}})
+			.sort({[sortBy]: sortDirection === 'asc' ? 1 : -1})
+			.skip(+pageNumber)
+			.limit(+pageSize)
+			.toArray()
+			
+		},
+		async findPostById(id: string): Promise<boolean> {
+			return postsCollection.findOne({id: id}, {projection: {_id: 0}})
+		}
 }

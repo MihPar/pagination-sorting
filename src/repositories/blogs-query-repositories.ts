@@ -1,7 +1,7 @@
 import { BlogsType, blogsCollection } from "../db/db"
 
 export const blogsQueryRepositories = {
-	async findBlogs(serchNameTerm: string | null, pageNumber: string, pageSize: string, sortBy: string, sortDirection: string): Promise<BlogsType[]> {
+	async findAllBlogs(serchNameTerm: string | null, pageNumber: string, pageSize: string, sortBy: string, sortDirection: string): Promise<BlogsType[]> {
 		
 		const filtered: any = serchNameTerm ? {name: {$regex: /serchNameTerm/i}}: {};// todo finished filter				
 		return blogsCollection

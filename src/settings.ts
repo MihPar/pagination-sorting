@@ -8,7 +8,7 @@ export const createApp = () => {
 	app.use(express())
 	app.use('/posts', postsRouter)
 	app.use('/blogs',  blogsRouter)
-	app.use('/deleteAll', deleteAllRouter)
+	app.use('/testing/all-data', deleteAllRouter)
 
 	return app
 }

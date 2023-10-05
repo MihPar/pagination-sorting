@@ -16,6 +16,14 @@ export const postsService = {
 		const post = await postsRepositories.createNewBlogs(newPost)
 		return post
 	},
+	async updateOldPost(id: string, title: string, shortDescription: string, content: string, blogId: string): Promise<boolean> {
+		const updatPostById = await postsRepositories.updatePost(id, title, shortDescription, content, blogId)
+		return updatPostById
+	},
+	async deletePostId(id: string): Promise<boolean> {
+		return await postsRepositories.deletedPostById(id)
+	}
+	
 	// async updateBlog(id: string, name: string, description: string, websiteUrl: string): Promise<boolean> {
 	// 	return await blogsRepositories.updateBlogById(id, name, description, websiteUrl,)
 	// },
