@@ -101,8 +101,3 @@ postsRouter.delete(
     }
   }
 );
-
-postsRouter.delete('/', function(req: Request, res: Response) {
-	
-})
-

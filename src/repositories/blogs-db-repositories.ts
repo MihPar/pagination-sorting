@@ -1,4 +1,4 @@
-import { BlogsType, blogsCollection } from "./../db/db";
+import { BlogsType, blogsCollection, postsCollection } from "./../db/db";
 
 export const blogsRepositories = {
   async findBlogs(): Promise<BlogsType[]> {
@@ -24,5 +24,9 @@ export const blogsRepositories = {
   async deletedBlog(id: string): Promise<boolean> {
 	const result = await blogsCollection.deleteOne({id: id})
 	return result.deletedCount === 1
-  }
+  },
+  async deleteRepoBlogs() {
+    const deletedAll = await postsCollection.deleteMany({});
+	return deletedAll.deletedCount === 1
+  },
 };

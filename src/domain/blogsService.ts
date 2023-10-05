@@ -1,5 +1,6 @@
 import { blogsRepositories } from './../repositories/blogs-db-repositories';
 import { BlogsType, blogsCollection } from "../db/db";
+import { deleteAllRepositories } from '../repositories/delete_db_repositories';
 
 export const blogsService = {
 	async createNewBlog(name: string, description: string, websiteUrl: string): Promise<BlogsType> {
@@ -19,5 +20,9 @@ export const blogsService = {
 	},
 	async deletedBlog(id: string): Promise<boolean> {
 		return await blogsRepositories.deletedBlog(id)
+	},
+	async deleteAllBlogs()  {
+		const delBlogs = blogsRepositories.deleteRepoBlogs()
+		return delBlogs
 	}
 }
