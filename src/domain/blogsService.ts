@@ -13,5 +13,11 @@ export const blogsService = {
 		}
 		const createBlog = await blogsRepositories.createNewBlogs(newBlog)
 		return createBlog
+	},
+	async updateBlog(id: string, name: string, description: string, websiteUrl: string): Promise<boolean> {
+		return await blogsRepositories.updateBlogById(id, name, description, websiteUrl,)
+	},
+	async deletedBlog(id: string): Promise<boolean> {
+		return await blogsRepositories.deletedBlog(id)
 	}
 }

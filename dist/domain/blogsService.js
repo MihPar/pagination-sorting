@@ -25,5 +25,15 @@ exports.blogsService = {
             const createBlog = yield blogs_db_repositories_1.blogsRepositories.createNewBlogs(newBlog);
             return createBlog;
         });
+    },
+    updateBlog(id, name, description, websiteUrl) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield blogs_db_repositories_1.blogsRepositories.updateBlogById(id, name, description, websiteUrl);
+        });
+    },
+    deletedBlog(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield blogs_db_repositories_1.blogsRepositories.deletedBlog(id);
+        });
     }
 };

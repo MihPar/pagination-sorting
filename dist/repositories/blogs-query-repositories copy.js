@@ -25,7 +25,8 @@ exports.blogsQueryRepositories = {
     },
     findBlogById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return db_1.blogsCollection.findOne({ id: id }, { projection: { _id: 0 } });
+            const blogById = yield db_1.blogsCollection.findOne({ id: id }, { projection: { _id: 0 } });
+            return blogById ? blogById : null;
         });
     }
 };

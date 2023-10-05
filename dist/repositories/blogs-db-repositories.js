@@ -23,5 +23,17 @@ exports.blogsRepositories = {
             const result = yield db_1.blogsCollection.insertOne(Object.assign({}, newBlog));
             return newBlog;
         });
+    },
+    updateBlogById(id, name, description, websiteUrl) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield db_1.blogsCollection.updateOne({ id: id }, { $set: { name: name, description: description, websiteUrl: websiteUrl } });
+            return result.upsertedCount === 1;
+        });
+    },
+    deletedBlog(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield db_1.blogsCollection.deleteOne({ id: id });
+            return result.deletedCount === 1;
+        });
     }
 };

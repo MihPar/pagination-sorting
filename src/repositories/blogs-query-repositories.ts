@@ -10,5 +10,8 @@ export const blogsQueryRepositories = {
 		.skip(+pageNumber)//todo find how we can skip
 		.limit(+pageSize)
 		.toArray()
-	}
+	},
+	async findBlogById(id: string): Promise<BlogsType | null> {
+		return blogsCollection.findOne({id: id}, {projection: {_id: 0}})
+ 	}
 }

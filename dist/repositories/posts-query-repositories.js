@@ -9,23 +9,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.blogsQueryRepositories = void 0;
+exports.postsQueryRepositories = void 0;
 const db_1 = require("../db/db");
-exports.blogsQueryRepositories = {
-    findBlogs(serchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
+exports.postsQueryRepositories = {
+    findPostsByBlogsId(pageNumber, pageSize, sortBy, sortDirection, blogId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const filtered = serchNameTerm ? { name: { $regex: /serchNameTerm/i } } : {}; // todo finished filter				
-            return db_1.blogsCollection
-                .find(filtered, { projection: { _id: 0 } })
+            const filter = { blogId: blogId };
+            const posts = yield db_1.postsCollection.find(filter, { projection: { _id: 0 } })
                 .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
                 .skip(+pageNumber) //todo find how we can skip
                 .limit(+pageSize)
                 .toArray();
-        });
-    },
-    findBlogById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return db_1.blogsCollection.findOne({ id: id }, { projection: { _id: 0 } });
+            return posts;
         });
     }
 };
