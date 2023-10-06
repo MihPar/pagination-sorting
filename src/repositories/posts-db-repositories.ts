@@ -23,7 +23,7 @@ export const postsRepositories = {
         },
       }
     );
-    return result.upsertedCount === 1;
+    return result.modifiedCount === 1;
   },
   async deletedPostById(id: string): Promise<boolean> {
     const result = await blogsCollection.deleteOne({ id: id });
