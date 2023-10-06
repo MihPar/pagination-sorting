@@ -1,3 +1,4 @@
+import { postsRepositories } from './../repositories/posts-db-repositories';
 import { paramsBlogsModel } from "./../model/modelBlogs/paramsBlogsModel";
 import { bodyPostsModel } from "./../model/modelPosts/bodyPostsMode";
 import { queryPostsModel } from "./../model/modelPosts/queryPostsModel";
@@ -7,7 +8,6 @@ import {
   RequestWithParams,
 } from "./../types";
 import { postsService } from "./../domain/postsService";
-import { postsQueryRepositories } from "./../repositories/posts-query-repositories";
 import {
   inputBlogNameValidator,
   inputBlogDescription,
@@ -16,10 +16,9 @@ import {
 import { authorization } from "./../middleware/authorizatin";
 import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { blogsService } from "./../domain/blogsService";
-import { Router, Request, Response } from "express";
+import { Router, Response } from "express";
 import { HTTP_STATUS } from "../utils";
 import { BlogsType, PostsType } from "../db/db";
-import { blogsQueryRepositories } from "../repositories/blogs-query-repositories";
 import { RequestWithBody, RequestWithQuery } from "../types";
 import {
   inputPostContentValidator,
@@ -44,11 +43,11 @@ blogsRouter.get(
     const {
       serchNameTerm,
       pageNumber = "1",
-      pageSize = "2",
+      pageSize = "10",
       sortBy = "createdAt",
       sortDirection = "desc",
     } = req.query;
-    const getAllBlogs: BlogsType[] = await blogsQueryRepositories.findAllBlogs(
+    const getAllBlogs: BlogsType[] = await blogsRepositories.findAllBlogs(
       serchNameTerm,
       pageNumber,
       pageSize,
@@ -81,7 +80,7 @@ blogsRouter.post(
   }
 );
 
-/********************************** get{blogId} **********************************/
+/********************************** get{blogId/posts} *******************************/
 
 blogsRouter.get(
   "/:blogId/posts",
@@ -92,24 +91,28 @@ blogsRouter.get(
     const {
       pageNumber = "1",
       pageSize = "10",
-      sortBy = "createAt",
+      sortBy = "createdAt",
       sortDirection = "desc",
     } = req.query;
 
     const { blogId } = req.params;
 
-	const blog = await blogsQueryRepositories.findBlogById(blogId)
-	if(!blog) return res.sendStatus(404)
+	const blog = await blogsRepositories.findBlogById(blogId)
+	if(!blog) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
 
     const getPosts: PostsType[] =
-      await postsQueryRepositories.findPostsByBlogsId(
+      await postsRepositories.findPostsByBlogsId(
         pageNumber as string,
         pageSize as string,
         sortBy as string,
         sortDirection as string,
-        blogId
+        blogId as string
       );
-    return res.status(HTTP_STATUS.OK_200).send(getPosts);
+	  if(!getPosts) {
+		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+	  } else {
+		return res.status(HTTP_STATUS.OK_200).send(getPosts);
+	  }
   }
 );
 
@@ -128,6 +131,10 @@ blogsRouter.post(
   ): Promise<Response<PostsType>> {
     const { blogId } = req.params;
     const { title, shortDescription, content } = req.body;
+
+	const blog = await blogsRepositories.findBlogById(blogId)
+	if(!blog) return res.sendStatus(404)
+
     const isCreatePost = await postsService.createPost(
       blogId,
       title,
@@ -151,7 +158,7 @@ blogsRouter.get(
     res: Response<BlogsType | null>
   ) {
     const blogById: BlogsType | null =
-      await blogsQueryRepositories.findBlogById(req.params.id);
+      await blogsRepositories.findBlogById(req.params.id);
     if (!blogById) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {

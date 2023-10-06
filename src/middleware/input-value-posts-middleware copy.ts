@@ -1,4 +1,4 @@
-import { blogsQueryRepositories } from './../repositories/blogs-query-repositories';
+import { blogsRepositories } from './../repositories/blogs-db-repositories';
 import {body} from 'express-validator'
 
 
@@ -28,7 +28,7 @@ export const inputPostBlogValidator = body('content')
 .trim()
 .notEmpty()
 .custom(async (id) => {
-    const blogExist = await blogsQueryRepositories.findBlogById(id);
+    const blogExist = await blogsRepositories.findBlogById(id);
     if (!blogExist) {
       throw new Error("Blog is not exists");
     }

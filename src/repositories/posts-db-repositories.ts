@@ -1,9 +1,82 @@
 import { PostsType, blogsCollection, postsCollection } from "./../db/db";
+import { Filter } from "mongodb";
 
 export const postsRepositories = {
+	async findAllPosts(
+		pageNumber: string,
+		pageSize: string,
+		sortBy: string,
+		sortDirection: string
+	  ): Promise<PostsType[]> {
+		const filtered: Filter<PostsType> = {};
+		const allPosts = await postsCollection
+		  .find(filtered, { projection: { _id: 0 } })
+		  .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
+		  .skip((+pageNumber - 1) * +pageSize)
+		  .limit(+pageSize)
+		  .toArray();
+	
+		const totalCount: number = await postsCollection.countDocuments(filtered);
+		const pagesCount: number = Math.ceil(totalCount / +pageSize);
+
+		type Type = {
+			pagesCount: number
+			page: number
+			pageSize: number
+			totalCount: number
+			items: Array<PostsType>
+		}
+	
+		let result: Type = {
+			pagesCount: pagesCount,
+			page: +pageNumber,
+			pageSize: +pageSize,
+			totalCount: totalCount,
+			items: allPosts,
+		}
+	
+		return result
+	  },
   async createNewBlogs(newPost: PostsType): Promise<PostsType> {
     const result = await postsCollection.insertOne({ ...newPost });
     return newPost;
+  },
+  async findPostsByBlogsId(
+    pageNumber: string,
+    pageSize: string,
+    sortBy: string,
+    sortDirection: string,
+    blogId: string
+  ): Promise<PostsType[]> {
+    const filter: Filter<PostsType> = { blogId: blogId };
+    const posts = await postsCollection
+      .find(filter, { projection: { _id: 0 } })
+      .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
+      .skip((+pageNumber - 1) * +pageSize) //todo find how we can skip
+      .limit(+pageSize)
+      .toArray();
+    const totalCount: number = await postsCollection.countDocuments(filter);
+    const pagesCount: number = Math.ceil(totalCount / +pageSize);
+
+    type Type = {
+		pagesCount: number
+		page: number
+		pageSize: number
+		totalCount: number
+		items: Array<PostsType>
+	}
+
+	let result: Type = {
+		pagesCount: pagesCount,
+		page: +pageNumber,
+		pageSize: +pageSize,
+		totalCount: totalCount,
+		items: posts,
+	}
+	return result
+  },
+  async findPostById(id: string): Promise<PostsType | null> {
+    return postsCollection.findOne({ id: id }, { projection: { _id: 0 } });
   },
   async updatePost(
     id: string,

@@ -1,3 +1,4 @@
+import { postsRepositories } from './../repositories/posts-db-repositories';
 import { paramsPostsIdModel } from './../model/modelPosts/paramsPostsIdModel';
 import { bodyPostsModel } from './../model/modelPosts/bodyPostsMode';
 import { queryPostsModel } from './../model/modelPosts/queryPostsModel';
@@ -11,8 +12,7 @@ import {
 import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { authorization } from "./../middleware/authorizatin";
 import { PostsType } from "./../db/db";
-import { Router, Request, Response } from "express";
-import { postsQueryRepositories } from "../repositories/posts-query-repositories";
+import { Router, Response } from "express";
 import { HTTP_STATUS } from "../utils";
 import { postsService } from "../domain/postsService";
 
@@ -27,7 +27,7 @@ postsRouter.get("/", async function (req: RequestWithParams<queryPostsModel>, re
     sortBy = "createAt",
     sortDirection = "desc",
   } = req.query;
-  const getAllPosts: PostsType[] = await postsQueryRepositories.findAllPosts(
+  const getAllPosts: PostsType[] = await postsRepositories.findAllPosts(
     pageNumber as string,
     pageSize as string,
     sortBy as string,
@@ -64,7 +64,7 @@ postsRouter.post(
 postsRouter.get(
   "/:id",
   async function (req: RequestWithParams<paramsPostsIdModel>, res: Response<PostsType | null>) {
-    const getPostById: PostsType | null = await postsQueryRepositories.findPostById(
+    const getPostById: PostsType | null = await postsRepositories.findPostById(
       req.params.id
     );
     if (!getPostById) {
