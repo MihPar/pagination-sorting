@@ -54,8 +54,11 @@ postsRouter.post(
       content,
       blogId
     );
-	if(!createNewPost) return res.sendStatus(404)
-    return res.status(HTTP_STATUS.CREATED_201).send(createNewPost);
+	if (!createNewPost) {
+		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+	} else {
+		return res.status(HTTP_STATUS.CREATED_201).send(createNewPost);
+	}
   }
 );
 
@@ -69,8 +72,9 @@ postsRouter.get(
     );
     if (!getPostById) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
-    }
-      return res.status(HTTP_STATUS.OK_200).send(getPostById);
+    } else {
+	  return res.status(HTTP_STATUS.OK_200).send(getPostById);
+	}
   }
 );
 

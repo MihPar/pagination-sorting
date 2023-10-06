@@ -76,7 +76,11 @@ blogsRouter.post(
       req.body.description,
       req.body.websiteUrl
     );
-    return res.status(HTTP_STATUS.CREATED_201).send(createBlog);
+	if(!createBlog) {
+		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+	} else {
+		return res.status(HTTP_STATUS.CREATED_201).send(createBlog);
+	}
   }
 );
 
