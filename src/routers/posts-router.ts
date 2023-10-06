@@ -8,7 +8,7 @@ import {
   inputPostShortDescriptionValidator,
   inputPostTitleValidator,
 } from "./../middleware/input-value-posts-middleware copy";
-import { valueMiddleware } from "./../middleware/validatorMiddleware";
+import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { authorization } from "./../middleware/authorizatin";
 import { PostsType } from "./../db/db";
 import { Router, Request, Response } from "express";
@@ -41,7 +41,7 @@ postsRouter.get("/", async function (req: RequestWithParams<queryPostsModel>, re
 postsRouter.post(
   "/",
   authorization,
-  valueMiddleware,
+  ValueMiddleware,
   inputPostTitleValidator,
   inputPostShortDescriptionValidator,
   inputPostContentValidator,
@@ -78,7 +78,7 @@ postsRouter.get(
 postsRouter.put(
   "/:id",
   authorization,
-  valueMiddleware,
+  ValueMiddleware,
   inputPostTitleValidator,
   inputPostShortDescriptionValidator,
   inputPostContentValidator,
