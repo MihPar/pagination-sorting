@@ -12,7 +12,8 @@
   },
   "scripts": {
     "dev": "nodemon dist/index.js",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+	"serveo": "ssh -R 80:localhost:3000 serveo.net"
   },
   "devDependencies": {
     "@types/express": "^4.17.18",

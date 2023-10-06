@@ -1,9 +1,10 @@
 import { postsRepositories } from "../repositories/posts-db-repositories";
-import { PostsType, blogsCollection} from "../db/db";
+import { BlogsType, PostsType, blogsCollection} from "../db/db";
 
 export const postsService = {
-	async createPost(blogId: string, title: string, shortDescription: string, content: string): Promise<PostsType> {
-		const blog: any = await blogsCollection.findOne({ id: blogId });
+	async createPost(blogId: string, title: string, shortDescription: string, content: string): Promise<PostsType |null> {
+		const blog: BlogsType | null = await blogsCollection.findOne({ id: blogId });
+		if(!blog) return null
 		const newPost: PostsType = {
 			id: new Date().toISOString(),
 			title,

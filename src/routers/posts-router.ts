@@ -48,12 +48,13 @@ postsRouter.post(
   inputPostBlogValidator,
   async function (req: RequestWithBody<bodyPostsModel>, res: Response <PostsType>) {
     const { title, shortDescription, content, blogId } = req.body;
-    const createNewPost: PostsType = await postsService.createPost(
+    const createNewPost: PostsType | null = await postsService.createPost(
       title,
       shortDescription,
       content,
       blogId
     );
+	if(!createNewPost) return res.sendStatus(404)
     return res.status(HTTP_STATUS.CREATED_201).send(createNewPost);
   }
 );
