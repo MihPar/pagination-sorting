@@ -14,7 +14,7 @@ import {
   inputBlogWebsiteUrl,
 } from "./../middleware/input-value-blogs-middleware";
 import { authorization } from "./../middleware/authorizatin";
-import { valueMiddleware } from "./../middleware/validatorMiddleware";
+import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { blogsService } from "./../domain/blogsService";
 import { Router, Request, Response } from "express";
 import { HTTP_STATUS } from "../utils";
@@ -63,7 +63,7 @@ blogsRouter.get(
 blogsRouter.post(
   "/",
   authorization,
-  valueMiddleware,
+  ValueMiddleware,
   inputBlogNameValidator,
   inputBlogDescription,
   inputBlogWebsiteUrl,
@@ -114,7 +114,7 @@ blogsRouter.get(
 blogsRouter.post(
   "/:blogId/posts",
   authorization,
-  valueMiddleware,
+  ValueMiddleware,
   inputPostContentValidator,
   inputPostTitleValidator,
   inputPostShortDescriptionValidator,
@@ -161,7 +161,7 @@ blogsRouter.get(
 blogsRouter.put(
   "/:id",
   authorization,
-  valueMiddleware,
+  ValueMiddleware,
   inputBlogNameValidator,
   inputBlogDescription,
   inputBlogWebsiteUrl,
