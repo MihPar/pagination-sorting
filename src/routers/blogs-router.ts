@@ -29,6 +29,7 @@ import {
 import { paramsPostsModelBlogId } from "../model/modelPosts/paramsPostsModeBlogId";
 import { QueryBlogsModel } from "../model/modelBlogs/QueryBlogsModel";
 import { bodyBlogsModel } from "../model/modelBlogs/bodyBlogsModel";
+import { blogsRepositories } from "../repositories/blogs-db-repositories";
 
 export const blogsRouter = Router({});
 
@@ -96,6 +97,9 @@ blogsRouter.get(
     } = req.query;
 
     const { blogId } = req.params;
+
+	const blog = await blogsQueryRepositories.findBlogById(blogId)
+	if(!blog) return res.sendStatus(404)
 
     const getPosts: PostsType[] =
       await postsQueryRepositories.findPostsByBlogsId(
