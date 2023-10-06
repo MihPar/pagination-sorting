@@ -1,6 +1,5 @@
 import { postsRepositories } from "../repositories/posts-db-repositories";
-import { PostsType, blogsCollection, postsCollection } from "../db/db";
-import { deleteAllRepositories } from "../repositories/delete_db_repositories";
+import { PostsType, blogsCollection} from "../db/db";
 
 export const postsService = {
 	async createPost(blogId: string, title: string, shortDescription: string, content: string): Promise<PostsType> {
@@ -28,11 +27,4 @@ export const postsService = {
 		const delPosts = postsRepositories.deleteRepoPosts()
 		return delPosts
 	},
-	
-	// async updateBlog(id: string, name: string, description: string, websiteUrl: string): Promise<boolean> {
-	// 	return await blogsRepositories.updateBlogById(id, name, description, websiteUrl,)
-	// },
-	// async deletedBlog(id: string): Promise<boolean> {
-	// 	return await blogsRepositories.deletedBlog(id)
-	// }
 }

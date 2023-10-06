@@ -10,7 +10,6 @@ import { PostsType } from "./../db/db";
 import { Router, Request, Response } from "express";
 import { postsQueryRepositories } from "../repositories/posts-query-repositories";
 import { HTTP_STATUS } from "../utils";
-import { postsRepositories } from "../repositories/posts-db-repositories";
 import { postsService } from "../domain/postsService";
 
 export const postsRouter = Router({});
@@ -54,7 +53,7 @@ postsRouter.post(
 postsRouter.get(
   "/:id",
   async function (req: Request, res: Response): Promise<boolean> {
-    const getPostById: PostsType = await postsQueryRepositories.findPostById(
+    const getPostById: boolean = await postsQueryRepositories.findPostById(
       req.params.id
     );
     if (!getPostById) {

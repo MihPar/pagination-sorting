@@ -1,6 +1,5 @@
 import { blogsRepositories } from './../repositories/blogs-db-repositories';
-import { BlogsType, blogsCollection } from "../db/db";
-import { deleteAllRepositories } from '../repositories/delete_db_repositories';
+import { BlogsType} from "../db/db";
 
 export const blogsService = {
 	async createNewBlog(name: string, description: string, websiteUrl: string): Promise<BlogsType> {
