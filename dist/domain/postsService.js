@@ -42,8 +42,7 @@ exports.postsService = {
     },
     deleteAllPosts() {
         return __awaiter(this, void 0, void 0, function* () {
-            const delPosts = posts_db_repositories_1.postsRepositories.deleteRepoPosts();
-            return delPosts;
+            return yield posts_db_repositories_1.postsRepositories.deleteRepoPosts();
         });
     },
 };

@@ -19,6 +19,6 @@ exports.deleteAllRouter.delete("/", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         yield postsService_1.postsService.deleteAllPosts();
         yield blogsService_1.blogsService.deleteAllBlogs();
-        res.sendStatus(utils_1.HTTP_STATUS.NO_CONTENT_204);
+        return res.sendStatus(utils_1.HTTP_STATUS.NO_CONTENT_204);
     });
 });

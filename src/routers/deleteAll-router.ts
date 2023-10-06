@@ -7,9 +7,9 @@ export const deleteAllRouter = Router({});
 
 deleteAllRouter.delete(
   "/",
-  async function (req: Request, res: Response) {
+  async function (req: Request, res: Response<void>): Promise<Response<void>> {
     await postsService.deleteAllPosts();
     await blogsService.deleteAllBlogs();
-    res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
+    return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
   }
 );

@@ -20,8 +20,7 @@ export const blogsService = {
 	async deletedBlog(id: string): Promise<boolean> {
 		return await blogsRepositories.deletedBlog(id)
 	},
-	async deleteAllBlogs()  {
-		const delBlogs = blogsRepositories.deleteRepoBlogs()
-		return delBlogs
+	async deleteAllBlogs(): Promise<boolean> {
+		return await blogsRepositories.deleteRepoBlogs()
 	}
 }

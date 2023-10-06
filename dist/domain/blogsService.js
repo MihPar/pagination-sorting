@@ -38,8 +38,7 @@ exports.blogsService = {
     },
     deleteAllBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
-            const delBlogs = blogs_db_repositories_1.blogsRepositories.deleteRepoBlogs();
-            return delBlogs;
+            return yield blogs_db_repositories_1.blogsRepositories.deleteRepoBlogs();
         });
     }
 };

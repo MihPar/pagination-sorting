@@ -1,7 +1,11 @@
-import { paramsBlogsModel } from './../model/modelBlogs/paramsBlogsModel';
-import { bodyPostsModel } from './../model/modelPosts/bodyPostsMode';
-import { queryPostsModel } from './../model/modelPosts/queryPostsModel';
-import { RequestWithParamsAndQuery, RequestWithParamsAndBody, RequestWithParams } from './../types';
+import { paramsBlogsModel } from "./../model/modelBlogs/paramsBlogsModel";
+import { bodyPostsModel } from "./../model/modelPosts/bodyPostsMode";
+import { queryPostsModel } from "./../model/modelPosts/queryPostsModel";
+import {
+  RequestWithParamsAndQuery,
+  RequestWithParamsAndBody,
+  RequestWithParams,
+} from "./../types";
 import { postsService } from "./../domain/postsService";
 import { postsQueryRepositories } from "./../repositories/posts-query-repositories";
 import {
@@ -17,8 +21,12 @@ import { HTTP_STATUS } from "../utils";
 import { BlogsType, PostsType } from "../db/db";
 import { blogsQueryRepositories } from "../repositories/blogs-query-repositories";
 import { RequestWithBody, RequestWithQuery } from "../types";
-import { inputPostContentValidator, inputPostShortDescriptionValidator, inputPostTitleValidator } from "../middleware/input-value-posts-middleware copy";
-import { paramsPostsModelBlogId } from '../model/modelPosts/paramsPostsModeBlogId';
+import {
+  inputPostContentValidator,
+  inputPostShortDescriptionValidator,
+  inputPostTitleValidator,
+} from "../middleware/input-value-posts-middleware copy";
+import { paramsPostsModelBlogId } from "../model/modelPosts/paramsPostsModeBlogId";
 import { QueryBlogsModel } from "../model/modelBlogs/QueryBlogsModel";
 import { bodyBlogsModel } from "../model/modelBlogs/bodyBlogsModel";
 
@@ -28,7 +36,10 @@ export const blogsRouter = Router({});
 
 blogsRouter.get(
   "/",
-  async function (req: RequestWithQuery<QueryBlogsModel>, res: Response<BlogsType[]>) {
+  async function (
+    req: RequestWithQuery<QueryBlogsModel>,
+    res: Response<BlogsType[]>
+  ):Promise<Response<BlogsType[]>> {
     const {
       serchNameTerm,
       pageNumber = "1",
@@ -56,7 +67,10 @@ blogsRouter.post(
   inputBlogNameValidator,
   inputBlogDescription,
   inputBlogWebsiteUrl,
-  async function (req: RequestWithBody<bodyBlogsModel>, res: Response<BlogsType>){
+  async function (
+    req: RequestWithBody<bodyBlogsModel>,
+    res: Response<BlogsType>
+  ) {
     const createBlog: BlogsType = await blogsService.createNewBlog(
       req.body.name,
       req.body.description,
@@ -68,25 +82,32 @@ blogsRouter.post(
 
 /********************************** get{blogId} **********************************/
 
-blogsRouter.get("/:blogId/posts", async function (req: RequestWithParamsAndQuery<paramsPostsModelBlogId, queryPostsModel>, res: Response<PostsType[]>) {
-  const {
-    pageNumber = "1",
-    pageSize = "10",
-    sortBy = "createAt",
-    sortDirection = "desc",
-  } = req.query;
+blogsRouter.get(
+  "/:blogId/posts",
+  async function (
+    req: RequestWithParamsAndQuery<paramsPostsModelBlogId, queryPostsModel>,
+    res: Response<PostsType[]>
+  ) {
+    const {
+      pageNumber = "1",
+      pageSize = "10",
+      sortBy = "createAt",
+      sortDirection = "desc",
+    } = req.query;
 
-  const { blogId } = req.params;
+    const { blogId } = req.params;
 
-  const getPosts: PostsType[] = await postsQueryRepositories.findPostsByBlogsId(
-    pageNumber as string,
-    pageSize as string,
-    sortBy as string,
-    sortDirection as string,
-    blogId
-  );
-  return res.status(HTTP_STATUS.OK_200).send(getPosts);
-});
+    const getPosts: PostsType[] =
+      await postsQueryRepositories.findPostsByBlogsId(
+        pageNumber as string,
+        pageSize as string,
+        sortBy as string,
+        sortDirection as string,
+        blogId
+      );
+    return res.status(HTTP_STATUS.OK_200).send(getPosts);
+  }
+);
 
 /********************************** post{blogId/posts} ***************************/
 
@@ -97,33 +118,43 @@ blogsRouter.post(
   inputPostContentValidator,
   inputPostTitleValidator,
   inputPostShortDescriptionValidator,
-  async function (req: RequestWithParamsAndBody<paramsPostsModelBlogId, bodyPostsModel>, res: Response<PostsType>) {
-	const { blogId } = req.params
-	const {title, shortDescription, content} = req.body
+  async function (
+    req: RequestWithParamsAndBody<paramsPostsModelBlogId, bodyPostsModel>,
+    res: Response<PostsType>
+  ): Promise<Response<PostsType>> {
+    const { blogId } = req.params;
+    const { title, shortDescription, content } = req.body;
     const isCreatePost = await postsService.createPost(
       blogId,
       title,
       shortDescription,
       content
     );
-	if(!isCreatePost) {
-		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-	} else {
-		return res.status(HTTP_STATUS.CREATED_201).send(isCreatePost)
-	}
+    if (!isCreatePost) {
+      return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+    } else {
+      return res.status(HTTP_STATUS.CREATED_201).send(isCreatePost);
+    }
   }
 );
 
 /********************************** get{id} *********************************/
 
-blogsRouter.get("/:id", async function (req: RequestWithParams<paramsBlogsModel>, res: Response<BlogsType | null>) {
-  const blogById = await blogsQueryRepositories.findBlogById(req.params.id);
-  if (!blogById) {
-    return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
-  } else {
-    return res.status(HTTP_STATUS.OK_200).send(blogById);
+blogsRouter.get(
+  "/:id",
+  async function (
+    req: RequestWithParams<paramsBlogsModel>,
+    res: Response<BlogsType | null>
+  ) {
+    const blogById: BlogsType | null =
+      await blogsQueryRepositories.findBlogById(req.params.id);
+    if (!blogById) {
+      return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+    } else {
+      return res.status(HTTP_STATUS.OK_200).send(blogById);
+    }
   }
-});
+);
 
 /********************************** put{id} *********************************/
 
@@ -134,9 +165,12 @@ blogsRouter.put(
   inputBlogNameValidator,
   inputBlogDescription,
   inputBlogWebsiteUrl,
-  async function (req: RequestWithParamsAndBody<paramsBlogsModel, bodyBlogsModel>, res: Response<void>){
-	const {id} = req.params
-	const {name, description, websiteUrl} = req.body
+  async function (
+    req: RequestWithParamsAndBody<paramsBlogsModel, bodyBlogsModel>,
+    res: Response<void>
+  ) {
+    const { id } = req.params;
+    const { name, description, websiteUrl } = req.body;
     const isUpdateBlog: boolean = await blogsService.updateBlog(
       id,
       name,
@@ -156,7 +190,10 @@ blogsRouter.put(
 blogsRouter.delete(
   "/:id",
   authorization,
-  async function (req: RequestWithParams<paramsBlogsModel>, res: Response<void>) {
+  async function (
+    req: RequestWithParams<paramsBlogsModel>,
+    res: Response<void>
+  ) {
     const isDeleted: boolean = await blogsService.deletedBlog(req.params.id);
     if (!isDeleted) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);

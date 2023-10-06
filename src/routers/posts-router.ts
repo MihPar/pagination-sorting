@@ -20,7 +20,7 @@ export const postsRouter = Router({});
 
 /********************************** get **********************************/
 
-postsRouter.get("/", async function (req: RequestWithParams<queryPostsModel>, res: Response<PostsType[]>) {
+postsRouter.get("/", async function (req: RequestWithParams<queryPostsModel>, res: Response<PostsType[]>): Promise<Response<PostsType[]>> {
   const {
     pageNumber = "1",
     pageSize = "10",
@@ -106,7 +106,7 @@ postsRouter.put(
 postsRouter.delete(
   "/:id",
   authorization,
-  async function (req: RequestWithParams<paramsPostsIdModel>, res: Response<boolean>) {
+  async function (req: RequestWithParams<paramsPostsIdModel>, res: Response<void>) {
     const deletPost: boolean = await postsService.deletePostId(req.params.id);
     if (!deletPost) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);

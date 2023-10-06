@@ -29,7 +29,7 @@ export const postsRepositories = {
     const result = await blogsCollection.deleteOne({ id: id });
     return result.deletedCount === 1;
   },
-  async deleteRepoPosts() {
+  async deleteRepoPosts(): Promise<boolean> {
     const deletedAll = await postsCollection.deleteMany({});
     return deletedAll.deletedCount === 1;
   },
