@@ -55,7 +55,7 @@ postsRouter.post(
       blogId
     );
 	if (!createNewPost) {
-		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+		return null
 	} else {
 		return res.status(HTTP_STATUS.CREATED_201).send(createNewPost);
 	}
