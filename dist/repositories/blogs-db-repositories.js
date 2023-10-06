@@ -38,7 +38,7 @@ exports.blogsRepositories = {
     },
     deleteRepoBlogs() {
         return __awaiter(this, void 0, void 0, function* () {
-            const deletedAll = yield db_1.postsCollection.deleteMany({});
+            const deletedAll = yield db_1.blogsCollection.deleteMany({});
             return deletedAll.deletedCount === 1;
         });
     },

@@ -17,7 +17,10 @@ const settings_1 = require("./settings");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const app = (0, settings_1.createApp)();
-const port = process.env.PORT || 2000;
+const port = process.env.PORT || 3000;
+app.get('/test', (req, res) => {
+    res.json({ message: 'This is a test endpoint!' });
+});
 const starting = () => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, db_1.runDb)();
     app.listen(port, function () {
