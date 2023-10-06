@@ -11,6 +11,7 @@ export const authorization = function (
 ) {
 	try {
 	const auth = req.headers.authorization
+	console.log(auth)
 	if(!auth) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 	const [key, value] = auth.split(" ")
 	if(key !== 'Basic') return  res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
