@@ -16,6 +16,8 @@ export const inputBlogDescription = body('description')
 
 export const inputBlogWebsiteUrl = body('websiteUrl')
 .isString()
+.notEmpty()
+.isURL()
 .trim()
 .notEmpty()
 .isLength({min: 1, max: 100})
