@@ -13,7 +13,7 @@ const createApp = () => {
     app.use((0, express_1.default)());
     app.use('/posts', posts_router_1.postsRouter);
     app.use('/blogs', blogs_router_1.blogsRouter);
-    app.use('/deleteAll', deleteAll_router_1.deleteAllRouter);
+    app.use('/testing/all-data', deleteAll_router_1.deleteAllRouter);
     return app;
 };
 exports.createApp = createApp;

@@ -18,24 +18,29 @@ exports.postsRepositories = {
             return newPost;
         });
     },
-    //   async createNewBlogs(newBlog: BlogsType): Promise<BlogsType> {
-    //     const result = await blogsCollection.insertOne({ ...newBlog });
-    //     return newBlog;
-    //   },
-    //   async updateBlogById(
-    //     id: string,
-    //     name: string,
-    //     description: string,
-    //     websiteUrl: string
-    //   ): Promise<boolean> {
-    //     const result = await blogsCollection.updateOne(
-    //       { id: id },
-    //       { $set: { name: name, description: description, websiteUrl: websiteUrl } }
-    //     );
-    //     return result.upsertedCount === 1;
-    //   },
-    //   async deletedBlog(id: string): Promise<boolean> {
-    // 	const result = await blogsCollection.deleteOne({id: id})
-    // 	return result.deletedCount === 1
-    //   }
+    updatePost(id, title, shortDescription, content, blogId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield db_1.postsCollection.updateOne({ id: id }, {
+                $set: {
+                    title: title,
+                    shortDescription: shortDescription,
+                    content: content,
+                    blogId: blogId,
+                },
+            });
+            return result.upsertedCount === 1;
+        });
+    },
+    deletedPostById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield db_1.blogsCollection.deleteOne({ id: id });
+            return result.deletedCount === 1;
+        });
+    },
+    deleteRepoPosts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const deletedAll = yield db_1.postsCollection.deleteMany({});
+            return deletedAll.deletedCount === 1;
+        });
+    },
 };

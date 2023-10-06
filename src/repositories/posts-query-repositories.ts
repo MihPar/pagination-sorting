@@ -22,7 +22,7 @@ export const postsQueryRepositories = {
 			.toArray()
 			
 		},
-		async findPostById(id: string): Promise<boolean> {
+		async findPostById(id: string): Promise<PostsType | null> {
 			return postsCollection.findOne({id: id}, {projection: {_id: 0}})
 		}
 }

@@ -35,5 +35,11 @@ exports.blogsService = {
         return __awaiter(this, void 0, void 0, function* () {
             return yield blogs_db_repositories_1.blogsRepositories.deletedBlog(id);
         });
+    },
+    deleteAllBlogs() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const delBlogs = blogs_db_repositories_1.blogsRepositories.deleteRepoBlogs();
+            return delBlogs;
+        });
     }
 };

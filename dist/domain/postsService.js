@@ -29,10 +29,21 @@ exports.postsService = {
             return post;
         });
     },
-    // async updateBlog(id: string, name: string, description: string, websiteUrl: string): Promise<boolean> {
-    // 	return await blogsRepositories.updateBlogById(id, name, description, websiteUrl,)
-    // },
-    // async deletedBlog(id: string): Promise<boolean> {
-    // 	return await blogsRepositories.deletedBlog(id)
-    // }
+    updateOldPost(id, title, shortDescription, content, blogId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const updatPostById = yield posts_db_repositories_1.postsRepositories.updatePost(id, title, shortDescription, content, blogId);
+            return updatPostById;
+        });
+    },
+    deletePostId(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield posts_db_repositories_1.postsRepositories.deletedPostById(id);
+        });
+    },
+    deleteAllPosts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const delPosts = posts_db_repositories_1.postsRepositories.deleteRepoPosts();
+            return delPosts;
+        });
+    },
 };

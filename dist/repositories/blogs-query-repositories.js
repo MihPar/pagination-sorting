@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.blogsQueryRepositories = void 0;
 const db_1 = require("../db/db");
 exports.blogsQueryRepositories = {
-    findBlogs(serchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
+    findAllBlogs(serchNameTerm, pageNumber, pageSize, sortBy, sortDirection) {
         return __awaiter(this, void 0, void 0, function* () {
             const filtered = serchNameTerm ? { name: { $regex: /serchNameTerm/i } } : {}; // todo finished filter				
             return db_1.blogsCollection

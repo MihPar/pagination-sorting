@@ -1,3 +1,7 @@
+import { paramsPostsIdModel } from './../model/modelPosts/paramsPostsIdModel';
+import { bodyPostsModel } from './../model/modelPosts/bodyPostsMode';
+import { queryPostsModel } from './../model/modelPosts/queryPostsModel';
+import { RequestWithParams, RequestWithBody, RequestWithParamsAndBody } from './../types';
 import {
   inputPostBlogValidator,
   inputPostContentValidator,
@@ -14,7 +18,9 @@ import { postsService } from "../domain/postsService";
 
 export const postsRouter = Router({});
 
-postsRouter.get("/", async function (req: Request, res: Response): Promise<PostsType[]> {
+/********************************** get **********************************/
+
+postsRouter.get("/", async function (req: RequestWithParams<queryPostsModel>, res: Response<PostsType[]>) {
   const {
     pageNumber = "1",
     pageSize = "10",
@@ -27,8 +33,10 @@ postsRouter.get("/", async function (req: Request, res: Response): Promise<Posts
     sortBy as string,
     sortDirection as string
   );
-  res.status(HTTP_STATUS.OK_200).send(getAllPosts);
+  return res.status(HTTP_STATUS.OK_200).send(getAllPosts);
 });
+
+/********************************** post **********************************/
 
 postsRouter.post(
   "/",
@@ -38,7 +46,7 @@ postsRouter.post(
   inputPostShortDescriptionValidator,
   inputPostContentValidator,
   inputPostBlogValidator,
-  async function (req: Request, res: Request): Promise<PostsType> {
+  async function (req: RequestWithBody<bodyPostsModel>, res: Response <PostsType>) {
     const { title, shortDescription, content, blogId } = req.body;
     const createNewPost: PostsType = await postsService.createPost(
       title,
@@ -46,24 +54,28 @@ postsRouter.post(
       content,
       blogId
     );
-    res.status(HTTP_STATUS.CREATED_201).send(createNewPost);
+    return res.status(HTTP_STATUS.CREATED_201).send(createNewPost);
   }
 );
+
+/********************************** get{id} **********************************/
 
 postsRouter.get(
   "/:id",
-  async function (req: Request, res: Response): Promise<boolean> {
-    const getPostById: boolean = await postsQueryRepositories.findPostById(
+  async function (req: RequestWithParams<paramsPostsIdModel>, res: Response<PostsType | null>) {
+    const getPostById: PostsType | null = await postsQueryRepositories.findPostById(
       req.params.id
     );
     if (!getPostById) {
-      res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+      return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     }
-    res.status(HTTP_STATUS.OK_200).send(getPostById);
+      return res.status(HTTP_STATUS.OK_200).send(getPostById);
   }
 );
 
-postsService.put(
+/********************************** put{id} **********************************/
+
+postsRouter.put(
   "/:id",
   authorization,
   valueMiddleware,
@@ -71,32 +83,35 @@ postsService.put(
   inputPostShortDescriptionValidator,
   inputPostContentValidator,
   inputPostBlogValidator,
-  async function (req: Request, res: Response): Promise<PostsType> {
+  async function (req: RequestWithParamsAndBody<paramsPostsIdModel, bodyPostsModel>, res: Response<boolean>) {
+	const {id} = req.params
     const { title, shortDescription, content, blogId } = req.body;
-    const updatePost: PostsType = await postsService.updateOldPost(
-      req.params.id,
+    const updatePost: boolean = await postsService.updateOldPost(
+      id,
       title,
       shortDescription,
       content,
       blogId
     );
     if (!updatePost) {
-      res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+      return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {
-      res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
+      return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
     }
   }
 );
 
+/********************************** delete{id} **********************************/
+
 postsRouter.delete(
   "/:id",
   authorization,
-  async function (req: Request, res: Response): Promise<boolean> {
-    const deletPost: PostsType = await postsService.deletePostId(req.params.id);
+  async function (req: RequestWithParams<paramsPostsIdModel>, res: Response<boolean>) {
+    const deletPost: boolean = await postsService.deletePostId(req.params.id);
     if (!deletPost) {
-      res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+      return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {
-      res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
+      return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
     }
   }
 );

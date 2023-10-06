@@ -22,5 +22,21 @@ exports.postsQueryRepositories = {
                 .toArray();
             return posts;
         });
+    },
+    findAllPosts(pageNumber, pageSize, sortBy, sortDirection) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const filter = {};
+            return yield db_1.postsCollection
+                .find(filter, { projection: { _id: 0 } })
+                .sort({ [sortBy]: sortDirection === 'asc' ? 1 : -1 })
+                .skip(+pageNumber)
+                .limit(+pageSize)
+                .toArray();
+        });
+    },
+    findPostById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return db_1.postsCollection.findOne({ id: id }, { projection: { _id: 0 } });
+        });
     }
 };
