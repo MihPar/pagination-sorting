@@ -23,11 +23,11 @@ export const valueMiddleware = function (
   next: NextFunction
 ) {
 	const errors = validationResult(req)
-	if(!errors.isEmpty) {
-		const errorMessage = errors.array({onlyFirstError: true}).map(item => {
+	if(!errors.isEmpty()) {
+		const errorsMessage = errors.array({onlyFirstError: true}).map(item => {
 			return errorFormat(item)
 		})
-		res.status(HTTP_STATUS.BAD_REQUEST_400).send(errorMessage)
+		res.status(HTTP_STATUS.BAD_REQUEST_400).send({errorsMessage})
 		return 
 	} else {
 		next()

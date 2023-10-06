@@ -71,7 +71,6 @@ blogsRouter.post(
     req: RequestWithBody<bodyBlogsModel>,
     res: Response<BlogsType>
   ) {
-	console.log('wefwefwefwefwefwefwefwefwefwefwefwefwef',req.body)
     const createBlog: BlogsType = await blogsService.createNewBlog(
       req.body.name,
       req.body.description,
