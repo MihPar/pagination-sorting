@@ -82,7 +82,7 @@ export const postsRepositories = {
     return result.matchedCount === 1;
   },
   async deletedPostById(id: string): Promise<boolean> {
-    const result = await blogsCollection.deleteOne({ id: id });
+    const result = await postsCollection.deleteOne({ id: id });
     return result.deletedCount === 1;
   },
   async deleteRepoPosts(): Promise<boolean> {
