@@ -87,6 +87,6 @@ export const postsRepositories = {
   },
   async deleteRepoPosts(): Promise<boolean> {
     const deletedAll = await postsCollection.deleteMany({});
-    return deletedAll.deletedCount === 1;
+    return deletedAll.acknowledged
   },
 };
