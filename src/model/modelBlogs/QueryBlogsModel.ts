@@ -1,5 +1,5 @@
 export type QueryBlogsModel = {
-	serchNameTerm: string
+	searchNameTerm: string
       pageNumber: string
       pageSize: string
       sortBy: string

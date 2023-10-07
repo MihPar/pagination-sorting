@@ -1,5 +1,6 @@
 import { postsRepositories } from "../repositories/posts-db-repositories";
 import { BlogsType, PostsType, blogsCollection } from "../db/db";
+import { randomUUID } from "crypto";
 
 export const postsService = {
   async createPost(
@@ -13,7 +14,7 @@ export const postsService = {
     });
     if (!blog) return null;
     const newPost: PostsType = {
-      id: new Date().toISOString(),
+      id: randomUUID(),
       title,
       shortDescription,
       content,

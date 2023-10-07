@@ -4,14 +4,14 @@ import { Filter } from "mongodb";
 
 export const blogsRepositories = {
   async findAllBlogs(
-    serchNameTerm: string | null,
+    searchNameTerm: string | null,
     pageNumber: string,
     pageSize: string,
     sortBy: string,
     sortDirection: string
   ): Promise<PaginationType<BlogsType>> {
-    const filtered: Filter<BlogsType> = serchNameTerm
-      ? { name: { $regex: /serchNameTerm/i } }
+    const filtered: Filter<BlogsType> = searchNameTerm
+      ? { name: { $regex: searchNameTerm ?? '', $options: 'i' } }
       : {}; // todo finished filter
     const blogs: BlogsType[] = await blogsCollection
       .find(filtered, { projection: { _id: 0 } })

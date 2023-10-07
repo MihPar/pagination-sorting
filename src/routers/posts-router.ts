@@ -24,7 +24,7 @@ postsRouter.get("/", async function (req: RequestWithParams<queryPostsModel>, re
   const {
     pageNumber = "1",
     pageSize = "10",
-    sortBy = "createAt",
+    sortBy = "createdAt",
     sortDirection = "desc",
   } = req.query;
   const getAllPosts: PaginationType<PostsType> = await postsRepositories.findAllPosts(

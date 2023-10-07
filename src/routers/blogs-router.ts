@@ -42,14 +42,14 @@ blogsRouter.get(
     res: Response<PaginationType<BlogsType>>
   ):Promise<Response<PaginationType<BlogsType>>> {
     const {
-      serchNameTerm,
+      searchNameTerm,
       pageNumber = "1",
       pageSize = "10",
       sortBy = "createdAt",
       sortDirection = "desc",
     } = req.query;
     const getAllBlogs: PaginationType<BlogsType> = await blogsRepositories.findAllBlogs(
-      serchNameTerm,
+      searchNameTerm,
       pageNumber,
       pageSize,
       sortBy,
