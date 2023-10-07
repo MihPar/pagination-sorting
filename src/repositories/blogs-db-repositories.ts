@@ -1,3 +1,4 @@
+import { PaginationType } from "../types";
 import { BlogsType, blogsCollection } from "./../db/db";
 import { Filter } from "mongodb";
 
@@ -8,11 +9,11 @@ export const blogsRepositories = {
     pageSize: string,
     sortBy: string,
     sortDirection: string
-  ): Promise<BlogsType[]> {
+  ): Promise<PaginationType<BlogsType>> {
     const filtered: Filter<BlogsType> = serchNameTerm
       ? { name: { $regex: /serchNameTerm/i } }
       : {}; // todo finished filter
-    const blogs = await blogsCollection
+    const blogs: BlogsType[] = await blogsCollection
       .find(filtered, { projection: { _id: 0 } })
       .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
       .skip((+pageNumber - 1) * +pageSize) //todo find how we can skip
@@ -22,15 +23,9 @@ export const blogsRepositories = {
     const totalCount: number = await blogsCollection.countDocuments(filtered);
     const pagesCount: number = Math.ceil(totalCount / +pageSize);
 
-	type Type = {
-		pagesCount: number
-		page: number
-		pageSize: number
-		totalCount: number
-		items: Array<BlogsType>
-	}
+	
 
-	let result: Type = {
+	const result: PaginationType<BlogsType> = {
 		pagesCount: pagesCount,
 		page: +pageNumber,
 		pageSize: +pageSize,

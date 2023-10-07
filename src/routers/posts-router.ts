@@ -2,7 +2,7 @@ import { postsRepositories } from './../repositories/posts-db-repositories';
 import { paramsPostsIdModel } from './../model/modelPosts/paramsPostsIdModel';
 import { bodyPostsModel } from './../model/modelPosts/bodyPostsMode';
 import { queryPostsModel } from './../model/modelPosts/queryPostsModel';
-import { RequestWithParams, RequestWithBody, RequestWithParamsAndBody } from './../types';
+import { RequestWithParams, RequestWithBody, RequestWithParamsAndBody, PaginationType } from './../types';
 import {
   inputPostBlogValidator,
   inputPostContentValidator,
@@ -20,14 +20,14 @@ export const postsRouter = Router({});
 
 /********************************** get **********************************/
 
-postsRouter.get("/", async function (req: RequestWithParams<queryPostsModel>, res: Response<PostsType[]>): Promise<Response<PostsType[]>> {
+postsRouter.get("/", async function (req: RequestWithParams<queryPostsModel>, res: Response<PaginationType<PostsType>>): Promise<Response<PaginationType<PostsType>>> {
   const {
     pageNumber = "1",
     pageSize = "10",
     sortBy = "createAt",
     sortDirection = "desc",
   } = req.query;
-  const getAllPosts: PostsType[] = await postsRepositories.findAllPosts(
+  const getAllPosts: PaginationType<PostsType> = await postsRepositories.findAllPosts(
     pageNumber as string,
     pageSize as string,
     sortBy as string,
@@ -41,11 +41,11 @@ postsRouter.get("/", async function (req: RequestWithParams<queryPostsModel>, re
 postsRouter.post(
   "/",
   authorization,
-  ValueMiddleware,
   inputPostTitleValidator,
   inputPostShortDescriptionValidator,
   inputPostContentValidator,
   inputPostBlogValidator,
+  ValueMiddleware,
   async function (req: RequestWithBody<bodyPostsModel>, res: Response <PostsType>) {
     const { title, shortDescription, content, blogId } = req.body;
     const createNewPost: PostsType | null = await postsService.createPost(
@@ -83,11 +83,11 @@ postsRouter.get(
 postsRouter.put(
   "/:id",
   authorization,
-  ValueMiddleware,
   inputPostTitleValidator,
   inputPostShortDescriptionValidator,
   inputPostContentValidator,
   inputPostBlogValidator,
+  ValueMiddleware,
   async function (req: RequestWithParamsAndBody<paramsPostsIdModel, bodyPostsModel>, res: Response<boolean>) {
 	const {id} = req.params
     const { title, shortDescription, content, blogId } = req.body;

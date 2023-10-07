@@ -6,6 +6,7 @@ import {
   RequestWithParamsAndQuery,
   RequestWithParamsAndBody,
   RequestWithParams,
+  PaginationType,
 } from "./../types";
 import { postsService } from "./../domain/postsService";
 import {
@@ -38,8 +39,8 @@ blogsRouter.get(
   "/",
   async function (
     req: RequestWithQuery<QueryBlogsModel>,
-    res: Response<BlogsType[]>
-  ):Promise<Response<BlogsType[]>> {
+    res: Response<PaginationType<BlogsType>>
+  ):Promise<Response<PaginationType<BlogsType>>> {
     const {
       serchNameTerm,
       pageNumber = "1",
@@ -47,7 +48,7 @@ blogsRouter.get(
       sortBy = "createdAt",
       sortDirection = "desc",
     } = req.query;
-    const getAllBlogs: BlogsType[] = await blogsRepositories.findAllBlogs(
+    const getAllBlogs: PaginationType<BlogsType> = await blogsRepositories.findAllBlogs(
       serchNameTerm,
       pageNumber,
       pageSize,
@@ -63,10 +64,10 @@ blogsRouter.get(
 blogsRouter.post(
   "/",
   authorization,
-  ValueMiddleware,
   inputBlogNameValidator,
   inputBlogDescription,
   inputBlogWebsiteUrl,
+  ValueMiddleware,
   async function (
     req: RequestWithBody<bodyBlogsModel>,
     res: Response<BlogsType>
@@ -76,11 +77,7 @@ blogsRouter.post(
       req.body.description,
       req.body.websiteUrl
     );
-	if(!createBlog) {
-		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-	} else {
-		return res.status(HTTP_STATUS.CREATED_201).send(createBlog);
-	}
+	return res.status(HTTP_STATUS.CREATED_201).send(createBlog);
   }
 );
 
@@ -90,7 +87,7 @@ blogsRouter.get(
   "/:blogId/posts",
   async function (
     req: RequestWithParamsAndQuery<paramsPostsModelBlogId, queryPostsModel>,
-    res: Response<PostsType[]>
+    res: Response<PaginationType<PostsType>>
   ) {
     const {
       pageNumber = "1",
@@ -104,7 +101,7 @@ blogsRouter.get(
 	const blog = await blogsRepositories.findBlogById(blogId)
 	if(!blog) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
 
-    const getPosts: PostsType[] =
+    const getPosts: PaginationType<PostsType> =
       await postsRepositories.findPostsByBlogsId(
         pageNumber as string,
         pageSize as string,
@@ -112,11 +109,8 @@ blogsRouter.get(
         sortDirection as string,
         blogId as string
       );
-	  if(!getPosts) {
-		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-	  } else {
-		return res.status(HTTP_STATUS.OK_200).send(getPosts);
-	  }
+	return res.status(HTTP_STATUS.OK_200).send(getPosts);
+	
   }
 );
 
@@ -125,10 +119,10 @@ blogsRouter.get(
 blogsRouter.post(
   "/:blogId/posts",
   authorization,
-  ValueMiddleware,
   inputPostContentValidator,
   inputPostTitleValidator,
   inputPostShortDescriptionValidator,
+  ValueMiddleware,
   async function (
     req: RequestWithParamsAndBody<paramsPostsModelBlogId, bodyPostsModel>,
     res: Response<PostsType>
@@ -176,10 +170,10 @@ blogsRouter.get(
 blogsRouter.put(
   "/:id",
   authorization,
-  ValueMiddleware,
   inputBlogNameValidator,
   inputBlogDescription,
   inputBlogWebsiteUrl,
+  ValueMiddleware,
   async function (
     req: RequestWithParamsAndBody<paramsBlogsModel, bodyBlogsModel>,
     res: Response<void>
