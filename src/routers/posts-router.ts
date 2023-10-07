@@ -49,13 +49,13 @@ postsRouter.post(
   async function (req: RequestWithBody<bodyPostsModel>, res: Response <PostsType>) {
     const { title, shortDescription, content, blogId } = req.body;
     const createNewPost: PostsType | null = await postsService.createPost(
+	  blogId,
       title,
       shortDescription,
       content,
-      blogId
     );
 	if (!createNewPost) {
-		return null
+		return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
 	} else {
 		return res.status(HTTP_STATUS.CREATED_201).send(createNewPost);
 	}
