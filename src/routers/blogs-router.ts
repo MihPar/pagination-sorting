@@ -7,6 +7,8 @@ import {
   RequestWithParamsAndBody,
   RequestWithParams,
   PaginationType,
+  BlogsType,
+  PostsType,
 } from "./../types";
 import { postsService } from "./../domain/postsService";
 import {
@@ -19,7 +21,6 @@ import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { blogsService } from "./../domain/blogsService";
 import { Router, Response } from "express";
 import { HTTP_STATUS } from "../utils";
-import { BlogsType, PostsType } from "../db/db";
 import { RequestWithBody, RequestWithQuery } from "../types";
 import {
   inputPostContentValidator,

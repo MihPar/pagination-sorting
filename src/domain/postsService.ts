@@ -1,6 +1,8 @@
+import { PostsType } from './../types';
 import { postsRepositories } from "../repositories/posts-db-repositories";
-import { BlogsType, PostsType, blogsCollection } from "../db/db";
+import { blogsCollection } from "../db/db";
 import { randomUUID } from "crypto";
+import { BlogsType } from '../types';
 
 export const postsService = {
   async createPost(

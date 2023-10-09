@@ -2,7 +2,7 @@ import { postsRepositories } from './../repositories/posts-db-repositories';
 import { paramsPostsIdModel } from './../model/modelPosts/paramsPostsIdModel';
 import { bodyPostsModel } from './../model/modelPosts/bodyPostsMode';
 import { queryPostsModel } from './../model/modelPosts/queryPostsModel';
-import { RequestWithParams, RequestWithBody, RequestWithParamsAndBody, PaginationType } from './../types';
+import { RequestWithParams, RequestWithBody, RequestWithParamsAndBody, PaginationType, PostsType } from './../types';
 import {
   inputPostBlogValidator,
   inputPostContentValidator,
@@ -11,7 +11,6 @@ import {
 } from "./../middleware/input-value-posts-middleware copy";
 import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { authorization } from "./../middleware/authorizatin";
-import { PostsType } from "./../db/db";
 import { Router, Response } from "express";
 import { HTTP_STATUS } from "../utils";
 import { postsService } from "../domain/postsService";

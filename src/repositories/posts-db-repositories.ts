@@ -1,5 +1,5 @@
-import { PaginationType } from './../types';
-import { PostsType, blogsCollection, postsCollection } from "./../db/db";
+import { PaginationType, PostsType } from './../types';
+import { blogsCollection, postsCollection } from "./../db/db";
 import { Filter } from "mongodb";
 
 export const postsRepositories = {

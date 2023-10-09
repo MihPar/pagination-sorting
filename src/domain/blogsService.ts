@@ -1,5 +1,5 @@
 import { blogsRepositories } from "./../repositories/blogs-db-repositories";
-import { BlogsType } from "../db/db";
+import { BlogsType } from "../types";
 
 export const blogsService = {
   async createNewBlog(

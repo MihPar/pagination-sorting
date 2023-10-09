@@ -1,5 +1,5 @@
-import { PaginationType } from "../types";
-import { BlogsType, blogsCollection } from "./../db/db";
+import { BlogsType, PaginationType } from "../types";
+import { blogsCollection } from "./../db/db";
 import { Filter } from "mongodb";
 
 export const blogsRepositories = {
@@ -22,9 +22,7 @@ export const blogsRepositories = {
 
     const totalCount: number = await blogsCollection.countDocuments(filtered);
     const pagesCount: number = Math.ceil(totalCount / +pageSize);
-
 	
-
 	const result: PaginationType<BlogsType> = {
 		pagesCount: pagesCount,
 		page: +pageNumber,
