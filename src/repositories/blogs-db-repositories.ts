@@ -33,8 +33,8 @@ export const blogsRepositories = {
     return result
 
   },
-  async findBlogById(id: string): Promise<BlogsType | null> {
-    return blogsCollection.findOne({ id: id }, { projection: { _id: 0 } });
+  async findBlogById(blogId: string): Promise<BlogsType | null> {
+    return blogsCollection.findOne({ id: blogId }, { projection: { _id: 0 } });
   },
   async findBlogs(): Promise<BlogsType[]> {
     const filtered: any = {};

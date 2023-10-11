@@ -132,7 +132,7 @@ blogsRouter.post(
     const { title, shortDescription, content } = req.body;
 
 	const blog = await blogsRepositories.findBlogById(blogId)
-	if(!blog) return res.sendStatus(404)
+	if(!blog) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
 
     const isCreatePost = await postsService.createPost(
       blogId,

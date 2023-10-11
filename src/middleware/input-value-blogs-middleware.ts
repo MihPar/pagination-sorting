@@ -16,7 +16,6 @@ export const inputBlogDescription = body('description')
 
 export const inputBlogWebsiteUrl = body('websiteUrl')
 .isString()
-.notEmpty()
 .isURL()
 .trim()
 .notEmpty()

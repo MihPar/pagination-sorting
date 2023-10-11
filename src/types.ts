@@ -1,35 +1,42 @@
-import {Request} from 'express'
+import { Request } from "express";
 
-export type RequestWithBody<T> = Request<{}, {}, T>
-export type RequestWithQuery<T> = Request<{}, {}, {}, T>
-export type RequestWithParams<T> = Request<T>
-export type RequestWithParamsAndBody<T, B> = Request<T, {}, B>
-export type RequestWithParamsAndQuery<T, Q> = Request<T, {}, {}, Q>
-
+export type RequestWithBody<T> = Request<{}, {}, T>;
+export type RequestWithQuery<T> = Request<{}, {}, {}, T>;
+export type RequestWithParams<T> = Request<T>;
+export type RequestWithParamsAndBody<T, B> = Request<T, {}, B>;
+export type RequestWithParamsAndQuery<T, Q> = Request<T, {}, {}, Q>;
 
 export type PaginationType<T> = {
-	pagesCount: number
-	page: number
-	pageSize: number
-	totalCount: number
-	items: T[]
-}
+  pagesCount: number;
+  page: number;
+  pageSize: number;
+  totalCount: number;
+  items: T[];
+};
 
 export type BlogsType = {
-	id: string;
-	name: string;
-	description: string;
-	websiteUrl: string;
-	createdAt: string;
-	isMembership: boolean;
-  };
-  
-	export type PostsType = {
-	  id: string
-	  title: string
-	  shortDescription: string
-	  content: string
-	  blogId: string
-	  blogName: string
-	  createdAt: string
-	}
+  id: string;
+  name: string;
+  description: string;
+  websiteUrl: string;
+  createdAt: string;
+  isMembership: boolean;
+};
+
+export type PostsType = {
+  id: string;
+  title: string;
+  shortDescription: string;
+  content: string;
+  blogId: string;
+  blogName: string;
+  createdAt: string;
+};
+
+export type UserType = {
+  id: any
+  login: string;
+  email: string;
+  passwordHash: string;
+  createdAt: any;
+};

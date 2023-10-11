@@ -1,4 +1,4 @@
-import { BlogsType, PostsType } from './../types';
+import { BlogsType, PostsType, UserType } from './../types';
 
 import { MongoClient } from 'mongodb'
 import {config} from 'dotenv'
@@ -23,3 +23,4 @@ export async function runDb() {
 }
 export const blogsCollection = db.collection<BlogsType>('blogs')
 export const postsCollection = db.collection<PostsType>('posts')
+export const userCollection = db.collection<UserType>('posts')
