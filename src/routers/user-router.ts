@@ -71,8 +71,10 @@ usersRouter.post(
       email
     );
     return res.status(HTTP_STATUS.CREATED_201).send(newUser);
-  },
-  usersRouter.delete(
+  }
+);
+
+usersRouter.delete(
     "/:id",
 	authorization,
     async function (
@@ -87,4 +89,3 @@ usersRouter.post(
       }
     }
   )
-);
