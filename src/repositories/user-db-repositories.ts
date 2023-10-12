@@ -5,7 +5,7 @@ import { Filter, ObjectId } from "mongodb";
 export const userRepositories = {
   async findByLoginOrEmail(loginOrEmail: string) {
     const user = await userCollection.findOne({
-      $or: [{ email: loginOrEmail }, { userName: loginOrEmail }],
+      $or: [{ email: loginOrEmail }, { login: loginOrEmail }],
     });
     return user;
   },
@@ -21,7 +21,7 @@ export const userRepositories = {
 	
     const getAllUsers = await userCollection
       .find(filter, { projection: { passwordHash: 0 } })
-      .sort({ [sortBy]: sortDirection === "asc" ? -1 : 1 })
+      .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
       .skip((+pageNumber - 1) * +pageSize)
       .limit(+pageSize)
       .toArray();
