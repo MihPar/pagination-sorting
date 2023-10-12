@@ -9,7 +9,7 @@ import { userService } from "../domain/userService";
 export const authRouter = Router({});
 
 authRouter.post(
-  "/auth/login",
+  "/",
   inputValueLoginOrEamil,
   inputValuePassword,
   ValueMiddleware,

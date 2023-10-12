@@ -27,7 +27,7 @@ export const userService = {
 			email: email,
 			passwordHash,
 			passwordSalt,
-			createdAt: new Date()
+			createdAt: new Date().toISOString()
 		}
 		return userRepositories.createUser(newUser)
 	},

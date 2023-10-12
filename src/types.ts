@@ -39,5 +39,5 @@ export type UserType = {
   email: string;
   passwordHash: string;
   passwordSalt: string;
-  createdAt: any;
+  createdAt: string;
 };
