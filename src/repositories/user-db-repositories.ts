@@ -5,7 +5,7 @@ import { Filter } from "mongodb";
 export const userRepositories = {
   async findByLoginOrEmail(loginOrEmail: string) {
     const user = await userCollection.findOne({
-      sort: [{ email: loginOrEmail }, { userName: loginOrEmail }],
+      $or: [{ email: loginOrEmail }, { userName: loginOrEmail }],
     });
     return user;
   },
