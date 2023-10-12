@@ -14,6 +14,7 @@ import {
   RequestWithQuery,
   RequestWithBody,
   RequestWithParams,
+  DBUserType,
 } from "./../types";
 import { HTTP_STATUS } from "../utils";
 import { userRepositories } from "./../repositories/user-db-repositories";

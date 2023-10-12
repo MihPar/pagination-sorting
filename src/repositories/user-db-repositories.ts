@@ -1,6 +1,6 @@
-import { PaginationType, UserType } from "./../types";
+import { DBUserType, PaginationType, UserType } from "./../types";
 import { userCollection } from "./../db/db";
-import { Filter } from "mongodb";
+import { Filter, ObjectId } from "mongodb";
 
 export const userRepositories = {
   async findByLoginOrEmail(loginOrEmail: string) {
@@ -17,10 +17,10 @@ export const userRepositories = {
     searchLoginTerm: string,
     searchEmailTerm: string 
   ): Promise<PaginationType<UserType>> {
-    const filter: Filter<UserType> = {$or: [{login: {$regex: searchLoginTerm, $options: 'i'}}, {email: {$regex: searchEmailTerm, $options: 'i'}}]};
+    const filter: Filter<DBUserType> = {$or: [{login: {$regex: searchLoginTerm, $options: 'i'}}, {email: {$regex: searchEmailTerm, $options: 'i'}}]};
 	
     const getAllUsers = await userCollection
-      .find(filter, { projection: { _id: 0 } })
+      .find(filter, { projection: { _id: 0, passwordHash: 0 } })
       .sort({ [sortBy]: sortDirection === "asc" ? -1 : 1 })
       .skip((+pageNumber - 1) * +pageSize)
       .limit(+pageSize)
@@ -34,15 +34,20 @@ export const userRepositories = {
         page: +pageNumber,
         pageSize: +pageSize,
         totalCount: totalCount,
-        items: getAllUsers,
+        items: getAllUsers.map(user => ({
+			id: user._id,
+			login: user.login,
+			email: user.email,
+			createdAt: user.createdAt,
+		})),
       }
   },
-  async createUser(newUser: UserType): Promise<UserType> {
+  async createUser(newUser: DBUserType): Promise<DBUserType> {
 	const  updateUser = userCollection.insertOne({...newUser})
 	return newUser
   },
   async deleteById(id: string): Promise<boolean> {
-	const deleted = await userCollection.deleteOne({id: id})
+	const deleted = await userCollection.deleteOne({_id: new ObjectId(id)})
 	return deleted.deletedCount === 1;
   }
 };
