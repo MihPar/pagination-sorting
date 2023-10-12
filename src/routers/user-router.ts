@@ -18,9 +18,10 @@ import {
 } from "./../types";
 import { HTTP_STATUS } from "../utils";
 import { userRepositories } from "./../repositories/user-db-repositories";
-import { Router, Response } from "express";
+import { Router, Response, NextFunction } from "express";
 import { bodyUserModel } from "../model/modelUser/bodyUserModel";
 import { log } from "console";
+import { nextTick } from "process";
 
 export const usersRouter = Router({});
 
@@ -78,6 +79,13 @@ usersRouter.post(
 
 usersRouter.delete(
     "/:id",
+	function(req: RequestWithParams<ParamsUserMode>, res: Response<void>, next: NextFunction) {
+		if(!(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i).test(req.params.id)) {
+			return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+		} 
+		next()
+		return
+	},
 	authorization,
     async function (
       req: RequestWithParams<ParamsUserMode>,
