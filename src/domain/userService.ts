@@ -28,12 +28,9 @@ export const userService = {
 		const user: any = await userRepositories.findByLoginOrEmail(loginOrEmail)
 		console.log(user)
 		if(!user) return false
-		const passwordHash = await this._generateHash(password)
-		console.log("checkCridential", passwordHash, user)
-		if(user.passwordHash !== passwordHash) {
-			return false
-		}
-		return true
+		// const passwordHash = await this._generateHash(password)
+		const resultBcryptCompare = await bcrypt.compare(password, user.passwordHash)
+		return resultBcryptCompare
 	},
 	async _generateHash(password: string) {
 		const hash = await bcrypt.hash(password, 10)

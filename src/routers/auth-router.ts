@@ -15,6 +15,7 @@ authRouter.post(
   ValueMiddleware,
   async function (req: RequestWithBody<bodyAuthModel>, res: Response) {
     const { loginOrEmail, password } = req.body;
+	console.log("body", req.body)
     const checkResult = await userService.checkCridential(
       loginOrEmail,
       password
