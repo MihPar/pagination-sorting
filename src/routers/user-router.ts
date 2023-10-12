@@ -20,6 +20,7 @@ import { HTTP_STATUS } from "../utils";
 import { userRepositories } from "./../repositories/user-db-repositories";
 import { Router, Response } from "express";
 import { bodyUserModel } from "../model/modelUser/bodyUserModel";
+import { log } from "console";
 
 export const usersRouter = Router({});
 
@@ -82,6 +83,7 @@ usersRouter.delete(
       req: RequestWithParams<ParamsUserMode>,
       res: Response<void>
     ): Promise<Response<void>> {
+		console.log(req.params.id)
       const deleteUserById = await userService.deleteUserId(req.params.id);
       if (!deleteUserById) {
         return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);

@@ -20,7 +20,7 @@ export const userRepositories = {
     const filter: Filter<DBUserType> = {$or: [{login: {$regex: searchLoginTerm, $options: 'i'}}, {email: {$regex: searchEmailTerm, $options: 'i'}}]};
 	
     const getAllUsers = await userCollection
-      .find(filter, { projection: { _id: 0, passwordHash: 0 } })
+      .find(filter, { projection: { passwordHash: 0 } })
       .sort({ [sortBy]: sortDirection === "asc" ? -1 : 1 })
       .skip((+pageNumber - 1) * +pageSize)
       .limit(+pageSize)

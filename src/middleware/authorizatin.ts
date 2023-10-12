@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { HTTP_STATUS } from "../utils";
+import { constants } from "http2";
 
 const expectAuthHead = "admin:qwerty"
 const encoding = Buffer.from(expectAuthHead).toString('base64')
@@ -17,7 +18,8 @@ export const authorization = function (
 	if(key !== 'Basic') return  res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 	if(value !== encoding) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 	return next()
-  } catch {
-    res.sendStatus(HTTP_STATUS.NOT_WORK_SERVER_500);
+  } catch (e) {
+	console.log(e)
+    return false;
   }
 };
