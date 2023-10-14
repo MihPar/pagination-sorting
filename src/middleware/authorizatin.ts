@@ -12,14 +12,14 @@ export const authorization = function (
 ) {
 	try {
 	const auth = req.headers.authorization
-	console.log(auth)
+	// console.log(auth)
 	if(!auth) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 	const [key, value] = auth.split(" ")
 	if(key !== 'Basic') return  res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 	if(value !== encoding) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 	return next()
   } catch (e) {
-	console.log(e)
+	// console.log(e)
     return false;
   }
 };
