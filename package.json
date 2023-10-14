@@ -21,7 +21,7 @@
     "dev": "nodemon dist/index.js",
     "watch": "tsc -w",
     "serveo": "ssh -R 80:localhost:3000 serveo.net",
-	"test": "jest -i"
+	"test": "jest -i "
   },
   "devDependencies": {
     "@types/express": "^4.17.18",

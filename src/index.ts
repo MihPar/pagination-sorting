@@ -1,15 +1,10 @@
 import { randomUUID } from 'crypto';
 import { runDb } from './db/db';
-import { createApp } from './settings';
+import { app } from './settings';
 import dotenv from 'dotenv'
 dotenv.config()
 
-const app = createApp()
 const port = process.env.PORT || 3000
-
-app.get('/test', (req, res) => {
-    res.json({ message: 'This is a test endpoint!' });
-});
 
 const starting = async () => {
 	await runDb()
