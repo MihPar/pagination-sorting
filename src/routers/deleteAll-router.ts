@@ -1,5 +1,5 @@
-import { blogsService } from './../domain/blogsService';
-import { postsService } from './../domain/postsService';
+import { blogsService } from '../Bisnes-logic-layer/blogsService';
+import { postsService } from '../Bisnes-logic-layer/postsService';
 import { Router, Request, Response } from "express";
 import { HTTP_STATUS } from "../utils";
 

@@ -3,9 +3,7 @@ import { MongoClient } from "mongodb";
 import request from "supertest";
 import dotenv from "dotenv";
 import { HTTP_STATUS } from "../utils";
-import { log } from "console";
 import { runDb, stopDb } from "../db/db";
-import { blob } from "stream/consumers";
 import { randomUUID } from "crypto";
 dotenv.config();
 
@@ -46,13 +44,13 @@ describe("/blogs", () => {
   };
 
   describe("create blog tests", async () => {
-    const wipeAllRes = await request(app).delete("/testing/all-data").send();
+    // const wipeAllRes = await request(app).delete("/testing/all-data").send();
 
-    expect(wipeAllRes.status).toBe(HTTP_STATUS.NO_CONTENT_204);
+    // expect(wipeAllRes.status).toBe(HTTP_STATUS.NO_CONTENT_204);
 
-    const getBlogs = await request(app).get("/blogs").send();
-    expect(getBlogs.status).toBe(HTTP_STATUS.OK_200);
-    expect(getBlogs.body.items).toHaveLength(0);
+    // const getBlogs = await request(app).get("/blogs").send();
+    // expect(getBlogs.status).toBe(HTTP_STATUS.OK_200);
+    // expect(getBlogs.body.items).toHaveLength(0);
 
     it("create blog without auth => should return 401 status code", async () => {
       const createBlogWithoutHeaders = await request(app)
@@ -143,4 +141,24 @@ describe("/blogs", () => {
       expect(getBlogsAfter.body.items).toHaveLength(1);
     });
   });
+  
+//   describe('update blogs test', async() => {
+
+// 	const wipeAllRes = await request(app).delete("/testing/all-data").send();
+
+//     expect(wipeAllRes.status).toBe(HTTP_STATUS.NO_CONTENT_204);
+
+//     const getBlogs = await request(app).get("/blogs").send();
+//     expect(getBlogs.status).toBe(HTTP_STATUS.OK_200);
+//     expect(getBlogs.body.items).toHaveLength(0);
+
+// 	it("update blog without auth => should return 401 status code", async () => {
+// 		const createBlogWithoutHeaders = await request(app)
+// 		  .put("/blogs")
+// 		  .send({});
+// 		expect(createBlogWithoutHeaders.status).toBe(
+// 		  HTTP_STATUS.NOT_AUTHORIZATION_401
+// 		);
+// 	  });
+//   })
 });

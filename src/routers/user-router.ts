@@ -5,7 +5,7 @@ import {
   inputValuePasswordValidation,
   inputValueEmailValidation,
 } from "./../middleware/input-value-user-middleware";
-import { userService } from "./../domain/userService";
+import { userService } from "../Bisnes-logic-layer/userService";
 import { authorization } from "./../middleware/authorizatin";
 import { QueryUserModel } from "./../model/modelUser/queryUserModel";
 import {

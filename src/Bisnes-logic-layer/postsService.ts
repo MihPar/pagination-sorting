@@ -1,4 +1,4 @@
-import { PostsType } from './../types';
+import { PostsType } from '../types';
 import { postsRepositories } from "../repositories/posts-db-repositories";
 import { blogsCollection } from "../db/db";
 import { randomUUID } from "crypto";

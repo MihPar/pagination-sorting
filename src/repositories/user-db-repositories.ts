@@ -49,5 +49,13 @@ export const userRepositories = {
   async deleteById(id: string): Promise<boolean> {
 	const deleted = await userCollection.deleteOne({_id: new ObjectId(id)})
 	return deleted.deletedCount === 1;
-  }
+  },
+  async findUserById(userId: ObjectId | null) {
+    let user = await userCollection.findOne({ _id: userId });
+    if (user) {
+      return user;
+    } else {
+      return null;
+    }
+  },
 };

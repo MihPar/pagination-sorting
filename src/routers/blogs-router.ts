@@ -10,7 +10,7 @@ import {
   BlogsType,
   PostsType,
 } from "./../types";
-import { postsService } from "./../domain/postsService";
+import { postsService } from "../Bisnes-logic-layer/postsService";
 import {
   inputBlogNameValidator,
   inputBlogDescription,
@@ -18,7 +18,7 @@ import {
 } from "./../middleware/input-value-blogs-middleware";
 import { authorization } from "./../middleware/authorizatin";
 import { ValueMiddleware } from "./../middleware/validatorMiddleware";
-import { blogsService } from "./../domain/blogsService";
+import { blogsService } from "../Bisnes-logic-layer/blogsService";
 import { Router, Response } from "express";
 import { HTTP_STATUS } from "../utils";
 import { RequestWithBody, RequestWithQuery } from "../types";

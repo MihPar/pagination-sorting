@@ -13,7 +13,7 @@ import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { authorization } from "./../middleware/authorizatin";
 import { Router, Response } from "express";
 import { HTTP_STATUS } from "../utils";
-import { postsService } from "../domain/postsService";
+import { postsService } from "../Bisnes-logic-layer/postsService";
 
 export const postsRouter = Router({});
 
