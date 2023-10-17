@@ -15,7 +15,7 @@ import {
   RequestWithBody,
   RequestWithParams,
   DBUserType,
-} from "./../types";
+} from "./types/types";
 import { HTTP_STATUS } from "../utils";
 import { userRepositories } from "./../repositories/user-db-repositories";
 import { Router, Response, NextFunction } from "express";

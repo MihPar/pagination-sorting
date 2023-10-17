@@ -1,5 +1,5 @@
 import { userRepositories } from '../repositories/user-db-repositories';
-import { UserType, DBUserType, UserGeneralType } from '../types';
+import { UserType, DBUserType, UserGeneralType } from '../routers/types/types';
 import bcrypt from 'bcrypt'
 import { ObjectId } from 'mongodb';
 
@@ -25,20 +25,19 @@ export const userService = {
 		};
 	},
 	async checkCridential(loginOrEmail: string, password: string) {
-		const user: any = await userRepositories.findByLoginOrEmail(loginOrEmail)
+		const user: DBUserType | null = await userRepositories.findByLoginOrEmail(loginOrEmail)
 		if(!user) return null
-		// const passwordHash = await this._generateHash(password)
-		const resultBcryptCompare = await bcrypt.compare(password, user.passwordHash)
+		const resultBcryptCompare: boolean = await bcrypt.compare(password, user.passwordHash)
 		if (resultBcryptCompare !== true) return null
 		return user
 	},
-	async _generateHash(password: string) {
-		const hash = await bcrypt.hash(password, 10)
+	async _generateHash(password: string): Promise<string> {
+		const hash: string = await bcrypt.hash(password, 10)
 		return hash
 	},
 	
 	async deleteUserId(id: string): Promise<boolean> {
-		const deleteId = await userRepositories.deleteById(id)
+		const deleteId: boolean = await userRepositories.deleteById(id)
 		return deleteId
 	},
 	async findUserById(userId: ObjectId | null) {

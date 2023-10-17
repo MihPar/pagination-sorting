@@ -1,4 +1,5 @@
-import { PaginationType, PostsType } from './../types';
+import { PostsType } from '../routers/types/postsType';
+import { PaginationType} from '../routers/types/types';
 import { blogsCollection, postsCollection } from "./../db/db";
 import { Filter } from "mongodb";
 
@@ -18,10 +19,10 @@ export const postsRepositories = {
 		  .toArray();
 	
 		const totalCount: number = await postsCollection.countDocuments(filtered);
-		const pagesCount: number = Math.ceil(totalCount / +pageSize);
+		const pageCount: number = Math.ceil(totalCount / +pageSize);
 
 		let result: PaginationType<PostsType> = {
-			pagesCount: pagesCount,
+			pageCount: pageCount,
 			page: +pageNumber,
 			pageSize: +pageSize,
 			totalCount: totalCount,
@@ -48,10 +49,10 @@ export const postsRepositories = {
       .limit(+pageSize)
       .toArray();
     const totalCount: number = await postsCollection.countDocuments(filter);
-    const pagesCount: number = Math.ceil(totalCount / +pageSize);
+    const pageCount: number = Math.ceil(totalCount / +pageSize);
 
 	return {
-		pagesCount: pagesCount,
+		pageCount: pageCount,
 		page: +pageNumber,
 		pageSize: +pageSize,
 		totalCount: totalCount,

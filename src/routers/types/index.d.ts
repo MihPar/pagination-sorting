@@ -1,4 +1,4 @@
-import { DBUserType } from './../../types';
+import { DBUserType } from './types';
 
 declare global {
 	namespace Express {

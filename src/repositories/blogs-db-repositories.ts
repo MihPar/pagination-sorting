@@ -1,6 +1,7 @@
-import { BlogsType, PaginationType } from "../types";
+import { BlogsType } from "../routers/types/blogsType";
+import { PaginationType } from "../routers/types/types";
 import { blogsCollection } from "./../db/db";
-import { Filter } from "mongodb";
+import { DeleteResult, Filter, UpdateResult } from "mongodb";
 
 export const blogsRepositories = {
   async findAllBlogs(
@@ -34,11 +35,11 @@ export const blogsRepositories = {
 
   },
   async findBlogById(blogId: string): Promise<BlogsType | null> {
-    return blogsCollection.findOne({ id: blogId }, { projection: { _id: 0 } });
+    return await blogsCollection.findOne({ id: blogId }, { projection: { _id: 0 } });
   },
   async findBlogs(): Promise<BlogsType[]> {
     const filtered: any = {};
-    return blogsCollection.find(filtered, { projection: { _id: 0 } }).toArray();
+    return await blogsCollection.find(filtered, { projection: { _id: 0 } }).toArray();
   },
   async createNewBlogs(newBlog: BlogsType): Promise<BlogsType> {
     const result = await blogsCollection.insertOne({ ...newBlog });

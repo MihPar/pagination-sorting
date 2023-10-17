@@ -1,8 +1,15 @@
-import { postsRepositories } from './../repositories/posts-db-repositories';
-import { paramsPostsIdModel } from './../model/modelPosts/paramsPostsIdModel';
-import { bodyPostsModel } from './../model/modelPosts/bodyPostsMode';
-import { queryPostsModel } from './../model/modelPosts/queryPostsModel';
-import { RequestWithParams, RequestWithBody, RequestWithParamsAndBody, PaginationType, PostsType } from './../types';
+import { paramsIdModel } from "./../model/modelPosts/paramsIdModel";
+import { paramsPostIdMode } from "./../model/modelPosts/paramsPostIdMode";
+import { postsRepositories } from "./../repositories/posts-db-repositories";
+import { bodyPostsModel } from "./../model/modelPosts/bodyPostsMode";
+import { queryPostsModel } from "./../model/modelPosts/queryPostsModel";
+import {
+  RequestWithParams,
+  RequestWithBody,
+  RequestWithParamsAndBody,
+  RequestWithParamsAndQuery,
+  PaginationType,
+} from "./types/types";
 import {
   inputPostBlogValidator,
   inputPostContentValidator,
@@ -14,26 +21,68 @@ import { authorization } from "./../middleware/authorizatin";
 import { Router, Response } from "express";
 import { HTTP_STATUS } from "../utils";
 import { postsService } from "../Bisnes-logic-layer/postsService";
+import { PostsType } from "./types/postsType";
+import { commentService } from "../Bisnes-logic-layer/commentService";
+import { CommentType } from "./types/commentType";
+import { commentRepositories } from "../repositories/comment-db-repositories";
 
 export const postsRouter = Router({});
 
+/************************ get{postId}/comment *****************************/
+
+postsRouter.get(
+  "/:postId/comment",
+  async function (
+    req: RequestWithParamsAndQuery<paramsPostIdMode, queryPostsModel>,
+    res: Response<PaginationType<CommentType>>
+  ): Promise<Response<PaginationType<CommentType>>> {
+    const { postId } = req.params;
+    const {
+      pageNumber = "1",
+      pageSize = "10",
+      sortBy = "createdAt",
+      sortDirection = "desc",
+    } = req.query;
+    const commentByPostsId = await commentRepositories.findCommentByPostId(
+      postId,
+      pageNumber,
+      pageSize,
+      sortBy,
+      sortDirection
+    );
+
+    if (!commentByPostsId) {
+      return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+    } else {
+      return res.status(HTTP_STATUS.OK_200).send(commentByPostsId);
+    }
+  }
+);
+
 /********************************** get **********************************/
 
-postsRouter.get("/", async function (req: RequestWithParams<queryPostsModel>, res: Response<PaginationType<PostsType>>): Promise<Response<PaginationType<PostsType>>> {
-  const {
-    pageNumber = "1",
-    pageSize = "10",
-    sortBy = "createdAt",
-    sortDirection = "desc",
-  } = req.query;
-  const getAllPosts: PaginationType<PostsType> = await postsRepositories.findAllPosts(
-    pageNumber as string,
-    pageSize as string,
-    sortBy as string,
-    sortDirection as string
-  );
-  return res.status(HTTP_STATUS.OK_200).send(getAllPosts);
-});
+postsRouter.get(
+  "/",
+  async function (
+    req: RequestWithParams<queryPostsModel>,
+    res: Response<PaginationType<PostsType>>
+  ): Promise<Response<PaginationType<PostsType>>> {
+    const {
+      pageNumber = "1",
+      pageSize = "10",
+      sortBy = "createdAt",
+      sortDirection = "desc",
+    } = req.query;
+    const getAllPosts: PaginationType<PostsType> =
+      await postsRepositories.findAllPosts(
+        pageNumber as string,
+        pageSize as string,
+        sortBy as string,
+        sortDirection as string
+      );
+    return res.status(HTTP_STATUS.OK_200).send(getAllPosts);
+  }
+);
 
 /********************************** post **********************************/
 
@@ -45,19 +94,22 @@ postsRouter.post(
   inputPostContentValidator,
   inputPostBlogValidator,
   ValueMiddleware,
-  async function (req: RequestWithBody<bodyPostsModel>, res: Response <PostsType>) {
+  async function (
+    req: RequestWithBody<bodyPostsModel>,
+    res: Response<PostsType>
+  ) {
     const { title, shortDescription, content, blogId } = req.body;
     const createNewPost: PostsType | null = await postsService.createPost(
-	  blogId,
+      blogId,
       title,
       shortDescription,
-      content,
+      content
     );
-	if (!createNewPost) {
-		return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
-	} else {
-		return res.status(HTTP_STATUS.CREATED_201).send(createNewPost);
-	}
+    if (!createNewPost) {
+      return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400);
+    } else {
+      return res.status(HTTP_STATUS.CREATED_201).send(createNewPost);
+    }
   }
 );
 
@@ -65,15 +117,18 @@ postsRouter.post(
 
 postsRouter.get(
   "/:id",
-  async function (req: RequestWithParams<paramsPostsIdModel>, res: Response<PostsType | null>) {
+  async function (
+    req: RequestWithParams<paramsIdModel>,
+    res: Response<PostsType | null>
+  ) {
     const getPostById: PostsType | null = await postsRepositories.findPostById(
       req.params.id
     );
     if (!getPostById) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {
-	  return res.status(HTTP_STATUS.OK_200).send(getPostById);
-	}
+      return res.status(HTTP_STATUS.OK_200).send(getPostById);
+    }
   }
 );
 
@@ -87,8 +142,11 @@ postsRouter.put(
   inputPostContentValidator,
   inputPostBlogValidator,
   ValueMiddleware,
-  async function (req: RequestWithParamsAndBody<paramsPostsIdModel, bodyPostsModel>, res: Response<boolean>) {
-	const {id} = req.params
+  async function (
+    req: RequestWithParamsAndBody<paramsIdModel, bodyPostsModel>,
+    res: Response<boolean>
+  ) {
+    const { id } = req.params;
     const { title, shortDescription, content, blogId } = req.body;
     const updatePost: boolean = await postsService.updateOldPost(
       id,
@@ -110,7 +168,7 @@ postsRouter.put(
 postsRouter.delete(
   "/:id",
   authorization,
-  async function (req: RequestWithParams<paramsPostsIdModel>, res: Response<void>) {
+  async function (req: RequestWithParams<paramsIdModel>, res: Response<void>) {
     const deletPost: boolean = await postsService.deletePostId(req.params.id);
     if (!deletPost) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);

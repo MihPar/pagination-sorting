@@ -1,5 +1,5 @@
+import { BlogsType } from './../routers/types/blogsType';
 import { blogsRepositories } from "../repositories/blogs-db-repositories";
-import { BlogsType } from "../types";
 
 export const blogsService = {
   async createNewBlog(
@@ -31,9 +31,9 @@ export const blogsService = {
       websiteUrl
     );
   },
-  async deletedBlog(id: string): Promise<boolean> {
-    return await blogsRepositories.deletedBlog(id);
-  },
+//   async deletedBlog(id: string): Promise<boolean> {
+//     return await blogsRepositories.deletedBlog(id);
+//   },
   async deleteAllBlogs(): Promise<boolean> {
     return await blogsRepositories.deleteRepoBlogs();
   },

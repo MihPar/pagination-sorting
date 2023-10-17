@@ -1,10 +1,10 @@
-import { DBUserType, PaginationType, UserType } from "./../types";
+import { DBUserType, PaginationType, UserType } from "../routers/types/types";
 import { userCollection } from "./../db/db";
 import { Filter, ObjectId } from "mongodb";
 
 export const userRepositories = {
-  async findByLoginOrEmail(loginOrEmail: string) {
-    const user = await userCollection.findOne({
+  async findByLoginOrEmail(loginOrEmail: string): Promise<DBUserType | null> {
+    const user: DBUserType | null = await userCollection.findOne({
       $or: [{ email: loginOrEmail }, { login: loginOrEmail }],
     });
     return user;

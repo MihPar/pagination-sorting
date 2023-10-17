@@ -6,11 +6,12 @@ import {
 } from "./../middleware/input-value-auth-middleware";
 import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { bodyAuthModel } from "./../model/modelAuth/bodyAuthModel";
-import { DBUserType, RequestWithBody } from "./../types";
+import { RequestWithBody } from "./types/types";
 import { Router, Response, Request } from "express";
 import { HTTP_STATUS } from "../utils";
 import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
+import { DBUserType } from './types/usersType';
 
 export const authRouter = Router({});
 
@@ -24,14 +25,14 @@ authRouter.post(
     res: Response<{ accessToken: string }>
   ): Promise<Response<{ accessToken: string }>> {
     const { loginOrEmail, password } = req.body;
-    const checkResult: DBUserType | null = await userService.checkCridential(
+    const user: DBUserType | null = await userService.checkCridential(
       loginOrEmail,
       password
     );
-    if (!checkResult) {
+    if (!user) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
-      const token: string = await jwtService.createJWT(checkResult);
+      const token: string = await jwtService.createJWT(user);
       return res.sendStatus(HTTP_STATUS.OK_200).send({ accessToken: token });
     }
   }

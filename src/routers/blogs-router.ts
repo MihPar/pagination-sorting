@@ -7,9 +7,7 @@ import {
   RequestWithParamsAndBody,
   RequestWithParams,
   PaginationType,
-  BlogsType,
-  PostsType,
-} from "./../types";
+} from "./types/types";
 import { postsService } from "../Bisnes-logic-layer/postsService";
 import {
   inputBlogNameValidator,
@@ -21,7 +19,7 @@ import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { blogsService } from "../Bisnes-logic-layer/blogsService";
 import { Router, Response } from "express";
 import { HTTP_STATUS } from "../utils";
-import { RequestWithBody, RequestWithQuery } from "../types";
+import { RequestWithBody, RequestWithQuery } from "./types/types";
 import {
   inputPostContentValidator,
   inputPostShortDescriptionValidator,
@@ -31,6 +29,8 @@ import { paramsPostsModelBlogId } from "../model/modelPosts/paramsPostsModeBlogI
 import { QueryBlogsModel } from "../model/modelBlogs/QueryBlogsModel";
 import { bodyBlogsModel } from "../model/modelBlogs/bodyBlogsModel";
 import { blogsRepositories } from "../repositories/blogs-db-repositories";
+import { BlogsType } from './types/blogsType';
+import { PostsType } from './types/postsType';
 
 export const blogsRouter = Router({});
 
@@ -204,7 +204,7 @@ blogsRouter.delete(
     req: RequestWithParams<paramsBlogsModel>,
     res: Response<void>
   ) {
-    const isDeleted: boolean = await blogsService.deletedBlog(req.params.id);
+    const isDeleted: boolean = await blogsRepositories.deletedBlog(req.params.id);
     if (!isDeleted) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {
