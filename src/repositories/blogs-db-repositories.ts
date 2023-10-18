@@ -22,10 +22,10 @@ export const blogsRepositories = {
       .toArray();
 
     const totalCount: number = await blogsCollection.countDocuments(filtered);
-    const pagesCount: number = Math.ceil(totalCount / +pageSize);
+    const pageCount: number = Math.ceil(totalCount / +pageSize);
 	
 	const result: PaginationType<BlogsType> = {
-		pagesCount: pagesCount,
+		pageCount: pageCount,
 		page: +pageNumber,
 		pageSize: +pageSize,
 		totalCount: totalCount,

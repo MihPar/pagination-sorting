@@ -9,12 +9,10 @@ import { userService } from "../Bisnes-logic-layer/userService";
 import { authorization } from "./../middleware/authorizatin";
 import { QueryUserModel } from "./../model/modelUser/queryUserModel";
 import {
-  UserType,
   PaginationType,
   RequestWithQuery,
   RequestWithBody,
   RequestWithParams,
-  DBUserType,
 } from "./types/types";
 import { HTTP_STATUS } from "../utils";
 import { userRepositories } from "./../repositories/user-db-repositories";
@@ -23,6 +21,7 @@ import { bodyUserModel } from "../model/modelUser/bodyUserModel";
 import { log } from "console";
 import { nextTick } from "process";
 import { checkId } from "../middleware/input-value-delete-middleware";
+import { UserType } from "./types/usersType";
 
 export const usersRouter = Router({});
 

@@ -25,6 +25,7 @@ import { PostsType } from "./types/postsType";
 import { commentService } from "../Bisnes-logic-layer/commentService";
 import { CommentType } from "./types/commentType";
 import { commentRepositories } from "../repositories/comment-db-repositories";
+import { bodyPostModelContent } from "../model/modelPosts/bodyPostModeContent";
 
 export const postsRouter = Router({});
 
@@ -35,7 +36,7 @@ postsRouter.get(
   async function (
     req: RequestWithParamsAndQuery<paramsPostIdMode, queryPostsModel>,
     res: Response<PaginationType<CommentType>>
-  ): Promise<Response<PaginationType<CommentType>>> {
+  ) {
     const { postId } = req.params;
     const {
       pageNumber = "1",
@@ -43,7 +44,8 @@ postsRouter.get(
       sortBy = "createdAt",
       sortDirection = "desc",
     } = req.query;
-    const commentByPostsId = await commentRepositories.findCommentByPostId(
+	
+    const commentByPostsId: PaginationType<CommentType> | null = await commentRepositories.findCommentByPostId(
       postId,
       pageNumber,
       pageSize,
@@ -52,9 +54,36 @@ postsRouter.get(
     );
 
     if (!commentByPostsId) {
-      return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+    	res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {
-      return res.status(HTTP_STATUS.OK_200).send(commentByPostsId);
+       	res.status(HTTP_STATUS.OK_200).send(commentByPostsId);
+    }
+  }
+);
+
+/************************ post{postId}/comment *****************************/
+
+postsRouter.post(
+  "/:postId/comment",
+  async function (
+    req: RequestWithParamsAndBody<paramsPostIdMode, bodyPostModelContent>,
+    res: Response<CommentType>
+  ) {
+    const { postId } = req.params;
+    const { content } = req.body;
+
+    const post: PostsType | null =
+      await postsRepositories.findPostById(postId);
+
+    if (!post) return;
+
+    const createNewCommentByPostId: CommentType | null =
+      await commentService.createNewCommentByPostId(postId, content);
+
+    if (!createNewCommentByPostId) {
+    	res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+    } else {
+        res.status(HTTP_STATUS.CREATED_201).send(createNewCommentByPostId);
     }
   }
 );

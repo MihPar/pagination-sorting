@@ -1,9 +1,9 @@
-import { commentType } from './../routers/types/commentType';
-import { MongoClient } from 'mongodb'
 import dotenv from 'dotenv'
 import { BlogsType } from '../routers/types/blogsType';
 import { PostsType } from '../routers/types/postsType';
 import { DBUserType } from '../routers/types/usersType';
+import { CommentType } from '../routers/types/commentType';
+import { MongoClient } from 'mongodb';
 
 dotenv.config()
 
@@ -31,4 +31,4 @@ export const stopDb = async () => {
 export const blogsCollection = db.collection<BlogsType>('blogs')
 export const postsCollection = db.collection<PostsType>('posts')
 export const userCollection = db.collection<DBUserType>('user')
-export const commentCollection = db.collection<commentType>('comment')
+export const commentCollection = db.collection<CommentType>('comment')

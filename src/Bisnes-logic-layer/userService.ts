@@ -1,5 +1,5 @@
+import { DBUserType, UserType } from './../routers/types/usersType';
 import { userRepositories } from '../repositories/user-db-repositories';
-import { UserType, DBUserType, UserGeneralType } from '../routers/types/types';
 import bcrypt from 'bcrypt'
 import { ObjectId } from 'mongodb';
 

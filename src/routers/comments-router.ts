@@ -2,12 +2,14 @@ import { paramsCommentMode } from './../model/modelComment/paramsCommentModel';
 import { CommentType } from './types/commentType';
 import { commentRepositories } from "./../repositories/comment-db-repositories";
 import { commentAuthorization } from "./../middleware/commentAuthorization";
-import { Router, Request, Response } from "express";
+import { Router, Response } from "express";
 import { inputCommentValidator } from "../middleware/input-value-comment-middleware";
 import { ValueMiddleware } from "../middleware/validatorMiddleware";
 import { commentService } from "../Bisnes-logic-layer/commentService";
 import { HTTP_STATUS } from "../utils";
-import { RequestWithParams } from './types/types';
+import { RequestWithParams, RequestWithParamsAndBody } from './types/types';
+import { bodyCommentIdMode } from '../model/modelComment/boydCommentIdMode';
+import { paramsCommentIdMode } from '../model/modelComment/paramsCommentIdModel copy';
 
 export const commentsRouter = Router({});
 
@@ -16,14 +18,16 @@ commentsRouter.put(
   commentAuthorization,
   inputCommentValidator,
   ValueMiddleware,
-  async function (req: Request, res: Response) {
+  async function (req: RequestWithParamsAndBody<paramsCommentIdMode, bodyCommentIdMode>, res: Response<boolean>) {
+
     const { commentId } = req.params;
     const { content } = req.body;
-    const createComment = await commentService.updateCommentById(
+
+    const updateComment: boolean = await commentService.updateCommentByCommentId(
       commentId,
       content
     );
-    if (!createComment) {
+    if (!updateComment) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     }
     return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
@@ -33,8 +37,8 @@ commentsRouter.put(
 commentsRouter.delete(
   "/:commentId",
   commentAuthorization,
-  async function (req: Request, res: Response) {
-    const deleteCommentById = await commentRepositories.deleteComment(
+  async function (req: RequestWithParams<paramsCommentIdMode>, res: Response<void>) {
+    const deleteCommentById: boolean = await commentRepositories.deleteComment(
       req.params.commentId
     );
     if (!deleteCommentById) {

@@ -34,7 +34,7 @@ export const postsService = {
     content: string,
     blogId: string
   ): Promise<boolean> {
-    const updatPostById = await postsRepositories.updatePost(
+    const updatPostById: boolean = await postsRepositories.updatePost(
       id,
       title,
       shortDescription,

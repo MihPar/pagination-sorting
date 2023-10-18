@@ -1,4 +1,5 @@
-import { DBUserType, PaginationType, UserType } from "../routers/types/types";
+import { PaginationType } from "../routers/types/types";
+import { DBUserType, UserType } from "../routers/types/usersType";
 import { userCollection } from "./../db/db";
 import { Filter, ObjectId } from "mongodb";
 
@@ -27,10 +28,10 @@ export const userRepositories = {
       .toArray();
 
     const totalCount: number = await userCollection.countDocuments(filter);
-    const pagesCount: number = await Math.ceil(totalCount / +pageSize);
+    const pageCount: number = await Math.ceil(totalCount / +pageSize);
 
 	return {
-        pagesCount: pagesCount,
+        pageCount: pageCount,
         page: +pageNumber,
         pageSize: +pageSize,
         totalCount: totalCount,
