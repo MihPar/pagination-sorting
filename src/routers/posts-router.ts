@@ -75,7 +75,7 @@ postsRouter.post(
     const post: PostsType | null =
       await postsRepositories.findPostById(postId);
 
-    if (!post) return;
+    if (!post) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
 
     const createNewCommentByPostId: CommentType | null =
       await commentService.createNewCommentByPostId(postId, content);

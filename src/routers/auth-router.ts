@@ -22,8 +22,8 @@ authRouter.post(
   ValueMiddleware,
   async function (
     req: RequestWithBody<bodyAuthModel>,
-    res: Response<{ accessToken: string }>
-  ): Promise<Response<{ accessToken: string }>> {
+    res: Response<string>
+  ): Promise<Response<string>> {
     const { loginOrEmail, password } = req.body;
     const user: DBUserType | null = await userService.checkCridential(
       loginOrEmail,
@@ -33,7 +33,7 @@ authRouter.post(
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
       const token: string = await jwtService.createJWT(user);
-      return res.sendStatus(HTTP_STATUS.OK_200).send({ accessToken: token });
+      return res.sendStatus(HTTP_STATUS.OK_200).send(token);
     }
   }
 );
