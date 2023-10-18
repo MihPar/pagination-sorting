@@ -41,5 +41,8 @@ export const userService = {
 	},
 	async findUserById(userId: ObjectId | null) {
 		return await userRepositories.findUserById(userId)
+	},
+	async deleteAllUsers() {
+		return await userRepositories.deleteAll()
 	}
 }

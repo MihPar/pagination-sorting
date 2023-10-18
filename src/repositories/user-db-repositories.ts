@@ -59,4 +59,8 @@ export const userRepositories = {
       return null;
     }
   },
+  async deleteAll() {
+	const deleteAllUsers = await userCollection.deleteMany({})
+	return deleteAllUsers.deletedCount === 1;
+  }
 };
