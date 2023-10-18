@@ -42,6 +42,12 @@ export const postsRepositories = {
     blogId: string
   ): Promise<PaginationType<PostsType>> {
     const filter: Filter<PostsType> = { blogId: blogId };
+	
+	console.log(filter)
+	console.log({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
+	console.log((+pageNumber - 1) * +pageSize)
+	console.log(+pageSize)
+
     const posts = await postsCollection
       .find(filter, { projection: { _id: 0 } })
       .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })

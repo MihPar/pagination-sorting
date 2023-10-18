@@ -15,10 +15,7 @@ export const commentService = {
     );
     return updateCommentId;
   },
-  // async findCommentByPostId(postId: string, pageNumber: string, pageSize: string, sortBy: string, sortDirection: string) {
-  // 	const findComment = await commentRepositories.findCommentByPostId(postId,pageNumber, pageSize, sortBy, sortDirection)
-  // 	return findComment
-  // }
+  
   async createNewCommentByPostId(
     postId: string,
     content: string
