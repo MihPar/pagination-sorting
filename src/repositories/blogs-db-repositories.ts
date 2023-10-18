@@ -1,7 +1,7 @@
 import { BlogsType } from "../routers/types/blogsType";
 import { PaginationType } from "../routers/types/types";
 import { blogsCollection } from "./../db/db";
-import { DeleteResult, Filter, UpdateResult } from "mongodb";
+import { DeleteResult, Filter, ObjectId, UpdateResult } from "mongodb";
 
 export const blogsRepositories = {
   async findAllBlogs(
@@ -35,7 +35,7 @@ export const blogsRepositories = {
 
   },
   async findBlogById(blogId: string): Promise<BlogsType | null> {
-    return await blogsCollection.findOne({ id: blogId }, { projection: { _id: 0 } });
+    return await blogsCollection.findOne({ _id: new ObjectId(blogId)});
   },
   async findBlogs(): Promise<BlogsType[]> {
     const filtered: any = {};
@@ -53,13 +53,13 @@ export const blogsRepositories = {
     websiteUrl: string
   ): Promise<boolean> {
     const result = await blogsCollection.updateOne(
-      { id: id },
+      { _id: new ObjectId(id) },
       { $set: { name: name, description: description, websiteUrl: websiteUrl } }
     );
     return result.modifiedCount === 1;
   },
   async deletedBlog(id: string): Promise<boolean> {
-    const result = await blogsCollection.deleteOne({ id: id });
+    const result = await blogsCollection.deleteOne({ _id: new ObjectId(id) });
     return result.deletedCount === 1;
   },
   async deleteRepoBlogs(): Promise<boolean> {
