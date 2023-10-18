@@ -19,10 +19,10 @@ export const postsRepositories = {
 		  .toArray();
 	
 		const totalCount: number = await postsCollection.countDocuments(filtered);
-		const pageCount: number = Math.ceil(totalCount / +pageSize);
+		const pagesCount: number = Math.ceil(totalCount / +pageSize);
 
 		let result: PaginationType<PostsType> = {
-			pageCount: pageCount,
+			pagesCount: pagesCount,
 			page: +pageNumber,
 			pageSize: +pageSize,
 			totalCount: totalCount,
@@ -42,7 +42,7 @@ export const postsRepositories = {
     blogId: string
   ): Promise<PaginationType<PostsType>> {
     const filter: Filter<PostsType> = { blogId: blogId };
-	
+
 	console.log(filter)
 	console.log({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
 	console.log((+pageNumber - 1) * +pageSize)
@@ -55,10 +55,10 @@ export const postsRepositories = {
       .limit(+pageSize)
       .toArray();
     const totalCount: number = await postsCollection.countDocuments(filter);
-    const pageCount: number = Math.ceil(totalCount / +pageSize);
+    const pagesCount: number = Math.ceil(totalCount / +pageSize);
 
 	return {
-		pageCount: pageCount,
+		pagesCount: pagesCount,
 		page: +pageNumber,
 		pageSize: +pageSize,
 		totalCount: totalCount,

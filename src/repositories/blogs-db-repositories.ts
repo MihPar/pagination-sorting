@@ -25,7 +25,7 @@ export const blogsRepositories = {
     const pagesCount: number = Math.ceil(totalCount / +pageSize);
 	
 	const result: PaginationType<BlogsType> = {
-		pageCount: pagesCount,
+		pagesCount: pagesCount,
 		page: +pageNumber,
 		pageSize: +pageSize,
 		totalCount: totalCount,

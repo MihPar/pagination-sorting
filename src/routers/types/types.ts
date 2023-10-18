@@ -7,7 +7,7 @@ export type RequestWithParamsAndBody<T, B> = Request<T, {}, B>;
 export type RequestWithParamsAndQuery<T, Q> = Request<T, {}, {}, Q>;
 
 export type PaginationType<T> = {
-  pageCount: number;
+  pagesCount: number;
   page: number;
   pageSize: number;
   totalCount: number;

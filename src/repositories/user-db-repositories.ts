@@ -28,10 +28,10 @@ export const userRepositories = {
       .toArray();
 
     const totalCount: number = await userCollection.countDocuments(filter);
-    const pageCount: number = await Math.ceil(totalCount / +pageSize);
+    const pagesCount: number = await Math.ceil(totalCount / +pageSize);
 
 	return {
-        pageCount: pageCount,
+        pagesCount: pagesCount,
         page: +pageNumber,
         pageSize: +pageSize,
         totalCount: totalCount,
