@@ -36,7 +36,7 @@ export const userRepositories = {
         pageSize: +pageSize,
         totalCount: totalCount,
         items: getAllUsers.map(user => ({
-			id: user._id,
+			id: user._id.toString(),
 			login: user.login,
 			email: user.email,
 			createdAt: user.createdAt,

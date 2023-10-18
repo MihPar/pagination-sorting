@@ -21,8 +21,7 @@ export const inputValueEmailValidation = body('email')
 .notEmpty()
 .trim()
 .isEmail()
-.isLength({min: 6, max: 20})
-.matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/)
+// .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/)
 // .custom(async (email) => {
 // 	const checkLogin = await email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/)
 // 	if(!checkLogin) {
