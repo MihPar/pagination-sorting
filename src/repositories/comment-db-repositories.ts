@@ -29,9 +29,9 @@ export const commentRepositories = {
     pageSize: string,
     sortBy: string,
     sortDirection: string
-  ): Promise<PaginationType<CommentType> | null> {
-    const filter: Filter<CommentType> = { postId: postId };
-    const commentByPostId: CommentType[] = await commentCollection
+  ): Promise<PaginationType<CommentTypeView> | null> {
+    const filter: Filter<CommentTypeView> = { postId: postId };
+    const commentByPostId: CommentTypeView[] = await commentCollection
       .find(filter, { projection: { _id: 0 } })
       .sort({ [sortBy]: sortDirection === "desc" ? 1 : -1 })
       .skip((+pageNumber - 1) * +pageSize)

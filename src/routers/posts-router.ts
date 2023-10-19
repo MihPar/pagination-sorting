@@ -31,13 +31,13 @@ import { inputCommentValidator } from "../middleware/input-value-comment-middlew
 
 export const postsRouter = Router({});
 
-/************************ get{postId}/comment *****************************/
+/************************ get{postId}/comments *****************************/
 
 postsRouter.get(
   "/:postId/comments",
   async function (
     req: RequestWithParamsAndQuery<paramsPostIdMode, queryPostsModel>,
-    res: Response<PaginationType<CommentType>>
+    res: Response<PaginationType<CommentTypeView>>
   ) {
     const { postId } = req.params;
     const {
@@ -47,7 +47,7 @@ postsRouter.get(
       sortDirection = "desc",
     } = req.query;
 	
-    const commentByPostsId: PaginationType<CommentType> | null = await commentRepositories.findCommentByPostId(
+    const commentByPostsId: PaginationType<CommentTypeView> | null = await commentRepositories.findCommentByPostId(
       postId,
       pageNumber,
       pageSize,
