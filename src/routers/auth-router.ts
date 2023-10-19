@@ -11,7 +11,7 @@ import { Router, Response, Request } from "express";
 import { HTTP_STATUS } from "../utils";
 import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
-import { DBUserType } from './types/usersType';
+import { DBUserType, UserType } from './types/usersType';
 
 export const authRouter = Router({});
 

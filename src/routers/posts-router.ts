@@ -81,9 +81,9 @@ postsRouter.post(
       await commentService.createNewCommentByPostId(postId, content);
 
     if (!createNewCommentByPostId) {
-    	res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+    	return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {
-        res.status(HTTP_STATUS.CREATED_201).send(createNewCommentByPostId);
+        return res.status(HTTP_STATUS.CREATED_201).send(createNewCommentByPostId);
     }
   }
 );
