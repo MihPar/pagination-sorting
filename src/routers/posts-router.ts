@@ -26,6 +26,8 @@ import { commentService } from "../Bisnes-logic-layer/commentService";
 import { CommentType } from "./types/commentType";
 import { commentRepositories } from "../repositories/comment-db-repositories";
 import { bodyPostModelContent } from "../model/modelPosts/bodyPostModeContent";
+import { commentAuthorization } from "../middleware/commentAuthorization";
+import { inputCommentValidator } from "../middleware/input-value-comment-middleware";
 
 export const postsRouter = Router({});
 
@@ -65,6 +67,9 @@ postsRouter.get(
 
 postsRouter.post(
   "/:postId/comment",
+  commentAuthorization,
+  inputCommentValidator,
+  ValueMiddleware,
   async function (
     req: RequestWithParamsAndBody<paramsPostIdMode, bodyPostModelContent>,
     res: Response<CommentType>

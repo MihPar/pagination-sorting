@@ -6,12 +6,12 @@ dotenv.config()
 
 export const jwtService = {
 	async createJWT(user: DBUserType) {
-		const accessToken = await jwt.sign({userId: user._id}, process.env.JWT_SECRET!, {expiresIn: '30m'})
-		return accessToken
+		const token = await jwt.sign({userId: user._id}, process.env.JWT_SECRET!, {expiresIn: '30m'})
+		return token
 	},
-	async getUserIdByToken(accessToken: string) {
+	async getUserIdByToken(token: string) {
 		try {
-			const result: any = await jwt.verify(accessToken, process.env.JWT_SECRET!)
+			const result: any = await jwt.verify(token, process.env.JWT_SECRET!)
 			return new ObjectId(result.userId)
 		} catch(err) {
 			return null
