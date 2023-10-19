@@ -12,8 +12,12 @@ export const commentAuthorization = async function(req: Request, res: Response, 
 	const userId = await jwtService.getUserIdByToken(token)
 	if(userId) {
 		const resultAuth = await userService.findUserById(userId)
+		if(resultAuth){
+		req.user = resultAuth
 		next()
 		return 
+		}
+		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 	} else {
 		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 	}

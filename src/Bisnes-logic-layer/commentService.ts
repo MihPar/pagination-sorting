@@ -18,18 +18,17 @@ export const commentService = {
   
   async createNewCommentByPostId(
     postId: string,
-    content: string
+    content: string,
+	userId: string,
+	userLogin: string
   ): Promise<CommentType | null> {
-	const user: DBUserType | null = await userCollection.findOne({_id: new ObjectId(postId)})
-
-	if(!user) return null
-
+	
     const newComment = {
       id: new ObjectId(),
       content: content,
       commentatorInfo: {
-        userId: user._id,
-        userLogin: user.login,
+        userId,
+        userLogin,
       },
 	  postId,
       createdAt: new Date().toISOString(),

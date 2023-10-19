@@ -34,7 +34,7 @@ export const postsRouter = Router({});
 /************************ get{postId}/comment *****************************/
 
 postsRouter.get(
-  "/:postId/comment",
+  "/:postId/comments",
   async function (
     req: RequestWithParamsAndQuery<paramsPostIdMode, queryPostsModel>,
     res: Response<PaginationType<CommentType>>
@@ -66,7 +66,7 @@ postsRouter.get(
 /************************ post{postId}/comment *****************************/
 
 postsRouter.post(
-  "/:postId/comment",
+  "/:postId/comments",
   commentAuthorization,
   inputCommentValidator,
   ValueMiddleware,
@@ -76,14 +76,15 @@ postsRouter.post(
   ) {
     const { postId } = req.params;
     const { content } = req.body;
-
+	const user = req.user;
+	
     const post: PostsType | null =
       await postsRepositories.findPostById(postId);
 
     if (!post) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
 
     const createNewCommentByPostId: CommentType | null =
-      await commentService.createNewCommentByPostId(postId, content);
+      await commentService.createNewCommentByPostId(postId, content, user._id.toString(), user.login);
 
     if (!createNewCommentByPostId) {
     	return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
