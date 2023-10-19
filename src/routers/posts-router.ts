@@ -23,7 +23,7 @@ import { HTTP_STATUS } from "../utils";
 import { postsService } from "../Bisnes-logic-layer/postsService";
 import { PostsType } from "./types/postsType";
 import { commentService } from "../Bisnes-logic-layer/commentService";
-import { CommentType } from "./types/commentType";
+import { CommentType, CommentTypeView } from "./types/commentType";
 import { commentRepositories } from "../repositories/comment-db-repositories";
 import { bodyPostModelContent } from "../model/modelPosts/bodyPostModeContent";
 import { commentAuthorization } from "../middleware/commentAuthorization";
@@ -72,7 +72,7 @@ postsRouter.post(
   ValueMiddleware,
   async function (
     req: RequestWithParamsAndBody<paramsPostIdMode, bodyPostModelContent>,
-    res: Response<CommentType>
+    res: Response<CommentTypeView>
   ) {
     const { postId } = req.params;
     const { content } = req.body;
@@ -83,7 +83,7 @@ postsRouter.post(
 
     if (!post) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
 
-    const createNewCommentByPostId: CommentType | null =
+    const createNewCommentByPostId: CommentTypeView| null =
       await commentService.createNewCommentByPostId(postId, content, user._id.toString(), user.login);
 
     if (!createNewCommentByPostId) {

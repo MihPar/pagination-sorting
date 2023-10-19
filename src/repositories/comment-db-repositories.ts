@@ -1,3 +1,4 @@
+import { CommentTypeView } from './../routers/types/commentType';
 import { PaginationType } from "./../routers/types/types";
 import { CommentType } from "../routers/types/commentType";
 import { commentCollection } from "./../db/db";
@@ -62,8 +63,9 @@ export const commentRepositories = {
     );
     return updateComment.matchedCount === 1;
   },
-  async createNewCommentPostId(newComment: CommentType) {
+  async createNewCommentPostId(newComment: CommentType): Promise<CommentTypeView> {
 	const result = await commentCollection.insertOne({...newComment})
-	return newComment
+	const {postId, ...res} = newComment
+	return {...res, id: res.id.toString()}
   }
 };

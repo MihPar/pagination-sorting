@@ -1,3 +1,4 @@
+import { CommentTypeView } from './../routers/types/commentType';
 import { ObjectId } from "mongodb";
 import { commentCollection, postsCollection, userCollection } from "../db/db";
 import { commentRepositories } from "../repositories/comment-db-repositories";
@@ -21,7 +22,7 @@ export const commentService = {
     content: string,
 	userId: string,
 	userLogin: string
-  ): Promise<CommentType | null> {
+  ): Promise<CommentTypeView | null> {
 	
     const newComment = {
       id: new ObjectId(),

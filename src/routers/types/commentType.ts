@@ -20,3 +20,4 @@ export type CommentType = {
 	postId: string
 	createdAt: string
 }
+
