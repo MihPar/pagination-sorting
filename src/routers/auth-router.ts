@@ -33,7 +33,7 @@ authRouter.post(
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
       const token: string = await jwtService.createJWT(user);
-      return res.sendStatus(HTTP_STATUS.OK_200).send({accessToken: token});
+      return res.status(HTTP_STATUS.OK_200).send({accessToken: token});
     }
   }
 );
