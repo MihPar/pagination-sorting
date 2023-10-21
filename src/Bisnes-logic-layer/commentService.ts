@@ -7,9 +7,7 @@ import { DBUserType, UserGeneralType, UserType } from "../routers/types/usersTyp
 
 export const commentService = {
   async updateCommentByCommentId(commentId: string, content: string) {
-	// const findCommentId = await commentCollection.findOne({_id: new ObjectId(commentId)})
-
-	// if(!findCommentId) return false
+	
     const updateCommentId = await commentRepositories.updateComment(
       commentId,
       content

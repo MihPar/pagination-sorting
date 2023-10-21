@@ -62,16 +62,7 @@ export const commentRepositories = {
 	  })
     };
   },
-//   async updateCommentByPostId(
-//     postId: string,
-//     content: string
-//   ): Promise<boolean> {
-//     const updateComment: UpdateResult = await commentCollection.updateOne(
-//       { _id: new ObjectId(postId) },
-//       { $set: { content: content } }
-//     );
-//     return updateComment.matchedCount === 1;
-//   },
+
   async createNewCommentPostId(newComment: CommentType): Promise<CommentTypeView> {
 	await commentCollection.insertOne({...newComment})
 	return commentDBToView(newComment)
