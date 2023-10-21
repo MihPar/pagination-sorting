@@ -66,7 +66,7 @@ export const postsRepositories = {
 	}
   },
   async findPostById(id: string): Promise<PostsType | null> {
-    return postsCollection.findOne({ id: id }, { projection: { _id: 0 } });
+    return await postsCollection.findOne({ id: id }, { projection: { _id: 0 } });
   },
   async updatePost(
     id: string,

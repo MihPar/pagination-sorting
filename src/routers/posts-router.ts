@@ -46,6 +46,11 @@ postsRouter.get(
       sortBy = "createdAt",
       sortDirection = "desc",
     } = req.query;
+
+	const isExistPots = await postsRepositories.findPostById(postId)
+	if(!isExistPots) {
+		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+	}
 	
     const commentByPostsId: PaginationType<CommentTypeView> | null = await commentRepositories.findCommentByPostId(
       postId,
@@ -56,9 +61,9 @@ postsRouter.get(
     );
 
     if (!commentByPostsId) {
-    	res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+    	return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {
-       	res.status(HTTP_STATUS.OK_200).send(commentByPostsId);
+       	return res.status(HTTP_STATUS.OK_200).send(commentByPostsId);
     }
   }
 );
