@@ -24,13 +24,13 @@ commentsRouter.put(
     const { commentId } = req.params;
     const { content } = req.body;
 
-	// const isExistComment = await commentRepositories.findCommentById(commentId)
-	// if(!isExistComment) {
-	// 	return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-	// }
-	// if(req.user._id.toString() !== isExistComment.commentatorInfo.userId) {
-	// 	return res.sendStatus(HTTP_STATUS.FORBIDEN_403)
-	// }
+	const isExistComment = await commentRepositories.findCommentById(commentId)
+	if(!isExistComment) {
+		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+	}
+	if(req.user._id.toString() !== isExistComment.commentatorInfo.userId) {
+		return res.sendStatus(HTTP_STATUS.FORBIDEN_403)
+	}
 
     const updateComment: boolean = await commentService.updateCommentByCommentId(
       commentId,
@@ -48,6 +48,16 @@ commentsRouter.delete(
   "/:commentId",
   commentAuthorization,
   async function (req: RequestWithParams<paramsCommentIdMode>, res: Response<void>) {
+
+	const { commentId } = req.params;
+	const isExistComment = await commentRepositories.findCommentById(commentId)
+	if(!isExistComment) {
+		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+	}
+	if(req.user._id.toString() !== isExistComment.commentatorInfo.userId) {
+		return res.sendStatus(HTTP_STATUS.FORBIDEN_403)
+	}
+
     const deleteCommentById: boolean = await commentRepositories.deleteComment(
       req.params.commentId
     );
