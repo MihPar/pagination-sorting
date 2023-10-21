@@ -4,24 +4,35 @@ import { CommentType } from "../routers/types/commentType";
 import { commentCollection } from "./../db/db";
 import { Filter, ObjectId, UpdateResult } from "mongodb";
 
+const commentDBToView = (item: CommentType): CommentTypeView => {
+	return {
+		id: item._id.toString(),
+		content: item.content,
+		commentatorInfo: item.commentatorInfo,
+		createdAt: item.createdAt
+		}
+}
+
 export const commentRepositories = {
   async updateComment(commentId: string, content: string) {
     const updateOne = await commentCollection.updateOne(
       { _id: new ObjectId(commentId) },
       { $set: { content: content } }
     );
-    return updateOne.modifiedCount === 1;
+    return updateOne.matchedCount === 1;
   },
   async deleteComment(commentId: string) {
     const deleteComment = await commentCollection.deleteOne({ _id: new ObjectId(commentId) });
     return deleteComment.deletedCount === 1;
   },
   async findCommentById(id: string): Promise<CommentTypeView | null> {
-    const commentById: CommentTypeView | null = await commentCollection.findOne(
-      { _id: new ObjectId(id) },
-      { projection: { _id: 0 } }
+    const commentById: CommentType | null = await commentCollection.findOne(
+      { _id: new ObjectId(id) }
     );
-    return commentById;
+	if(!commentById) {
+		return null
+	}
+    return commentDBToView(commentById)
   },
   async findCommentByPostId(
     postId: string,
@@ -30,17 +41,13 @@ export const commentRepositories = {
     sortBy: string,
     sortDirection: string
   ): Promise<PaginationType<CommentTypeView> | null> {
-    const filter: Filter<CommentTypeView> = { postId: postId };
-    const commentByPostId: CommentTypeView[] = await commentCollection
-      .find(filter, { projection: { _id: 0 } })
+    const filter: Filter<CommentType> = { postId: postId };
+    const commentByPostId: CommentType[] = await commentCollection
+      .find(filter)
       .sort({ [sortBy]: sortDirection === "desc" ? 1 : -1 })
       .skip((+pageNumber - 1) * +pageSize)
       .limit(+pageSize)
       .toArray();
-
-	  if(!commentByPostId.length){
-		return null
-	  }
 
     const totalCount: number = await commentCollection.countDocuments(filter);
     const pagesCount: number = await Math.ceil(totalCount / +pageSize);
@@ -50,22 +57,23 @@ export const commentRepositories = {
       page: +pageNumber,
       pageSize: +pageSize,
       totalCount: totalCount,
-      items: commentByPostId,
+      items: commentByPostId.map(function(item) {
+		return commentDBToView(item)
+	  })
     };
   },
-  async updateCommentByPostId(
-    postId: string,
-    content: string
-  ): Promise<boolean> {
-    const updateComment: UpdateResult = await commentCollection.updateOne(
-      { id: new ObjectId(postId) },
-      { $set: { content: content } }
-    );
-    return updateComment.matchedCount === 1;
-  },
+//   async updateCommentByPostId(
+//     postId: string,
+//     content: string
+//   ): Promise<boolean> {
+//     const updateComment: UpdateResult = await commentCollection.updateOne(
+//       { _id: new ObjectId(postId) },
+//       { $set: { content: content } }
+//     );
+//     return updateComment.matchedCount === 1;
+//   },
   async createNewCommentPostId(newComment: CommentType): Promise<CommentTypeView> {
-	const result = await commentCollection.insertOne({...newComment})
-	const {postId, ...res} = newComment
-	return {...res, id: res.id}
+	await commentCollection.insertOne({...newComment})
+	return commentDBToView(newComment)
   }
 };

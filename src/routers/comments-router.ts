@@ -10,6 +10,7 @@ import { HTTP_STATUS } from "../utils";
 import { RequestWithParams, RequestWithParamsAndBody } from './types/types';
 import { bodyCommentIdMode } from '../model/modelComment/boydCommentIdMode';
 import { paramsCommentIdMode } from '../model/modelComment/paramsCommentIdModel copy';
+import { commentCollection } from '../db/db';
 
 export const commentsRouter = Router({});
 
@@ -23,10 +24,19 @@ commentsRouter.put(
     const { commentId } = req.params;
     const { content } = req.body;
 
+	// const isExistComment = await commentRepositories.findCommentById(commentId)
+	// if(!isExistComment) {
+	// 	return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+	// }
+	// if(req.user._id.toString() !== isExistComment.commentatorInfo.userId) {
+	// 	return res.sendStatus(HTTP_STATUS.FORBIDEN_403)
+	// }
+
     const updateComment: boolean = await commentService.updateCommentByCommentId(
       commentId,
       content
     );
+
     if (!updateComment) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     }
