@@ -44,7 +44,7 @@ export const commentRepositories = {
     const filter: Filter<CommentType> = { postId: postId };
     const commentByPostId: CommentType[] = await commentCollection
       .find(filter)
-      .sort({ [sortBy]: sortDirection === "desc" ? 1 : -1 })
+      .sort({ [sortBy]: sortDirection === "asc" ? 1 : -1 })
       .skip((+pageNumber - 1) * +pageSize)
       .limit(+pageSize)
       .toArray();
