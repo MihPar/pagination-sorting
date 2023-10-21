@@ -6,7 +6,7 @@ dotenv.config()
 
 export const jwtService = {
 	async createJWT(user: DBUserType) {
-		const token = await jwt.sign({userId: user._id}, process.env.JWT_SECRET!, {expiresIn: '30m'})
+		const token = await jwt.sign({userId: user._id}, process.env.JWT_SECRET!, {expiresIn: '1h'})
 		return token
 	},
 	async getUserIdByToken(token: string) {

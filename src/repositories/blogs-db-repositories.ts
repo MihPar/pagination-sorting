@@ -1,7 +1,7 @@
 import { BlogsType } from "../routers/types/blogsType";
 import { PaginationType } from "../routers/types/types";
 import { blogsCollection } from "./../db/db";
-import { DeleteResult, Filter, UpdateResult } from "mongodb";
+import { Filter } from "mongodb";
 
 export const blogsRepositories = {
   async findAllBlogs(

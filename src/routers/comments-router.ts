@@ -1,5 +1,5 @@
 import { paramsCommentMode } from './../model/modelComment/paramsCommentModel';
-import { CommentType } from './types/commentType';
+import { CommentType, CommentTypeView } from './types/commentType';
 import { commentRepositories } from "./../repositories/comment-db-repositories";
 import { commentAuthorization } from "./../middleware/commentAuthorization";
 import { Router, Response } from "express";
@@ -49,8 +49,8 @@ commentsRouter.delete(
   }
 );
 
-commentsRouter.get('/:id', async function(req: RequestWithParams<paramsCommentMode>, res: Response<CommentType | null>) {
-	const getCommentById: CommentType | null = await commentRepositories.findCommentById(req.params.id)
+commentsRouter.get('/:id', async function(req: RequestWithParams<paramsCommentMode>, res: Response<CommentTypeView | null>) {
+	const getCommentById: CommentTypeView | null = await commentRepositories.findCommentById(req.params.id)
 	if(!getCommentById) {
 		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
 	} else {

@@ -16,8 +16,8 @@ export const commentRepositories = {
     const deleteComment = await commentCollection.deleteOne({ _id: new ObjectId(commentId) });
     return deleteComment.deletedCount === 1;
   },
-  async findCommentById(id: string): Promise<CommentType | null> {
-    const commentById: CommentType | null = await commentCollection.findOne(
+  async findCommentById(id: string): Promise<CommentTypeView | null> {
+    const commentById: CommentTypeView | null = await commentCollection.findOne(
       { _id: new ObjectId(id) },
       { projection: { _id: 0 } }
     );
@@ -66,6 +66,6 @@ export const commentRepositories = {
   async createNewCommentPostId(newComment: CommentType): Promise<CommentTypeView> {
 	const result = await commentCollection.insertOne({...newComment})
 	const {postId, ...res} = newComment
-	return {...res, id: res.id.toString()}
+	return {...res, id: res.id}
   }
 };

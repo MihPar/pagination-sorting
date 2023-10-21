@@ -1,5 +1,4 @@
 import { app } from "./../settings";
-import { MongoClient } from "mongodb";
 import request from "supertest";
 import dotenv from "dotenv";
 import { HTTP_STATUS } from "../utils";
