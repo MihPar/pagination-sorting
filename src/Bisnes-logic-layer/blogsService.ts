@@ -1,6 +1,6 @@
 import { BlogsType } from './../routers/types/blogsType';
 import { blogsRepositories } from "../repositories/blogs-db-repositories";
-import { ObjectId } from "mongodb";
+import { randomUUID } from "crypto";
 
 
 export const blogsService = {
@@ -10,7 +10,7 @@ export const blogsService = {
     websiteUrl: string
   ): Promise<BlogsType> {
     const newBlog = {
-	  _id: new ObjectId(),
+	  id: randomUUID(),
       name,
       description,
       websiteUrl,
