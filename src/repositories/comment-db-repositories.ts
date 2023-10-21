@@ -22,17 +22,27 @@ export const commentRepositories = {
     return updateOne.matchedCount === 1;
   },
   async deleteComment(commentId: string) {
-    const deleteComment = await commentCollection.deleteOne({ _id: new ObjectId(commentId) });
-    return deleteComment.deletedCount === 1;
+	try {
+		const deleteComment = await commentCollection.deleteOne({ _id: new ObjectId(commentId) });
+		return deleteComment.deletedCount === 1;
+	} catch(err) {
+		return false
+	}
+    
   },
   async findCommentById(id: string): Promise<CommentTypeView | null> {
-    const commentById: CommentType | null = await commentCollection.findOne(
-      { _id: new ObjectId(id) }
-    );
-	if(!commentById) {
+	try {
+		const commentById: CommentType | null = await commentCollection.findOne(
+			{ _id: new ObjectId(id) }
+		  );
+		  if(!commentById) {
+			  return null
+		  }
+		  return commentDBToView(commentById)
+	}catch(e) {
 		return null
 	}
-    return commentDBToView(commentById)
+    
   },
   async findCommentByPostId(
     postId: string,
