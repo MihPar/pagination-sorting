@@ -7,14 +7,12 @@ import { DBUserType, UserGeneralType, UserType } from "../routers/types/usersTyp
 
 export const commentService = {
   async updateCommentByCommentId(commentId: string, content: string) {
-	
     const updateCommentId = await commentRepositories.updateComment(
       commentId,
       content
     );
     return updateCommentId;
   },
-  
   async createNewCommentByPostId(
     postId: string,
     content: string,
@@ -32,7 +30,6 @@ export const commentService = {
 	  postId,
       createdAt: new Date().toISOString(),
     };
-
     return await commentRepositories.createNewCommentPostId(newComment);
   },
 };

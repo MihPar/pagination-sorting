@@ -1,5 +1,7 @@
 import { BlogsType } from './../routers/types/blogsType';
 import { blogsRepositories } from "../repositories/blogs-db-repositories";
+import { ObjectId } from "mongodb";
+
 
 export const blogsService = {
   async createNewBlog(
@@ -8,7 +10,7 @@ export const blogsService = {
     websiteUrl: string
   ): Promise<BlogsType> {
     const newBlog = {
-      id: new Date().toISOString(),
+	  _id: new ObjectId(),
       name,
       description,
       websiteUrl,
