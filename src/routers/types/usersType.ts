@@ -3,10 +3,17 @@ export type DBUserType = {
   } & UserGeneralType;
   
   export type UserGeneralType = {
-	login: string;
-	email: string;
-	passwordHash: string;
-	createdAt: string;
+	accountData: {
+		userName: string
+		email: string
+		passwordHash: string
+		createdAt: string
+	},
+	emailConfirmation: {
+		confirmationCode: Object
+		expirationDate: Date
+		isConfirmed: boolean
+	}
   };
   
   export type UserType = {
@@ -14,5 +21,9 @@ export type DBUserType = {
 	login: string;
 	email: string;
 	createdAt: string;
+  };
+
+  export type RegistrationDateType = {
+	ip: string;
   };
   

@@ -32,7 +32,6 @@ export const blogsRepositories = {
 		items: blogs,
 	}
     return result
-
   },
   async findBlogById(blogId: string): Promise<BlogsType | null> {
     return await blogsCollection.findOne({ id: blogId }, { projection: { _id: 0 } });
@@ -45,7 +44,6 @@ export const blogsRepositories = {
     const result = await blogsCollection.insertOne({ ...newBlog });
     return newBlog;
   },
-  
   async updateBlogById(
     id: string,
     name: string,

@@ -6,7 +6,7 @@ import { CommentType } from "../routers/types/commentType";
 import { DBUserType, UserGeneralType, UserType } from "../routers/types/usersType";
 
 export const commentService = {
-  async updateCommentByCommentId(commentId: string, content: string) {
+  async updateCommentByCommentId(commentId: string, content: string): Promise<boolean> {
     const updateCommentId = await commentRepositories.updateComment(
       commentId,
       content

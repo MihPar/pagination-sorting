@@ -6,9 +6,17 @@ import { Filter, ObjectId } from "mongodb";
 export const userRepositories = {
   async findByLoginOrEmail(loginOrEmail: string): Promise<DBUserType | null> {
     const user: DBUserType | null = await userCollection.findOne({
-      $or: [{ email: loginOrEmail }, { login: loginOrEmail }],
+      $or: [{ 'accountData.email': loginOrEmail }, { 'accountData.userName': loginOrEmail }],
     });
     return user;
+  },
+  async findUserByConfirmation(emailConfirmationCode: string): Promise<DBUserType | null> {
+    const user: DBUserType | null = await userCollection.findOne({ 'emailConfirmation.confirmationCode': emailConfirmationCode });
+    return user;
+  },
+  async updateConfirmation(_id: ObjectId) {
+	const result = await userCollection.updateOne({_id}, {$set: {'emailConfirmation.isConfirmad': true}})
+	return result.modifiedCount === 1
   },
   async getAllUsers(
     sortBy: string,
@@ -37,9 +45,9 @@ export const userRepositories = {
         totalCount: totalCount,
         items: getAllUsers.map(user => ({
 			id: user._id.toString(),
-			login: user.login,
-			email: user.email,
-			createdAt: user.createdAt,
+			login: user.accountData.userName,
+			email: user.accountData.email,
+			createdAt: user.accountData.createdAt,
 		})),
       }
   },
@@ -62,5 +70,6 @@ export const userRepositories = {
   async deleteAll() {
 	const deleteAllUsers = await userCollection.deleteMany({})
 	return deleteAllUsers.deletedCount === 1;
-  }
+  },
+  
 };

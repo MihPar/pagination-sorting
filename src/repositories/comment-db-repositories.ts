@@ -2,7 +2,7 @@ import { CommentTypeView } from './../routers/types/commentType';
 import { PaginationType } from "./../routers/types/types";
 import { CommentType } from "../routers/types/commentType";
 import { commentCollection } from "./../db/db";
-import { Filter, ObjectId, UpdateResult } from "mongodb";
+import { Filter, ObjectId } from "mongodb";
 
 const commentDBToView = (item: CommentType): CommentTypeView => {
 	return {
@@ -21,14 +21,13 @@ export const commentRepositories = {
     );
     return updateOne.matchedCount === 1;
   },
-  async deleteComment(commentId: string) {
+  async deleteComment(commentId: string): Promise<boolean> {
 	try {
 		const deleteComment = await commentCollection.deleteOne({ _id: new ObjectId(commentId) });
 		return deleteComment.deletedCount === 1;
 	} catch(err) {
 		return false
 	}
-    
   },
   async findCommentById(id: string): Promise<CommentTypeView | null> {
 	try {
@@ -39,7 +38,7 @@ export const commentRepositories = {
 			  return null
 		  }
 		  return commentDBToView(commentById)
-	}catch(e) {
+	} catch(e) {
 		return null
 	}
     
@@ -72,7 +71,6 @@ export const commentRepositories = {
 	  })
     };
   },
-
   async createNewCommentPostId(newComment: CommentType): Promise<CommentTypeView> {
 	await commentCollection.insertOne({...newComment})
 	return commentDBToView(newComment)

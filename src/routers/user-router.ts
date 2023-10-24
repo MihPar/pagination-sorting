@@ -65,10 +65,10 @@ usersRouter.post(
   ValueMiddleware,
   async function (
     req: RequestWithBody<bodyUserModel>,
-    res: Response<UserType>
-  ): Promise<Response<UserType>> {
+    res: Response<UserType | null>
+  ): Promise<Response<UserType> | null> {
     const { login, password, email } = req.body;
-    const newUser: UserType = await userService.createNewUser(
+    const newUser: UserType | null = await userService.createNewUser(
       login,
       password,
       email
