@@ -1,3 +1,6 @@
+import { BodyRegistrationEmailResendigModel } from './../model/modelAuth/bodyRegistrationEamilResendingMidel';
+import { BodyRegistrationConfirmationModel } from './../model/modelAuth/bodyRegistrationConfirmationModel';
+import { BodyRegistrationModel } from './../model/modelAuth/bodyRegistrationMode';
 import { ResAuthModel } from "./../model/modelAuth/resAuthMode";
 import { jwtService } from "./../Bisnes-logic-layer/jwtService";
 import {
@@ -15,7 +18,6 @@ import { HTTP_STATUS } from "../utils";
 import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
 import { DBUserType, UserType } from "./types/usersType";
-import { emailAdapter } from "../adapter/email-adapter";
 
 export const authRouter = Router({});
 
@@ -76,19 +78,13 @@ authRouter.post(
   inputValuePassword,
   inputValueEmail,
   ValueMiddleware,
-  async function (req: Request, res: Response) {
+  async function (req: RequestWithBody<BodyRegistrationModel>, res: Response<void>): Promise<Response<void>> {
     const user = await userService.createNewUser(
       req.body.login,
       req.body.email,
       req.body.password
     );
     return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
-    // await userService.doSomething()
-    // return res.send({
-    // 	email: req.body.email,
-    // 	subject: req.body.subject,
-    // 	message: req.body.message,
-    //   });
   }
 );
 
@@ -96,7 +92,7 @@ authRouter.post(
   "/registratioin-confirmation",
   inputValueCode,
   ValueMiddleware,
-  async function (req: Request, res: Response<void>): Promise<Response<void>> {
+  async function (req: RequestWithBody<BodyRegistrationConfirmationModel>, res: Response<void>): Promise<Response<void>> {
     // const result = await userService.confirmEmail(
     //   req.body.code,
     //   req.body.email
@@ -110,8 +106,25 @@ authRouter.post(
   "/registration-email-resending",
   inputValueEmail,
   ValueMiddleware,
-  async function (req: Request, res: Response<void>): Promise<Response<void>> {
-	const result = await userService.confirmEmail(req.body.email)
+  async function (req: RequestWithBody<BodyRegistrationEmailResendigModel>, res: Response<string>): Promise<Response<string>> {
+	const confirmUser = await userService.resendConfirmEmail(req.body.email)
+	if(confirmUser === 'User does not exist') {
+		return res.status(HTTP_STATUS.BAD_REQUEST_400).send({
+			errorMessage: [
+				{
+					message: "User does not exist with correct email",
+					field: "email"
+				}
+			]
+		})
+	} else if(confirmUser === 'User already confirmed') {
+		return res.status(HTTP_STATUS.BAD_REQUEST_400).send({
+			errorMessage: [{
+				message: "User already confirm with correct email",
+				field: 'email'
+			}]
+		})
+	}
 	return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
   }
 );

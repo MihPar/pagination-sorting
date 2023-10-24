@@ -5,6 +5,7 @@ import { ObjectId } from "mongodb";
 import { emailManager } from "../manager/email-manager";
 import { v4 as uuidv4 } from "uuid";
 import add from "date-fns/add";
+import nodemailer from 'nodemailer'
 
 export const userService = {
   async createNewUser(
@@ -25,8 +26,7 @@ export const userService = {
       emailConfirmation: {
         confirmationCode: uuidv4(),
         expirationDate: add(new Date(), {
-          hours: 1,
-          minutes: 3,
+          minutes: 10,
         }),
         isConfirmed: false,
       },
@@ -114,5 +114,14 @@ export const userService = {
   },
   async confirmEmail(email: string): Promise<DBUserType | null> {
 	return await userRepositories.findByLoginOrEmail(email)
+  },
+  async resendConfirmEmail(user: UserType) {
+	const transporter = nodemailer.createTransport({
+		service: 'gmail',
+		auth: {
+			user: 'mpara7274@gmail.com',
+			pass: 'ldhkcdcybmrbxaew'
+		}
+	})
   }
 };

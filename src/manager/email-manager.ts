@@ -8,7 +8,6 @@ export const emailManager = {
 	async sendEamilConfirmationMessage(user: DBUserType): Promise<void> {
 		//  save to repo
 		// get user from repo
-		const result = await emailAdapter.sendEmail('mpara7274@gmail.com', 'Lesson 7-th', '<div>Hello Express.js</div>')
-		return result
+		const result = await emailAdapter.sendEmail(user.accountData.email, user.emailConfirmation.confirmationCode)
 	}
 }

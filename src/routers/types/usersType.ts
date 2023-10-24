@@ -10,7 +10,7 @@ export type DBUserType = {
 		createdAt: string
 	},
 	emailConfirmation: {
-		confirmationCode: Object
+		confirmationCode: string
 		expirationDate: Date
 		isConfirmed: boolean
 	}
