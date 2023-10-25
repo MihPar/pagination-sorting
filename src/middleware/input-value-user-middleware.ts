@@ -31,7 +31,7 @@ export const inputValuePasswordValidation = body('password')
 .isLength({min: 6, max: 20})
 .withMessage('password should be length from 6 to 20 symbols')
 
-export const inputValueEmailValidatioin = body('email')
+export const inputValueEmailRegistrationValidatioin = body('email')
 .isString()
 .withMessage('1')
 .trim()
@@ -43,6 +43,24 @@ export const inputValueEmailValidatioin = body('email')
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
 	// log('u e', user)
 	if(user) {
+		throw new Error('Email does not exist in DB')
+	} 
+	return true
+})
+.withMessage('4')
+
+export const inputValueEmailValidatioin = body('email')
+.isString()
+.withMessage('1')
+.trim()
+.withMessage('2')
+// .matches( /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g )
+.isEmail()
+.withMessage('3')
+.custom(async(email) => {
+	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
+	// log('u e', user)
+	if(!user) {
 		throw new Error('Email does not exist in DB')
 	} 
 	return true

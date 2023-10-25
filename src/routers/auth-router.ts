@@ -15,7 +15,7 @@ import { HTTP_STATUS } from "../utils";
 import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
 import { DBUserType, UserType } from "./types/usersType";
-import { inputValueEmailValidatioin, inputValueLoginValidation, inputValuePasswordValidation } from '../middleware/input-value-user-middleware';
+import { inputValueEmailRegistrationValidatioin, inputValueEmailValidatioin, inputValueLoginValidation, inputValuePasswordValidation } from '../middleware/input-value-user-middleware';
 import { log } from 'console';
 
 export const authRouter = Router({});
@@ -76,7 +76,7 @@ authRouter.post(
   "/registration",
   inputValueLoginValidation,
   inputValuePasswordValidation,
-  inputValueEmailValidatioin,
+  inputValueEmailRegistrationValidatioin,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationModel>, res: Response<void>): Promise<Response<void>> {
     const user = await userService.createNewUser(
