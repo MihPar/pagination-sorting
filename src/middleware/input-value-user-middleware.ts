@@ -66,3 +66,9 @@ export const inputValueEmailValidatioin = body('email')
 	// return true
 })
 .withMessage('4')
+
+export const inputValueLoginOrEamil = body('loginOrEmail')
+.isString()
+.notEmpty()
+.trim()
+.withMessage('loginOrEmail is not string')

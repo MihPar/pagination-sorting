@@ -1,12 +1,9 @@
+import { inputValueLoginOrEamil } from './../middleware/input-value-user-middleware';
 import { BodyRegistrationEmailResendigModel } from './../model/modelAuth/bodyRegistrationEamilResendingMidel';
 import { BodyRegistrationConfirmationModel } from './../model/modelAuth/bodyRegistrationConfirmationModel';
 import { BodyRegistrationModel } from './../model/modelAuth/bodyRegistrationMode';
 import { ResAuthModel } from "./../model/modelAuth/resAuthMode";
 import { jwtService } from "./../Bisnes-logic-layer/jwtService";
-import {
-  inputValueCode,
-  inputValueLoginOrEamil,
-} from "./../middleware/input-value-auth-middleware";
 import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { bodyAuthModel } from "./../model/modelAuth/bodyAuthModel";
 import { RequestWithBody } from "./types/types";
@@ -94,7 +91,7 @@ authRouter.post(
 
 authRouter.post(
   "/registratioin-confirmation",
-  inputValueCode,
+  inputValueLoginValidation,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationConfirmationModel>, res: Response<void>): Promise<Response<void>> {
     // const result = await userService.confirmEmail(
