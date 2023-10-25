@@ -98,7 +98,11 @@ authRouter.post(
     //   req.body.email
     // );
     const result = await userService.findUserByConfirmationCode(req.body.code);
-    return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
+	if(!result) {
+		return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
+	} else {
+		return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
+	}
   }
 );
 
@@ -106,7 +110,7 @@ authRouter.post(
   "/registration-email-resending",
   inputValueEmail,
   ValueMiddleware,
-  async function (req: RequestWithBody<BodyRegistrationEmailResendigModel>, res: Response<string>): Promise<Response<string>> {
+  async function (req: RequestWithBody<BodyRegistrationEmailResendigModel>, res: Response<string>): Promise<Response<string> | null> {
 	const confirmUser = await userService.confirmEmailResendCode(req.body.email)
 	if(!confirmUser) {
 		return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)

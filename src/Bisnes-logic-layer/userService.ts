@@ -53,7 +53,7 @@ export const userService = {
       createdAt: user.accountData.createdAt,
     };
   },
-  async checkCridential(loginOrEmail: string, password: string) {
+  async checkCridential(loginOrEmail: string, password: string): Promise<DBUserType | null> {
     const user: DBUserType | null = await userRepositories.findByLoginOrEmail(
       loginOrEmail
     );
@@ -76,7 +76,7 @@ export const userService = {
     const deleteId: boolean = await userRepositories.deleteById(id);
     return deleteId;
   },
-  async findUserById(userId: ObjectId | null) {
+  async findUserById(userId: ObjectId | null): Promise<DBUserType | null> {
     return await userRepositories.findUserById(userId);
   },
   async deleteAllUsers() {
@@ -106,7 +106,7 @@ export const userService = {
   async confirmEmail(email: string): Promise<DBUserType | null> {
 	return await userRepositories.findByLoginOrEmail(email)
   },
-  async confirmEmailResendCode(email: string) {
+  async confirmEmailResendCode(email: string): Promise<string | null> {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
 	const newConfirmationCode = uuidv4()
 	await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode)
