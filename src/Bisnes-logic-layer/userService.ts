@@ -110,9 +110,9 @@ export const userService = {
 	const newConfirmationCode = uuidv4()
 	await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode)
 	try {
-		await emailManager.sendEamilConfirmationMessage(user!._id)
+		await emailManager.sendEamilConfirmationMessage(user!)
 	} catch(error) {
-		await userRepositories.deleteById(user!._id.toString())
+		// await userRepositories.deleteById(user!._id.toString())
 		return null
 	}
 	return user!._id
