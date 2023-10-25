@@ -1,5 +1,5 @@
+import { userRepositories } from './../repositories/user-db-repositories';
 import { DBUserType, UserType } from "./../routers/types/usersType";
-import { userRepositories } from "../repositories/user-db-repositories";
 import bcrypt from "bcrypt";
 import { ObjectId } from "mongodb";
 import { emailManager } from "../manager/email-manager";
@@ -26,6 +26,7 @@ export const userService = {
       emailConfirmation: {
         confirmationCode: uuidv4(),
         expirationDate: add(new Date(), {
+		  hours: 1,
           minutes: 10,
         }),
         isConfirmed: false,
@@ -81,16 +82,6 @@ export const userService = {
   async deleteAllUsers() {
     return await userRepositories.deleteAll();
   },
-  async doSomething() {
-    //  save to repo
-    // get user from repo
-    await emailManager.sendPasswordRecoviryMessage({});
-  },
-  async doSomething2() {
-    //  save to repo
-    // get user from repo
-    await emailManager.sendPasswordRecoviryMessage({});
-  },
   //   async confirmEmail(code: string, email: string): Promise<boolean> {
   //     const user = await userRepositories.findByLoginOrEmail(email);
   //     if (!user) return false;
@@ -115,13 +106,16 @@ export const userService = {
   async confirmEmail(email: string): Promise<DBUserType | null> {
 	return await userRepositories.findByLoginOrEmail(email)
   },
-  async resendConfirmEmail(user: UserType) {
-	const transporter = nodemailer.createTransport({
-		service: 'gmail',
-		auth: {
-			user: 'mpara7274@gmail.com',
-			pass: 'ldhkcdcybmrbxaew'
-		}
-	})
+  async confirmEmailResendCode(email: string) {
+	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
+	const newConfirmationCode = uuidv4()
+	await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode)
+	try {
+		await emailManager.sendEamilConfirmationMessage(user!._id)
+	} catch(error) {
+		await userRepositories.deleteById(user!._id.toString())
+		return null
+	}
+	return user!._id
   }
 };

@@ -107,24 +107,15 @@ authRouter.post(
   inputValueEmail,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationEmailResendigModel>, res: Response<string>): Promise<Response<string>> {
-	const confirmUser = await userService.resendConfirmEmail(req.body.email)
-	if(confirmUser === 'User does not exist') {
-		return res.status(HTTP_STATUS.BAD_REQUEST_400).send({
-			errorMessage: [
-				{
-					message: "User does not exist with correct email",
-					field: "email"
-				}
-			]
-		})
-	} else if(confirmUser === 'User already confirmed') {
-		return res.status(HTTP_STATUS.BAD_REQUEST_400).send({
-			errorMessage: [{
-				message: "User already confirm with correct email",
-				field: 'email'
-			}]
-		})
+	const confirmUser = await userService.confirmEmailResendCode(req.body.email)
+	if(!confirmUser) {
+		return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
+	} else {
+		return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 	}
-	return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
   }
 );
+
+// 1). Регистрация в системе - отправить письмо в кодом;
+// 2). Подтвердить регистрацию при помощи кода отправленного внутри ссылки на почту.
+// 3). Переотправка письма с кодом регистрации, сгенерировать заново код сохранить в БД и отправить код на почту.

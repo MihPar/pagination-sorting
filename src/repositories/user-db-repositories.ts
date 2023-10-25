@@ -18,6 +18,10 @@ export const userRepositories = {
 	const result = await userCollection.updateOne({_id}, {$set: {'emailConfirmation.isConfirmad': true}})
 	return result.modifiedCount === 1
   },
+  async updateUserConfirmation(_id: ObjectId, confirmationCode: string) {
+	const result = await userCollection.updateOne({_id}, {$set: {'emailConfirmation.confirmationCode': confirmationCode}})
+	return result.modifiedCount === 1
+  },
   async getAllUsers(
     sortBy: string,
     sortDirection: string,

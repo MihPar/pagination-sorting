@@ -20,8 +20,6 @@ export const emailAdapter = {
 				  <a href='https://somesite.com/confirm-email?code=${code}'>complete registration</a>
 			  </p>`
 			});
-		  
-			console.log("Message sent: %s", info);
 		  }
 		  main().catch(console.error);
 	}
