@@ -5,7 +5,6 @@ import { ObjectId } from "mongodb";
 import { emailManager } from "../manager/email-manager";
 import { v4 as uuidv4 } from "uuid";
 import add from "date-fns/add";
-import nodemailer from 'nodemailer'
 
 export const userService = {
   async createNewUser(

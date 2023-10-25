@@ -14,7 +14,16 @@ export const inputValueLogin = body('login')
 .matches( /^[a-zA-Z0-9_-]*$/g )
 .notEmpty()
 .trim()
-.withMessage('loginOrEmail is not string')
+.custom(async(login) => {
+	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(login)
+	if(!user) {
+		throw new Error('Login does not exist in DB')
+	} 
+	if(user.emailConfirmation.isConfirmed) {
+		throw new Error('Login already confirmed')
+	}
+})
+.withMessage('Login is not string')
 
 
 export const inputValuePassword = body('password')
@@ -28,7 +37,6 @@ export const inputValueEmail = body('email')
 .isString()
 .trim()
 .matches( /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g )
-.withMessage('Email is not string')
 .custom(async(email) => {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
 	if(!user) {
@@ -38,6 +46,7 @@ export const inputValueEmail = body('email')
 		throw new Error('Email already confirmed')
 	}
 })
+.withMessage('Email is not string')
 
 export const inputValueCode = body('code')
 .isString()
