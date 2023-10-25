@@ -84,7 +84,11 @@ authRouter.post(
       req.body.email,
       req.body.password
     );
-    return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
+	if(!user) {
+		return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
+	} else {
+		return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
+	}
   }
 );
 
