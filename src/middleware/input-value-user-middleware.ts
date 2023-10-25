@@ -1,3 +1,4 @@
+import { DBUserType } from '../routers/types/usersType';
 import { userRepositories } from './../repositories/user-db-repositories';
 import {body} from 'express-validator'
 
@@ -16,17 +17,17 @@ export const inputValuePasswordValidation = body('password')
 .isLength({min: 6, max: 20})
 .withMessage('password should be length from 6 to 20 symbols')
 
-export const inputValueEmailValidation = body('email')
+export const inputValueEmailValidatioin = body('email')
 .isString()
-.notEmpty()
 .trim()
-.isEmail()
-// .matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/)
-// .custom(async (email) => {
-// 	const checkLogin = await email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}/)
-// 	if(!checkLogin) {
-// 		throw new Error('Login is not correct')
-// 	}
-// 	return true
-//   })
-.withMessage('password should be length from 6 to 20 symbols')
+.matches( /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g )
+.custom(async(email) => {
+	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
+	if(!user) {
+		throw new Error('Email does not exist in DB')
+	} 
+	if(user.emailConfirmation.isConfirmed) {
+		throw new Error('Email already confirmed')
+	}
+})
+.withMessage('Email is not string')

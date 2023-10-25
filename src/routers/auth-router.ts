@@ -5,10 +5,7 @@ import { ResAuthModel } from "./../model/modelAuth/resAuthMode";
 import { jwtService } from "./../Bisnes-logic-layer/jwtService";
 import {
   inputValueCode,
-  inputValueEmail,
-  inputValueLogin,
   inputValueLoginOrEamil,
-  inputValuePassword,
 } from "./../middleware/input-value-auth-middleware";
 import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import { bodyAuthModel } from "./../model/modelAuth/bodyAuthModel";
@@ -18,13 +15,14 @@ import { HTTP_STATUS } from "../utils";
 import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
 import { DBUserType, UserType } from "./types/usersType";
+import { inputValueEmailValidatioin, inputValueLoginValidation, inputValuePasswordValidation } from '../middleware/input-value-user-middleware';
 
 export const authRouter = Router({});
 
 authRouter.post(
   "/login",
   inputValueLoginOrEamil,
-  inputValuePassword,
+  inputValuePasswordValidation,
   ValueMiddleware,
   async function (
     req: RequestWithBody<bodyAuthModel>,
@@ -74,9 +72,9 @@ authRouter.get(
 
 authRouter.post(
   "/registration",
-  inputValueLogin,
-  inputValuePassword,
-  inputValueEmail,
+  inputValueLoginValidation,
+  inputValuePasswordValidation,
+  inputValueEmailValidatioin,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationModel>, res: Response<void>): Promise<Response<void>> {
     const user = await userService.createNewUser(
@@ -112,7 +110,7 @@ authRouter.post(
 
 authRouter.post(
   "/registration-email-resending",
-  inputValueEmail,
+  inputValueEmailValidatioin,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationEmailResendigModel>, res: Response<string>): Promise<Response<string> | null> {
 	const confirmUser = await userService.confirmEmailResendCode(req.body.email)
