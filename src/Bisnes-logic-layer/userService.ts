@@ -57,7 +57,7 @@ export const userService = {
       loginOrEmail
     );
     if (!user) return null;
-	if(!user.emailConfirmation.isConfirmed) return null
+	// if(!user.emailConfirmation.isConfirmed) return null
 
     const resultBcryptCompare: boolean = await bcrypt.compare(
       password,

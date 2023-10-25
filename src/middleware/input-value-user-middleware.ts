@@ -1,14 +1,28 @@
+import { tr } from 'date-fns/locale';
 import { DBUserType } from '../routers/types/usersType';
 import { userRepositories } from './../repositories/user-db-repositories';
 import {body} from 'express-validator'
+import { log } from 'console';
 
 export const inputValueLoginValidation = body('login')
 .isString()
+.withMessage('1')
 .notEmpty()
-.trim()
+.withMessage('2')
+.trim().withMessage('3')
 .isLength({min: 3, max: 10})
+.withMessage('4')
 .matches(/^[a-zA-Z0-9_-]/)
-.withMessage('login should be length from 3 to 10 symbols')
+.withMessage('5')
+.custom(async(login) => {
+		const user: DBUserType | null = await userRepositories.findByLoginOrEmail(login)
+		log('u l', user)
+		if(user) {
+			throw new Error('Login does not exist in DB')
+		}
+		return true
+	})
+.withMessage('6')
 
 export const inputValuePasswordValidation = body('password')
 .isString()
@@ -19,15 +33,18 @@ export const inputValuePasswordValidation = body('password')
 
 export const inputValueEmailValidatioin = body('email')
 .isString()
+.withMessage('1')
 .trim()
-.matches( /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g )
+.withMessage('2')
+// .matches( /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g )
+.isEmail()
+.withMessage('3')
 .custom(async(email) => {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
-	if(!user) {
+	log('u e', user)
+	if(user) {
 		throw new Error('Email does not exist in DB')
 	} 
-	if(user.emailConfirmation.isConfirmed) {
-		throw new Error('Email already confirmed')
-	}
+	return true
 })
-.withMessage('Email is not string')
+.withMessage('4')

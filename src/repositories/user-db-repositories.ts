@@ -1,3 +1,4 @@
+import { log } from "console";
 import { PaginationType } from "../routers/types/types";
 import { DBUserType, UserType } from "../routers/types/usersType";
 import { userCollection } from "./../db/db";

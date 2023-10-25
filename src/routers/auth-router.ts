@@ -16,6 +16,7 @@ import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
 import { DBUserType, UserType } from "./types/usersType";
 import { inputValueEmailValidatioin, inputValueLoginValidation, inputValuePasswordValidation } from '../middleware/input-value-user-middleware';
+import { log } from 'console';
 
 export const authRouter = Router({});
 
@@ -33,6 +34,7 @@ authRouter.post(
       loginOrEmail,
       password
     );
+	log(user, 'uuuu')
     if (!user) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
@@ -79,8 +81,8 @@ authRouter.post(
   async function (req: RequestWithBody<BodyRegistrationModel>, res: Response<void>): Promise<Response<void>> {
     const user = await userService.createNewUser(
       req.body.login,
+      req.body.password,
       req.body.email,
-      req.body.password
     );
 	if(!user) {
 		return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
