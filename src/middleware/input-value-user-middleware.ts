@@ -59,10 +59,10 @@ export const inputValueEmailValidatioin = body('email')
 .withMessage('3')
 .custom(async(email) => {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
-	// log('u e', user)
+	console.log("founded user", user)
 	if(!user) {
 		throw new Error('Email does not exist in DB')
 	} 
-	return true
+	// return true
 })
 .withMessage('4')
