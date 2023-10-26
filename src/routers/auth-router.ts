@@ -1,4 +1,4 @@
-import { inputValueCode, inputValueLoginOrEamil } from './../middleware/input-value-user-middleware';
+import { inputValueCodeValidation, inputValueLoginOrEamil } from './../middleware/input-value-user-middleware';
 import { BodyRegistrationEmailResendigModel } from './../model/modelAuth/bodyRegistrationEamilResendingMidel';
 import { BodyRegistrationConfirmationModel } from './../model/modelAuth/bodyRegistrationConfirmationModel';
 import { BodyRegistrationModel } from './../model/modelAuth/bodyRegistrationMode';
@@ -90,7 +90,7 @@ authRouter.post(
 
 authRouter.post(
   "/registratioin-confirmation",
-  inputValueCode,
+  inputValueCodeValidation,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationConfirmationModel>, res: Response<void>): Promise<Response<void>> {
     // const result = await userService.confirmEmail(

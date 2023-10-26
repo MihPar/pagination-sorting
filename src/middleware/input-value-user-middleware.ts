@@ -56,12 +56,12 @@ export const inputValueEmailValidatioin = body('email')
 // .matches( /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g )
 .isEmail()
 .withMessage('3')
-.custom(async(email) => {
+.custom(async(email): Promise<boolean> => {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
 	console.log("founded user", user)
 	if(!user) {
-		throw new Error('Email does not exist in DB')
-	} else if(user.emailConfirmation.isConfirmed) {
+		throw new Error('User does not exist in DB')
+	} else if(user.emailConfirmation.isConfirmed === true) {
 		throw new Error('Email is already exist in DB')
 	}
 	return true
@@ -74,7 +74,7 @@ export const inputValueLoginOrEamil = body('loginOrEmail')
 .trim()
 .withMessage('loginOrEmail is not string')
 
-export const inputValueCode = body('code')
+export const inputValueCodeValidation = body('code')
 .isString()
 .notEmpty()
 .trim()
