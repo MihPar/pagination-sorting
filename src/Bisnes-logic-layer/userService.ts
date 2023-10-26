@@ -105,16 +105,19 @@ export const userService = {
   async confirmEmail(email: string): Promise<DBUserType | null> {
 	return await userRepositories.findByLoginOrEmail(email)
   },
-  async confirmEmailResendCode(email: string): Promise<string | null> {
+  async confirmEmailResendCode(email: string): Promise<boolean | null> {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
+	if(!user) return null
 	const newConfirmationCode = uuidv4()
 	await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode)
+	user.emailConfirmation.confirmationCode = newConfirmationCode
 	try {
-		await emailManager.sendEamilConfirmationMessage(user!)
+		await emailManager.sendEamilConfirmationMessage(user)
 	} catch(error) {
 		// await userRepositories.deleteById(user!._id.toString())
 		return null
 	}
-	return user!._id
+	// return user!._id
+	return true
   }
 };

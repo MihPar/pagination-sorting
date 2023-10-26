@@ -1,4 +1,4 @@
-import { inputValueLoginOrEamil } from './../middleware/input-value-user-middleware';
+import { inputValueCode, inputValueLoginOrEamil } from './../middleware/input-value-user-middleware';
 import { BodyRegistrationEmailResendigModel } from './../model/modelAuth/bodyRegistrationEamilResendingMidel';
 import { BodyRegistrationConfirmationModel } from './../model/modelAuth/bodyRegistrationConfirmationModel';
 import { BodyRegistrationModel } from './../model/modelAuth/bodyRegistrationMode';
@@ -31,7 +31,6 @@ authRouter.post(
       loginOrEmail,
       password
     );
-	log(user, 'uuuu')
     if (!user) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
@@ -91,7 +90,7 @@ authRouter.post(
 
 authRouter.post(
   "/registratioin-confirmation",
-  inputValueLoginValidation,
+  inputValueCode,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationConfirmationModel>, res: Response<void>): Promise<Response<void>> {
     // const result = await userService.confirmEmail(
@@ -111,7 +110,7 @@ authRouter.post(
   "/registration-email-resending",
   inputValueEmailValidatioin,
   ValueMiddleware,
-  async function (req: RequestWithBody<BodyRegistrationEmailResendigModel>, res: Response<string>): Promise<Response<string> | null> {
+  async function (req: RequestWithBody<BodyRegistrationEmailResendigModel>, res: Response<void>): Promise<Response<void> | null> {
 	const confirmUser = await userService.confirmEmailResendCode(req.body.email)
 	if(!confirmUser) {
 		return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)

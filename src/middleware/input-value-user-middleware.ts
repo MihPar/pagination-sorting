@@ -16,7 +16,6 @@ export const inputValueLoginValidation = body('login')
 .withMessage('5')
 .custom(async(login) => {
 		const user: DBUserType | null = await userRepositories.findByLoginOrEmail(login)
-		// log('u l', user)
 		if(user) {
 			throw new Error('Login does not exist in DB')
 		}
@@ -62,8 +61,10 @@ export const inputValueEmailValidatioin = body('email')
 	console.log("founded user", user)
 	if(!user) {
 		throw new Error('Email does not exist in DB')
-	} 
-	// return true
+	} else if(user.emailConfirmation.isConfirmed) {
+		throw new Error('Email is already exist in DB')
+	}
+	return true
 })
 .withMessage('4')
 
@@ -71,4 +72,17 @@ export const inputValueLoginOrEamil = body('loginOrEmail')
 .isString()
 .notEmpty()
 .trim()
+.withMessage('loginOrEmail is not string')
+
+export const inputValueCode = body('code')
+.isString()
+.notEmpty()
+.trim()
+.custom(async(code) => {
+	const user: DBUserType | null = await userRepositories.findUserByConfirmation(code)
+	if(!user) {
+		throw new Error('Email does not exist in DB')
+	} 
+	return true
+})
 .withMessage('loginOrEmail is not string')
