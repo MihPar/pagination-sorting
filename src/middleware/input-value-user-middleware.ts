@@ -58,7 +58,6 @@ export const inputValueEmailValidatioin = body('email')
 .withMessage('3')
 .custom(async(email): Promise<boolean> => {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
-	console.log("founded user", user)
 	if(!user) {
 		throw new Error('User does not exist in DB')
 	} else if(user.emailConfirmation.isConfirmed === true) {
@@ -81,8 +80,8 @@ export const inputValueCodeValidation = body('code')
 .custom(async(code) => {
 	const user: DBUserType | null = await userRepositories.findUserByConfirmation(code)
 	if(!user) {
-		throw new Error('Email does not exist in DB')
+		throw new Error('Code does not exist in DB')
 	} 
 	return true
 })
-.withMessage('loginOrEmail is not string')
+.withMessage('Code is not string')

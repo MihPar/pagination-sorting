@@ -99,7 +99,9 @@ export const userService = {
     if(user.emailConfirmation.confirmationCode !== code) return false
     if(user.emailConfirmation.expirationDate < new Date()) return false
 
-    const result = await userRepositories.updateConfirmation(user._id);
+    // const result = await userRepositories.updateConfirmation(user._id);
+	const newConfirmationCode = uuidv4()
+	const result = await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode)
     return result
   },
   async confirmEmail(email: string): Promise<DBUserType | null> {
