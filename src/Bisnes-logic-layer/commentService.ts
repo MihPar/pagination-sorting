@@ -27,6 +27,7 @@ export const commentService = {
 	  postId,
       createdAt: new Date().toISOString(),
     };
+	console.log((newComment.commentatorInfo))
     return await commentRepositories.createNewCommentPostId(newComment);
   },
 };

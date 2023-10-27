@@ -10,7 +10,7 @@ const commentDBToView = (item: CommentType): CommentTypeView => {
 		id: item._id.toString(),
 		content: item.content,
 		commentatorInfo: item.commentatorInfo,
-		createdAt: item.createdAt
+		createdAt: item.createdAt,
 		}
 }
 
