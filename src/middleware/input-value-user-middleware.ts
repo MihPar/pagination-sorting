@@ -90,9 +90,17 @@ export const inputValueCodeValidation = body('code')
 .notEmpty()
 .trim()
 .custom(async(code) => {
+	console.log(code)
 	const user: DBUserType | null = await userRepositories.findUserByConfirmation(code)
+	console.log(user)
 	if(!user) {
 		throw new Error('User not found')
+	} 
+    // if(user.emailConfirmation.confirmationCode !== code) {
+	// 	throw new Error('Code incorrect')
+	// } 
+    if(user.emailConfirmation.expirationDate <= new Date()) {
+		throw new Error('code was expiration')
 	} 
 	if(user.emailConfirmation.isConfirmed) {
 		throw new Error('Code is alreade confirmed')

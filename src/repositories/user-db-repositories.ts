@@ -16,7 +16,7 @@ export const userRepositories = {
     return user;
   },
   async updateConfirmation(_id: ObjectId) {
-	const result = await userCollection.updateOne({_id}, {$set: {'emailConfirmation.isConfirmad': true}})
+	const result = await userCollection.updateOne({_id}, {$set: {'emailConfirmation.isConfirmed': true}})
 	return result.modifiedCount === 1
   },
   async updateUserConfirmation(_id: ObjectId, confirmationCode: string, newExpirationDate: Date): Promise<boolean> {
