@@ -99,9 +99,9 @@ export const userService = {
     if(user.emailConfirmation.confirmationCode !== code) return false
     if(user.emailConfirmation.expirationDate < new Date()) return false
 
-    // const result = await userRepositories.updateConfirmation(user._id);
-	const newConfirmationCode = uuidv4()
-	const result = await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode)
+    const result = await userRepositories.updateConfirmation(user._id);
+	// const newConfirmationCode = uuidv4()
+	// const result = await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode)
     return result
   },
   async confirmEmail(email: string): Promise<DBUserType | null> {
@@ -111,10 +111,15 @@ export const userService = {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
 	if(!user) return null
 	const newConfirmationCode = uuidv4()
-	await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode)
+	const newExpirationDate = add(new Date(), {
+		hours: 1,
+		minutes: 10,
+	  })
+	await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode, newExpirationDate)
 	user.emailConfirmation.confirmationCode = newConfirmationCode
+	user.emailConfirmation.expirationDate = newExpirationDate
 	try {
-		await emailManager.sendEamilConfirmationMessage(user)
+		await emailManager.sendEamilConfirmationMessage(user)//todo user.email, newConfirmationCode
 	} catch(error) {
 		// await userRepositories.deleteById(user!._id.toString())
 		return null

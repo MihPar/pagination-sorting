@@ -89,7 +89,7 @@ authRouter.post(
 );
 
 authRouter.post(
-  "/registratioin-confirmation",
+  "/registration-confirmation",
   inputValueCodeValidation,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationConfirmationModel>, res: Response<void>): Promise<Response<void>> {
