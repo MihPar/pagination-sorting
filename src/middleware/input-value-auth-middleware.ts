@@ -28,18 +28,15 @@ export const inputValueEmailRegistrationAuth = body('email')
 .withMessage('1')
 .trim()
 .withMessage('2')
-// .matches( /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g )
 .isEmail()
 .withMessage('3')
 .custom(async(email) => {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
-	// log('u e', user)
 	if(user) {
 		throw new Error('Email does not exist in DB')
 	} 
 	return true
 })
-.withMessage('4')
 
 
 export const inputValueEmaiAuth = body('email')
@@ -47,14 +44,10 @@ export const inputValueEmaiAuth = body('email')
 .withMessage('1')
 .trim()
 .withMessage('2')
-// .matches( /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g )
 .isEmail()
 .withMessage('3')
 .custom(async(email): Promise<boolean> => {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
-	// if(user) {
-	// 	throw new Error('Email is already confirmed')
-	// }
 	if(!user) {
 		throw new Error('User does not exist in DB')
 	} else if(user.emailConfirmation.isConfirmed === true) {
@@ -62,7 +55,6 @@ export const inputValueEmaiAuth = body('email')
 	}
 	return true
 })
-.withMessage('4')
 
 export const inputValueLoginOrEamilAuth = body('loginOrEmail')
 .isString()
