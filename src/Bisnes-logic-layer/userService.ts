@@ -38,7 +38,7 @@ export const userService = {
 
     const user: DBUserType = await userRepositories.createUser(newUser);
     try {
-      await emailManager.sendEamilConfirmationMessage(user);
+      await emailManager.sendEamilConfirmationMessage(user.accountData.email, user.emailConfirmation.confirmationCode);
     } catch (error) {
       console.log(error);
     //   await userRepositories.deleteById(user._id);
@@ -116,10 +116,10 @@ export const userService = {
 		minutes: 10,
 	  })
 	await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode, newExpirationDate)
-	user.emailConfirmation.confirmationCode = newConfirmationCode
-	user.emailConfirmation.expirationDate = newExpirationDate
+	// user.emailConfirmation.confirmationCode = newConfirmationCode
+	// user.emailConfirmation.expirationDate = newExpirationDate
 	try {
-		await emailManager.sendEamilConfirmationMessage(user)//todo user.email, newConfirmationCode
+		await emailManager.sendEamilConfirmationMessage(user.accountData.email, newConfirmationCode)//todo user.email, newConfirmationCode
 	} catch(error) {
 		// await userRepositories.deleteById(user!._id.toString())
 		return null
