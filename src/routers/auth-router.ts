@@ -91,7 +91,7 @@ authRouter.post(
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationConfirmationModel>, res: Response<void>): Promise<Response<void>> {
 	await userService.findUserByConfirmationCode(req.body.code)
-		return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
+	return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
   }
 );
 
