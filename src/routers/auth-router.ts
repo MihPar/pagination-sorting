@@ -93,10 +93,6 @@ authRouter.post(
   inputValueCodeValidation,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationConfirmationModel>, res: Response<void>): Promise<Response<void>> {
-    // const result = await userService.confirmEmail(
-    //   req.body.code,
-    //   req.body.email
-    // );
     const result = await userService.findUserByConfirmationCode(req.body.code);
 	if(!result) {
 		return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
