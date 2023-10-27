@@ -93,12 +93,13 @@ authRouter.post(
   inputValueCodeValidation,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationConfirmationModel>, res: Response<void>): Promise<Response<void>> {
-    const result = await userService.findUserByConfirmationCode(req.body.code);
-	if(!result) {
-		return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
-	} else {
+    // const findUser = await userService.findUserByConfirmationCode(req.body.code);
+	await userService.findUserByConfirmationCode(req.body.code)
+	// if(!result) {
+	// 	return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
+	// } else {
 		return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
-	}
+	// }
   }
 );
 

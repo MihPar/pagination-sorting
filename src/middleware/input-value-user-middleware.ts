@@ -6,22 +6,17 @@ import { log } from 'console';
 
 export const inputValueLoginValidation = body('login')
 .isString()
-.withMessage('1')
 .notEmpty()
-.withMessage('2')
-.trim().withMessage('3')
+.trim()
 .isLength({min: 3, max: 10})
-.withMessage('4')
 .matches(/^[a-zA-Z0-9_-]/)
-.withMessage('5')
 .custom(async(login) => {
 		const user: DBUserType | null = await userRepositories.findByLoginOrEmail(login)
 		if(user) {
 			throw new Error('Login does not exist in DB')
 		}
 		return true
-	})
-.withMessage('6')
+})
 
 export const inputValuePasswordValidation = body('password')
 .isString()
@@ -47,6 +42,19 @@ export const inputValueEmailRegistrationValidatioin = body('email')
 	return true
 })
 .withMessage('4')
+
+export const inputValueUserEmailValidatioin = body('email')
+.isString()
+.trim()
+.isEmail()
+.custom(async(email): Promise<boolean> => {
+	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
+	if(user) {
+		throw new Error('User does not exist in DB')
+	} 
+	return true
+})
+.withMessage('Email incorrect')
 
 export const inputValueEmailValidatioin = body('email')
 .isString()
@@ -91,4 +99,3 @@ export const inputValueCodeValidation = body('code')
 	}
 	return true
 })
-.withMessage('Code is alreade confirmed')

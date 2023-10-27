@@ -4,6 +4,7 @@ import {
 	inputValueEmailValidatioin,
   inputValueLoginValidation,
   inputValuePasswordValidation,
+  inputValueUserEmailValidatioin,
 } from "./../middleware/input-value-user-middleware";
 import { userService } from "../Bisnes-logic-layer/userService";
 import { authorization } from "./../middleware/authorizatin";
@@ -61,7 +62,7 @@ usersRouter.post(
   authorization,
   inputValueLoginValidation,
   inputValuePasswordValidation,
-  inputValueEmailValidatioin,
+  inputValueUserEmailValidatioin,
   ValueMiddleware,
   async function (
     req: RequestWithBody<bodyUserModel>,
