@@ -67,7 +67,7 @@ export const userService = {
     return user;
   },
   async _generateHash(password: string): Promise<string> {
-    const hash: string = await bcrypt.hash(password, 10);
+    const hash: string = await bcrypt.hash(password, 3);
     return hash;
   },
 
