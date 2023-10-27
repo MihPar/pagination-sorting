@@ -84,8 +84,11 @@ export const inputValueCodeValidation = body('code')
 .custom(async(code) => {
 	const user: DBUserType | null = await userRepositories.findUserByConfirmation(code)
 	if(!user) {
-		throw new Error('Code is alreade confirmed')
+		throw new Error('User not found')
 	} 
+	if(user.emailConfirmation.isConfirmed) {
+		throw new Error('Code is alreade confirmed')
+	}
 	return true
 })
 .withMessage('Code is alreade confirmed')

@@ -110,6 +110,9 @@ export const userService = {
   async confirmEmailResendCode(email: string): Promise<boolean | null> {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
 	if(!user) return null
+	if(user.emailConfirmation.isConfirmed) {
+		return null
+	}
 	const newConfirmationCode = uuidv4()
 	const newExpirationDate = add(new Date(), {
 		hours: 1,
