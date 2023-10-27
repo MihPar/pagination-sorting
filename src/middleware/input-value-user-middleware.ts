@@ -58,6 +58,9 @@ export const inputValueEmailValidatioin = body('email')
 .withMessage('3')
 .custom(async(email): Promise<boolean> => {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
+	// if(user) {
+	// 	throw new Error('Email is already confirmed')
+	// }
 	if(!user) {
 		throw new Error('User does not exist in DB')
 	} else if(user.emailConfirmation.isConfirmed === true) {
@@ -80,7 +83,7 @@ export const inputValueCodeValidation = body('code')
 .trim()
 .custom(async(code) => {
 	const user: DBUserType | null = await userRepositories.findUserByConfirmation(code)
-	if(user) {
+	if(!user) {
 		throw new Error('Code is alreade confirmed')
 	} 
 	return true
