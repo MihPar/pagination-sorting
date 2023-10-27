@@ -6,7 +6,7 @@ import { Filter, ObjectId } from "mongodb";
 
 const commentDBToView = (item: CommentType): CommentTypeView => {
 	return {
-		_id: new ObjectId,
+		id: new Date().toString(),
 		content: item.content,
 		commentatorInfo: item.commentatorInfo,
 		createdAt: item.createdAt
