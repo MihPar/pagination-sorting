@@ -1,7 +1,6 @@
 import { ParamsUserMode } from "./../model/modelUser/paramsUserModel";
 import { ValueMiddleware } from "./../middleware/validatorMiddleware";
 import {
-	inputValueEmailValidatioin,
   inputValueLoginValidation,
   inputValuePasswordValidation,
   inputValueUserEmailValidatioin,

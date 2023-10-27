@@ -1,4 +1,4 @@
-import { inputValueCodeValidation, inputValueLoginOrEamil } from './../middleware/input-value-user-middleware';
+import { inputValueEmaiAuth, inputValueCodeAuth, inputValueEmailRegistrationAuth, inputValuePasswordAuth, inputValueLoginAuth, inputValueLoginOrEamilAuth } from './../middleware/input-value-auth-middleware';
 import { BodyRegistrationEmailResendigModel } from './../model/modelAuth/bodyRegistrationEamilResendingMidel';
 import { BodyRegistrationConfirmationModel } from './../model/modelAuth/bodyRegistrationConfirmationModel';
 import { BodyRegistrationModel } from './../model/modelAuth/bodyRegistrationMode';
@@ -11,16 +11,13 @@ import { Router, Response, Request } from "express";
 import { HTTP_STATUS } from "../utils";
 import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
-import { DBUserType, UserType } from "./types/usersType";
-import { inputValueEmailRegistrationValidatioin, inputValueEmailValidatioin, inputValueLoginValidation, inputValuePasswordValidation } from '../middleware/input-value-user-middleware';
-import { log } from 'console';
-
+import { DBUserType } from "./types/usersType";
 export const authRouter = Router({});
 
 authRouter.post(
   "/login",
-  inputValueLoginOrEamil,
-  inputValuePasswordValidation,
+  inputValueLoginOrEamilAuth,
+  inputValuePasswordAuth,
   ValueMiddleware,
   async function (
     req: RequestWithBody<bodyAuthModel>,
@@ -70,9 +67,9 @@ authRouter.get(
 
 authRouter.post(
   "/registration",
-  inputValueLoginValidation,
-  inputValuePasswordValidation,
-  inputValueEmailRegistrationValidatioin,
+  inputValueLoginAuth,
+  inputValuePasswordAuth,
+  inputValueEmailRegistrationAuth,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationModel>, res: Response<void>): Promise<Response<void>> {
     const user = await userService.createNewUser(
@@ -90,22 +87,17 @@ authRouter.post(
 
 authRouter.post(
   "/registration-confirmation",
-  inputValueCodeValidation,
+  inputValueCodeAuth,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationConfirmationModel>, res: Response<void>): Promise<Response<void>> {
-    // const findUser = await userService.findUserByConfirmationCode(req.body.code);
 	await userService.findUserByConfirmationCode(req.body.code)
-	// if(!result) {
-	// 	return res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
-	// } else {
 		return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
-	// }
   }
 );
 
 authRouter.post(
   "/registration-email-resending",
-  inputValueEmailValidatioin,
+  inputValueEmaiAuth,
   ValueMiddleware,
   async function (req: RequestWithBody<BodyRegistrationEmailResendigModel>, res: Response<void>): Promise<Response<void> | null> {
 	const confirmUser = await userService.confirmEmailResendCode(req.body.email)
