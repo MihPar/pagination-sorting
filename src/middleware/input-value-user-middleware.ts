@@ -75,13 +75,14 @@ export const inputValueLoginOrEamil = body('loginOrEmail')
 
 export const inputValueCodeValidation = body('code')
 .isString()
+.withMessage('Code should be string')
 .notEmpty()
 .trim()
 .custom(async(code) => {
 	const user: DBUserType | null = await userRepositories.findUserByConfirmation(code)
-	if(!user) {
-		throw new Error('Code does not exist in DB')
+	if(user) {
+		throw new Error('Code is alreade confirmed')
 	} 
 	return true
 })
-.withMessage('Code is not string')
+.withMessage('Code is alreade confirmed')
