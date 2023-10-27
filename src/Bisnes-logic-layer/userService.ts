@@ -95,9 +95,9 @@ export const userService = {
   async findUserByConfirmationCode(code: string): Promise<boolean> {
     const user = await userRepositories.findUserByConfirmation(code);
     if(!user) return false;
-	if(user.emailConfirmation.isConfirmed) return false
-    if(user.emailConfirmation.confirmationCode !== code) return false
-    if(user.emailConfirmation.expirationDate < new Date()) return false
+	// if(user.emailConfirmation.isConfirmed) return false
+    // if(user.emailConfirmation.confirmationCode !== code) return false
+    // if(user.emailConfirmation.expirationDate < new Date()) return false
 
     const result = await userRepositories.updateConfirmation(user._id);
 	// const newConfirmationCode = uuidv4()

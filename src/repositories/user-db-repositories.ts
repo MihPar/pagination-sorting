@@ -11,8 +11,8 @@ export const userRepositories = {
     });
     return user;
   },
-  async findUserByConfirmation(emailConfirmationCode: string): Promise<DBUserType | null> {
-    const user: DBUserType | null = await userCollection.findOne({ 'emailConfirmation.confirmationCode': emailConfirmationCode });
+  async findUserByConfirmation(code: string): Promise<DBUserType | null> {
+    const user: DBUserType | null = await userCollection.findOne({ 'emailConfirmation.confirmationCode': code });
     return user;
   },
   async updateConfirmation(_id: ObjectId) {
