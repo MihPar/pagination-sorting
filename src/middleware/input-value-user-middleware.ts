@@ -86,7 +86,7 @@ export const inputValueCodeValidation = body('code')
 	if(!user) {
 		throw new Error('User not found')
 	} 
-	if(user.emailConfirmation.isConfirmed) {
+	if(user.emailConfirmation.isConfirmed || user.emailConfirmation.expirationDate || user.emailConfirmation.confirmationCode) {
 		throw new Error('Code is alreade confirmed')
 	}
 	return true
