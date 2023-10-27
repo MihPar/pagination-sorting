@@ -1,9 +1,6 @@
 import { CommentTypeView } from './../routers/types/commentType';
 import { ObjectId } from "mongodb";
-import { commentCollection, postsCollection, userCollection } from "../db/db";
 import { commentRepositories } from "../repositories/comment-db-repositories";
-import { CommentType } from "../routers/types/commentType";
-import { DBUserType, UserGeneralType, UserType } from "../routers/types/usersType";
 
 export const commentService = {
   async updateCommentByCommentId(commentId: string, content: string): Promise<boolean> {
