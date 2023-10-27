@@ -7,7 +7,7 @@ import { randomUUID } from 'crypto';
 
 const commentDBToView = (item: CommentType): CommentTypeView => {
 	return {
-		id: randomUUID(),
+		id: new Date().toString(),
 		content: item.content,
 		commentatorInfo: item.commentatorInfo,
 		createdAt: item.createdAt
