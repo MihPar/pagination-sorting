@@ -89,6 +89,12 @@ export const inputValueCodeValidation = body('code')
 	if(user.emailConfirmation.isConfirmed) {
 		throw new Error('Code is alreade confirmed')
 	}
+	if(user.emailConfirmation.confirmationCode !== code) {
+		throw new Error('Code is alreade confirmed')
+	}
+	if(user.emailConfirmation.expirationDate < new Date()) {
+		throw new Error('Code is alreade confirmed')
+	} 
 	return true
 })
 .withMessage('Code is alreade confirmed')
