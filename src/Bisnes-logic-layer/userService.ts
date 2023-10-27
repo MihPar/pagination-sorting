@@ -95,13 +95,11 @@ export const userService = {
   async findUserByConfirmationCode(code: string): Promise<boolean> {
     const user = await userRepositories.findUserByConfirmation(code);
     if(!user) return false;
-	// if(user.emailConfirmation.isConfirmed) return false
-    // if(user.emailConfirmation.confirmationCode !== code) return false
-    // if(user.emailConfirmation.expirationDate < new Date()) return false
+	if(user.emailConfirmation.isConfirmed) return false
+    if(user.emailConfirmation.confirmationCode !== code) return false
+    if(user.emailConfirmation.expirationDate < new Date()) return false
 
     const result = await userRepositories.updateConfirmation(user._id);
-	// const newConfirmationCode = uuidv4()
-	// const result = await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode)
     return result
   },
   async confirmEmail(email: string): Promise<DBUserType | null> {
@@ -122,7 +120,7 @@ export const userService = {
 	// user.emailConfirmation.confirmationCode = newConfirmationCode
 	// user.emailConfirmation.expirationDate = newExpirationDate
 	try {
-		await emailManager.sendEamilConfirmationMessage(user.accountData.email, newConfirmationCode)//todo user.email, newConfirmationCode
+		await emailManager.sendEamilConfirmationMessage(user.accountData.email, newConfirmationCode)
 	} catch(error) {
 		// await userRepositories.deleteById(user!._id.toString())
 		return null
