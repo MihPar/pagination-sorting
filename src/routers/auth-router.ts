@@ -1,4 +1,4 @@
-import { authValidationInfoMiddleware } from './../middleware/authValidationInfoMiddleware';
+import { authValidationInfoMiddleware } from "./../middleware/authValidationInfoMiddleware";
 import { checkRefreshTokenMiddleware } from "./../middleware/checkRefreshToken-middleware";
 import {
   inputValueEmailAuth,
@@ -84,30 +84,33 @@ authRouter.post(
   "/logout",
   checkRefreshTokenMiddleware,
   async function (req: Request, res: Response) {
-    list.refreshToken = '';
+    list.refreshToken = "";
     return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
   }
 );
 
 authRouter.get(
   "/me",
-  authValidationInfoMiddleware,
+  //   authValidationInfoMiddleware,
   async function (
     req: Request,
     res: Response<ResAuthModel>
   ): Promise<Response<ResAuthModel>> {
-	if(!req.body.authorization) {
-		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
-	}
-	if(req.user) {
-		return res.status(HTTP_STATUS.OK_200).send({
-			userId: req.user._id.toString(),
-			email: req.user.accountData.email,
-			login: req.user.accountData.userName,
-		  });
-	} 
-	return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-    
+    if (!req.headers.authorization) {
+      return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
+    }
+    const token: string = req.headers.authorization!.split(" ")[1];
+    const userId: ObjectId | null = await jwtService.getUserIdByToken(token);
+    if (!userId) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
+    const currentUser: DBUserType | null = await userService.findUserById(
+      userId
+    );
+    if (!currentUser) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
+    return res.status(HTTP_STATUS.OK_200).send({
+      userId: currentUser._id.toString(),
+      email: currentUser.accountData.email,
+      login: currentUser.accountData.userName,
+    });
   }
 );
 
