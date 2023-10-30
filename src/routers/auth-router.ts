@@ -21,7 +21,6 @@ import { HTTP_STATUS } from "../utils";
 import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
 import { DBUserType } from "./types/usersType";
-import { list } from "../whiteList";
 export const authRouter = Router({});
 
 authRouter.post(
@@ -43,8 +42,8 @@ authRouter.post(
     } else {
       const token: string = await jwtService.createJWT(user);
       const refreshToken: string = await jwtService.createRefreshJWT(user);
-      list.refreshToken = refreshToken;
-      res.cookie("refresh_token", refreshToken, {
+      user.blackList.push(refreshToken);
+      res.cookie("refresh_token", user.blackList.length - 1, {
         httpOnly: true,
         secure: true,
       });
@@ -57,7 +56,7 @@ authRouter.post(
   "/refresh-token",
   checkRefreshTokenMiddleware,
   async function (req: Request, res: Response) {
-    const refreshToken = req.cookies.refreshToken; //userId
+    const refreshToken = req.cookies.refreshToken;
     const currentUserId = await jwtService.getUserIdByRefreshToken(
       refreshToken
     );
@@ -68,13 +67,18 @@ authRouter.post(
     if (currentUser) {
       const newToken = await jwtService.createJWT(currentUser);
       const newRefreshToken = await jwtService.createRefreshJWT(currentUser);
-      list.refreshToken = newRefreshToken;
-      return res
-        .cookie("refresh_token", newRefreshToken, {
-          httpOnly: true,
-          secure: true,
-        })
-        .status(HTTP_STATUS.OK_200);
+      for (let char of currentUser.blackList) {
+        if (char !== newRefreshToken) {
+			currentUser.blackList.push(newRefreshToken)
+          return res
+            .cookie("refresh_token", currentUser.blackList, {
+              httpOnly: true,
+              secure: true,
+            })
+            .status(HTTP_STATUS.OK_200)
+            .send({ accessToken: newToken });
+        }
+      }
     }
     return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
   }
@@ -84,14 +88,23 @@ authRouter.post(
   "/logout",
   checkRefreshTokenMiddleware,
   async function (req: Request, res: Response) {
-    list.refreshToken = "";
+    const refreshToken = req.cookies.refreshToken;
+    const currentUserId = await jwtService.getUserIdByRefreshToken(
+      refreshToken
+    );
+    const currentUser = await userService.findUserById(currentUserId);
+    if (!currentUser) {
+      return null;
+    } else {
+      currentUser.blackList.push('');
+    }
     return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
   }
 );
 
 authRouter.get(
   "/me",
-  //   authValidationInfoMiddleware,
+    authValidationInfoMiddleware,
   async function (
     req: Request,
     res: Response<ResAuthModel>

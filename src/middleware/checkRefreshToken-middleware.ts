@@ -1,8 +1,8 @@
+import { userService } from './../Bisnes-logic-layer/userService';
+import { jwtService } from './../Bisnes-logic-layer/jwtService';
 import  jwt  from 'jsonwebtoken';
 import {Request, Response, NextFunction} from 'express'
 import { HTTP_STATUS } from '../utils'
-import { jwtService } from '../Bisnes-logic-layer/jwtService'
-import { list } from '../whiteList';
 
 export const checkRefreshTokenMiddleware = async function(req: Request, res: Response, next: NextFunction) {
 	const refreshToken = req.body.refreshToken
@@ -10,7 +10,11 @@ export const checkRefreshTokenMiddleware = async function(req: Request, res: Res
 		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 		return
 	}
-	if(refreshToken !== list.refreshToken) {
+	const currentUserId = await jwtService.getUserIdByRefreshToken(
+		refreshToken
+	  );
+	  const currentUser = await userService.findUserById(currentUserId);
+	if(refreshToken !== currentUser?.blackList) {
 		return res
 		.status(HTTP_STATUS.NOT_AUTHORIZATION_401)
 		.send({message: 'It isn`t valid refresh token'})

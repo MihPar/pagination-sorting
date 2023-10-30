@@ -1,7 +1,7 @@
 export type DBUserType = {
 	_id: any;
   } & UserGeneralType;
-  
+
   export type UserGeneralType = {
 	accountData: {
 		userName: string
@@ -14,6 +14,7 @@ export type DBUserType = {
 		expirationDate: Date
 		isConfirmed: boolean
 	},
+	blackList: string[]
   };
   
   export type UserType = {

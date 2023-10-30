@@ -30,6 +30,7 @@ export const userService = {
         }),
         isConfirmed: false,
       },
+	  blackList: []
     };
 
     const user: DBUserType = await userRepositories.createUser(newUser);
