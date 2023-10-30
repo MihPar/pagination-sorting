@@ -76,7 +76,7 @@ export const userRepositories = {
 	return deleteAllUsers.deletedCount === 1;
   },
   async updateUserByToken(currentUserId: ObjectId, refreshToken: string): Promise<boolean> {
-	const user: any = await userCollection.updateOne({id: currentUserId}, {$push: {blackList: refreshToken}})
+	const user = await userCollection.updateOne({_id: currentUserId}, {$push: {blackList: refreshToken}})
 	return user.modifiedCount === 1
   }
 };

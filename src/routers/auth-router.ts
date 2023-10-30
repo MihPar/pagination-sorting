@@ -21,6 +21,7 @@ import { HTTP_STATUS } from "../utils";
 import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
 import { DBUserType } from "./types/usersType";
+import { sessionService } from "../Bisnes-logic-layer/sessionService";
 
 export const authRouter = Router({});
 
@@ -60,26 +61,25 @@ authRouter.post(
     const currentUserId = await jwtService.getUserIdByRefreshToken(
       refreshToken
     );
+	if(!currentUserId) {
+		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+	}
     const currentUser = await userService.findUserById(currentUserId);
     if (!currentUser) {
       return res.sendStatus(401);
     }
-	const doesExist = currentUser.blackList.find(item => item == refreshToken)
-	if(doesExist) return res.sendStatus(401);
-	currentUser.blackList.push(refreshToken)
-    if (currentUser) {
-      const newToken = await jwtService.createJWT(currentUser);
-      const newRefreshToken = await jwtService.createRefreshJWT(currentUser);
-	  const updateUser = await userService.updateUserByNewToken(currentUserId!, refreshToken)
-          return res
-            .cookie("refreshToken", newRefreshToken, {
-              httpOnly: true,
-              secure: true,
-            })
-            .status(HTTP_STATUS.OK_200)
-            .send({ accessToken: newToken });
-        }
-    return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
+    const isExistToken = sessionService.findRefreshToken(refreshToken);
+    if (refreshToken === isExistToken) return res.sendStatus(401);
+    const newToken = await jwtService.createJWT(currentUser);
+    const newRefreshToken = await jwtService.createRefreshJWT(currentUser);
+	const updateSession = await sessionService.updateSession(currentUserId, newRefreshToken)
+    return res
+      .cookie("refreshToken", newRefreshToken, {
+        httpOnly: true,
+        secure: true,
+      })
+      .status(HTTP_STATUS.OK_200)
+      .send({ accessToken: newToken });
   }
 );
 
@@ -91,16 +91,18 @@ authRouter.post(
     const currentUserId = await jwtService.getUserIdByRefreshToken(
       refreshToken
     );
+	if(!currentUserId) {
+		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+	}
     const currentUser = await userService.findUserById(currentUserId);
     if (!currentUser) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
-      const doesExist = currentUser.blackList.find(
-        (item) => item == refreshToken
-      );
-      currentUser.blackList.push(refreshToken);
-      if (doesExist) return res.sendStatus(401);
-      const updateUser = await userService.updateUserByNewToken(currentUserId!, refreshToken)
+		const isExistToken = sessionService.findRefreshToken(refreshToken);
+		if (refreshToken === isExistToken) return res.sendStatus(401);
+		const newToken = await jwtService.createJWT(currentUser);
+		const newRefreshToken = await jwtService.createRefreshJWT(currentUser);
+		const updateSession = await sessionService.updateSession(currentUserId, newRefreshToken)
     }
     return res
       .clearCookie("refreshToken")
@@ -110,7 +112,7 @@ authRouter.post(
 
 authRouter.get(
   "/me",
-    authValidationInfoMiddleware,
+  authValidationInfoMiddleware,
   async function (
     req: Request,
     res: Response<ResAuthModel>

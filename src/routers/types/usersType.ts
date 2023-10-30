@@ -14,7 +14,6 @@ export type DBUserType = {
 		expirationDate: Date
 		isConfirmed: boolean
 	},
-	blackList: string[]
   };
   
   export type UserType = {

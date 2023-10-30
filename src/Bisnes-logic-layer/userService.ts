@@ -5,7 +5,6 @@ import { ObjectId } from "mongodb";
 import { emailManager } from "../manager/email-manager";
 import { v4 as uuidv4 } from "uuid";
 import add from "date-fns/add";
-import { userCollection } from '../db/db';
 
 export const userService = {
   async createNewUser(
@@ -31,7 +30,6 @@ export const userService = {
         }),
         isConfirmed: false,
       },
-	  blackList: []
     };
 
     const user: DBUserType = await userRepositories.createUser(newUser);
