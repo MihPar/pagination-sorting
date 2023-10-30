@@ -21,6 +21,7 @@ import { HTTP_STATUS } from "../utils";
 import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
 import { DBUserType } from "./types/usersType";
+
 export const authRouter = Router({});
 
 authRouter.post(
@@ -42,8 +43,7 @@ authRouter.post(
     } else {
       const token: string = await jwtService.createJWT(user);
       const refreshToken: string = await jwtService.createRefreshJWT(user);
-      user.blackList.push(refreshToken);
-      res.cookie("refresh_token", user.blackList.length - 1, {
+      res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
       });
@@ -62,24 +62,23 @@ authRouter.post(
     );
     const currentUser = await userService.findUserById(currentUserId);
     if (!currentUser) {
-      return null;
+      return res.sendStatus(401);
     }
+	const doesExist = currentUser.blackList.find(item => item == refreshToken)
+	if(doesExist) return res.sendStatus(401);
+	currentUser.blackList.push(refreshToken)
     if (currentUser) {
       const newToken = await jwtService.createJWT(currentUser);
       const newRefreshToken = await jwtService.createRefreshJWT(currentUser);
-      for (let char of currentUser.blackList) {
-        if (char !== newRefreshToken) {
-			currentUser.blackList.push(newRefreshToken)
+	  const updateUser = await userService.updateUserByNewToken(currentUserId!, refreshToken)
           return res
-            .cookie("refresh_token", currentUser.blackList, {
+            .cookie("refreshToken", newRefreshToken, {
               httpOnly: true,
               secure: true,
             })
             .status(HTTP_STATUS.OK_200)
             .send({ accessToken: newToken });
         }
-      }
-    }
     return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
   }
 );
@@ -94,11 +93,18 @@ authRouter.post(
     );
     const currentUser = await userService.findUserById(currentUserId);
     if (!currentUser) {
-      return null;
+      return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
-      currentUser.blackList.push('');
+      const doesExist = currentUser.blackList.find(
+        (item) => item == refreshToken
+      );
+      currentUser.blackList.push(refreshToken);
+      if (doesExist) return res.sendStatus(401);
+      const updateUser = await userService.updateUserByNewToken(currentUserId!, refreshToken)
     }
-    return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
+    return res
+      .clearCookie("refreshToken")
+      .sendStatus(HTTP_STATUS.NO_CONTENT_204);
   }
 );
 

@@ -5,6 +5,7 @@ import { ObjectId } from "mongodb";
 import { emailManager } from "../manager/email-manager";
 import { v4 as uuidv4 } from "uuid";
 import add from "date-fns/add";
+import { userCollection } from '../db/db';
 
 export const userService = {
   async createNewUser(
@@ -101,5 +102,8 @@ export const userService = {
 		return null
 	}
 	return true
+  },
+  async updateUserByNewToken(currentUserId: ObjectId, refreshToken: string) {
+	return await userRepositories.updateUserByToken(currentUserId, refreshToken)
   }
 };

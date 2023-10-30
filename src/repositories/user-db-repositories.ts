@@ -1,4 +1,3 @@
-import { log } from "console";
 import { PaginationType } from "../routers/types/types";
 import { DBUserType, UserType } from "../routers/types/usersType";
 import { userCollection } from "./../db/db";
@@ -76,5 +75,8 @@ export const userRepositories = {
 	const deleteAllUsers = await userCollection.deleteMany({})
 	return deleteAllUsers.deletedCount === 1;
   },
-  
+  async updateUserByToken(currentUserId: ObjectId, refreshToken: string): Promise<boolean> {
+	const user: any = await userCollection.updateOne({id: currentUserId}, {$push: {blackList: refreshToken}})
+	return user.modifiedCount === 1
+  }
 };
