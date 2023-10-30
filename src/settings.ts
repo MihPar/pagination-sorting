@@ -5,11 +5,13 @@ import { postsRouter } from './routers/posts-router'
 import { deleteAllRouter } from './routers/deleteAll-router'
 import { authRouter} from './routers/auth-router'
 import { commentsRouter } from './routers/comments-router';
+import cookieParser from 'cookie-parser'
 
 
 	export const app = express()
 
 	app.use(express.json());
+	app.use(cookieParser())
 
 	app.use('/posts', postsRouter)
 	app.use('/blogs',  blogsRouter)

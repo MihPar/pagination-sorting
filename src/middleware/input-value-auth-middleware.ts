@@ -39,7 +39,7 @@ export const inputValueEmailRegistrationAuth = body('email')
 })
 
 
-export const inputValueEmaiAuth = body('email')
+export const inputValueEmailAuth = body('email')
 .isString()
 .withMessage('1')
 .trim()

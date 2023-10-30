@@ -30,10 +30,6 @@ export const userService = {
         }),
         isConfirmed: false,
       },
-      // login: login,
-      // email: email,
-      // passwordHash,
-      // createdAt: new Date().toISOString()
     };
 
     const user: DBUserType = await userRepositories.createUser(newUser);
@@ -41,7 +37,6 @@ export const userService = {
       await emailManager.sendEamilConfirmationMessage(user.accountData.email, user.emailConfirmation.confirmationCode);
     } catch (error) {
       console.log(error);
-    //   await userRepositories.deleteById(user._id);
       return null;
     }
 
@@ -57,8 +52,6 @@ export const userService = {
       loginOrEmail
     );
     if (!user) return null;
-	// if(!user.emailConfirmation.isConfirmed) return null
-
     const resultBcryptCompare: boolean = await bcrypt.compare(
       password,
       user.accountData.passwordHash
@@ -81,24 +74,8 @@ export const userService = {
   async deleteAllUsers() {
     return await userRepositories.deleteAll();
   },
-  //   async confirmEmail(code: string, email: string): Promise<boolean> {
-  //     const user = await userRepositories.findByLoginOrEmail(email);
-  //     if (!user) return false;
-  //     if (
-  //       user.emailConfirmation.confirmationCode === code &&
-  //       user.emailConfirmation.expirationDate > new Date()
-  //     ) {
-  //       const result = await userRepositories.updateConfirmation(user._id);
-  //     }
-  //     return false;
-  //   },
   async findUserByConfirmationCode(code: string): Promise<boolean> {
     const user = await userRepositories.findUserByConfirmation(code);
-    // if(!user) return false;
-	// if(user.emailConfirmation.isConfirmed) return false
-    // if(user.emailConfirmation.confirmationCode !== code) return false
-    // if(user.emailConfirmation.expirationDate < new Date()) return false
-
     const result = await userRepositories.updateConfirmation(user!._id);
     return result
   },
@@ -117,15 +94,11 @@ export const userService = {
 		minutes: 10,
 	  })
 	await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode, newExpirationDate)
-	// user.emailConfirmation.confirmationCode = newConfirmationCode
-	// user.emailConfirmation.expirationDate = newExpirationDate
 	try {
 		await emailManager.sendEamilConfirmationMessage(user.accountData.email, newConfirmationCode)
 	} catch(error) {
-		// await userRepositories.deleteById(user!._id.toString())
 		return null
 	}
-	// return user!._id
 	return true
   }
 };

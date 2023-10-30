@@ -6,13 +6,25 @@ dotenv.config()
 
 export const jwtService = {
 	async createJWT(user: DBUserType) {
-		const token = await jwt.sign({userId: user._id}, process.env.JWT_SECRET!, {expiresIn: '1h'})
+		const token: string = await jwt.sign({userId: user._id}, process.env.JWT_SECRET!, {expiresIn: '10s'})
 		return token
+	},
+	async createRefreshJWT(user: DBUserType) {
+		const refreshToken: string = await jwt.sign({userId: user._id}, process.env.REFRESH_JWT_SECRET!, {expiresIn: '20s'})
+		return refreshToken
 	},
 	async getUserIdByToken(token: string) {
 		try {
 			const result: any = await jwt.verify(token, process.env.JWT_SECRET!)
 			return new ObjectId(result.userId)
+		} catch(err) {
+			return null
+		}
+	},
+	async getUserIdByRefreshToken(refreshToken: string) {
+		try {
+			 const result: any = await jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET!)
+			 return new ObjectId(result.userId)
 		} catch(err) {
 			return null
 		}

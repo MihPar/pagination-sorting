@@ -3,7 +3,6 @@ import { PaginationType } from "./../routers/types/types";
 import { CommentType } from "../routers/types/commentType";
 import { commentCollection } from "./../db/db";
 import { Filter, ObjectId } from "mongodb";
-import { randomUUID } from 'crypto';
 
 const commentDBToView = (item: CommentType): CommentTypeView => {
 	return {

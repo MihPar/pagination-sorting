@@ -16,10 +16,8 @@ import {
 } from "./types/types";
 import { HTTP_STATUS } from "../utils";
 import { userRepositories } from "./../repositories/user-db-repositories";
-import { Router, Response, NextFunction } from "express";
+import { Router, Response } from "express";
 import { bodyUserModel } from "../model/modelUser/bodyUserModel";
-import { log } from "console";
-import { nextTick } from "process";
 import { checkId } from "../middleware/input-value-delete-middleware";
 import { UserType } from "./types/usersType";
 

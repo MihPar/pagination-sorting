@@ -13,7 +13,7 @@ export type DBUserType = {
 		confirmationCode: string
 		expirationDate: Date
 		isConfirmed: boolean
-	}
+	},
   };
   
   export type UserType = {

@@ -1,7 +1,5 @@
-import { randomUUID } from 'crypto';
 import { runDb } from './db/db';
 import { app } from './settings';
-import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 dotenv.config()
 
