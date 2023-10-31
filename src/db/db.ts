@@ -4,7 +4,7 @@ import { PostsType } from '../routers/types/postsType';
 import { DBUserType } from '../routers/types/usersType';
 import { CommentType } from '../routers/types/commentType';
 import { MongoClient } from 'mongodb';
-import { SessionType } from './../routers/types/sessionTypes';
+import { BlackList } from './../routers/types/sessionTypes';
 	 
 
 dotenv.config()
@@ -34,4 +34,4 @@ export const blogsCollection = db.collection<BlogsType>('blogs')
 export const postsCollection = db.collection<PostsType>('posts')
 export const userCollection = db.collection<DBUserType>('user')
 export const commentCollection = db.collection<CommentType>('comment')
-export const sessionCollection = db.collection<SessionType>('session')
+export const sessionCollection = db.collection<BlackList>('session')
