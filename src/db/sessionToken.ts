@@ -1,3 +1,3 @@
-import { SessionType } from "../routers/types/sessionTypes";
+// import { SessionType } from "../routers/types/sessionTypes";
 
-export const sessionToken: Array<SessionType> = []
+// export const sessionToken: Array<SessionType> = []

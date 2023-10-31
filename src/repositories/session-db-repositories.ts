@@ -1,22 +1,26 @@
-import { ObjectId } from 'mongodb';
-import { sessionCollection } from './../db/db';
-import { sessionToken } from '../db/sessionToken';
-
-// function findToken(item) {
-// 	for(let char of sessionToken) {
-// 		if(char === item) {
-// 			return char
-// 		}
-// 	}
-// }
+import { SessionType } from './../routers/types/sessionTypes';
+import { ObjectId } from "mongodb";
+import { sessionCollection } from "./../db/db";
 
 export const sessionRepositories = {
-	async findRefreshToken(refreshToken: string) {
-		const result = await sessionCollection.find({sessionToken: [refreshToken]})
-		return result
-		// return findToken(refreshToken)
-	},
-	async addRefreshToken(currentUserId: ObjectId, newRefreshToken: string) {
-		const result = await sessionCollection.updateOne({_id: currentUserId}, {$push: {sessionToken: newRefreshToken}})
+  async findRefreshToken(refreshToken: string) {
+    const result = await sessionCollection.findOne({
+		refreshToken: refreshToken,
+    });
+    return result;
+  },
+  async addRefreshToken(currentUserId: ObjectId, newRefreshToken: string) {
+    const result = await sessionCollection.updateOne(
+      { _id: currentUserId },
+      { $push: { sessionToken: newRefreshToken } }
+    );
+  },
+  async addToBlackList(newRefreshToken: SessionType): Promise<boolean> {
+	const result = await sessionCollection.insertOne({...newRefreshToken})
+	if(result) {
+		return true
+	} else {
+		return false
 	}
-}
+  }
+};

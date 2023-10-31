@@ -18,7 +18,7 @@ export const authValidationInfoMiddleware = async function (
   const userId: ObjectId | null = await jwtService.getUserIdByToken(token);
   if (!userId) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
   const currentUser: DBUserType | null = await userService.findUserById(userId);
+  if (!currentUser) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
   next();
   return;
-  //   if (!currentUser) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
 };
