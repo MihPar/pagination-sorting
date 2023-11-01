@@ -1,4 +1,4 @@
-import { SessionType } from './../routers/types/sessionTypes';
+import { BlackList } from './../routers/types/sessionTypes';
 import { ObjectId } from "mongodb";
 import { sessionCollection } from "./../db/db";
 
@@ -15,7 +15,7 @@ export const sessionRepositories = {
       { $push: { sessionToken: newRefreshToken } }
     );
   },
-  async addToBlackList(newRefreshToken: SessionType): Promise<boolean> {
+  async addToBlackList(newRefreshToken: BlackList): Promise<boolean> {
 	const result = await sessionCollection.insertOne({...newRefreshToken})
 	if(result) {
 		return true
