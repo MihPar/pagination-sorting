@@ -37,7 +37,7 @@ export const userService = {
       await emailManager.sendEamilConfirmationMessage(user.accountData.email, user.emailConfirmation.confirmationCode);
     } catch (error) {
       console.log(error);
-      return null;
+    //   return null;
     }
 
     return {

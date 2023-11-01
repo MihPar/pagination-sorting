@@ -56,7 +56,7 @@ export const userRepositories = {
       }
   },
   async createUser(newUser: DBUserType): Promise<DBUserType> {
-	const  updateUser = await userCollection.insertOne(newUser)
+	const  updateUser = await userCollection.insertOne({...newUser})
 	return newUser
   },
   async deleteById(id: string): Promise<boolean> {
