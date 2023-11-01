@@ -1,5 +1,7 @@
+import { ObjectId } from "mongodb";
+
 export type DBUserType = {
-	_id: any;
+	_id: ObjectId;
   } & UserGeneralType;
 
   export type UserGeneralType = {

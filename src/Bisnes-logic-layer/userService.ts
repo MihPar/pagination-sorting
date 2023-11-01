@@ -68,7 +68,7 @@ export const userService = {
     const deleteId: boolean = await userRepositories.deleteById(id);
     return deleteId;
   },
-  async findUserById(userId: ObjectId | null): Promise<DBUserType | null> {
+  async findUserById(userId: ObjectId): Promise<DBUserType | null> {
     return await userRepositories.findUserById(userId);
   },
   async deleteAllUsers() {

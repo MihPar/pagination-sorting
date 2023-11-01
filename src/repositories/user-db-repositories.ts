@@ -30,7 +30,8 @@ export const userRepositories = {
     searchLoginTerm: string,
     searchEmailTerm: string 
   ): Promise<PaginationType<UserType>> {
-    const filter: Filter<DBUserType> = {$or: [{login: {$regex: searchLoginTerm, $options: 'i'}}, {email: {$regex: searchEmailTerm, $options: 'i'}}]};
+	// console.log('queryLogin:', searchLoginTerm, 'queryEmail:', searchEmailTerm)
+    const filter: Filter<DBUserType> = {$or: [{'accountData.userName': {$regex: searchLoginTerm ?? '', $options: 'i'}}, {'accountData.email': {$regex: searchEmailTerm ?? '', $options: 'i'}}]};
 	
     const getAllUsers = await userCollection
       .find(filter, { projection: { passwordHash: 0 } })
@@ -41,7 +42,7 @@ export const userRepositories = {
 
     const totalCount: number = await userCollection.countDocuments(filter);
     const pagesCount: number = await Math.ceil(totalCount / +pageSize);
-
+// console.log('allUsers:', getAllUsers)
 	return {
         pagesCount: pagesCount,
         page: +pageNumber,
@@ -63,13 +64,11 @@ export const userRepositories = {
 	const deleted = await userCollection.deleteOne({_id: new ObjectId(id)})
 	return deleted.deletedCount === 1;
   },
-  async findUserById(userId: ObjectId | null) {
+  async findUserById(userId: ObjectId) :Promise<DBUserType | null>{
     let user = await userCollection.findOne({ _id: userId });
-    if (user) {
+    
       return user;
-    } else {
-      return null;
-    }
+    
   },
   async deleteAll() {
 	const deleteAllUsers = await userCollection.deleteMany({})

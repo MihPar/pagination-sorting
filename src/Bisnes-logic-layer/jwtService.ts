@@ -10,7 +10,8 @@ export const jwtService = {
 		return token
 	},
 	async createRefreshJWT(user: DBUserType) {
-		const refreshToken: string = await jwt.sign({userId: user._id}, process.env.REFRESH_JWT_SECRET!, {expiresIn: '20s'})
+		console.log('secret in login:', process.env.REFRESH_JWT_SECRET!)
+		const refreshToken: string = await jwt.sign({userId: user._id}, process.env.REFRESH_JWT_SECRET as string, {expiresIn: '200s'})
 		return refreshToken
 	},
 	async getUserIdByToken(token: string) {
