@@ -30,7 +30,6 @@ export const userRepositories = {
     searchLoginTerm: string,
     searchEmailTerm: string 
   ): Promise<PaginationType<UserType>> {
-	// console.log('queryLogin:', searchLoginTerm, 'queryEmail:', searchEmailTerm)
     const filter: Filter<DBUserType> = {$or: [{'accountData.userName': {$regex: searchLoginTerm ?? '', $options: 'i'}}, {'accountData.email': {$regex: searchEmailTerm ?? '', $options: 'i'}}]};
 	
     const getAllUsers = await userCollection
@@ -42,7 +41,6 @@ export const userRepositories = {
 
     const totalCount: number = await userCollection.countDocuments(filter);
     const pagesCount: number = await Math.ceil(totalCount / +pageSize);
-// console.log('allUsers:', getAllUsers)
 	return {
         pagesCount: pagesCount,
         page: +pageNumber,

@@ -1,4 +1,4 @@
-import { userRepositories } from './../repositories/user-db-repositories';
+import { userRepositories } from "./../repositories/user-db-repositories";
 import { DBUserType, UserType } from "./../routers/types/usersType";
 import bcrypt from "bcrypt";
 import { ObjectId } from "mongodb";
@@ -25,7 +25,7 @@ export const userService = {
       emailConfirmation: {
         confirmationCode: uuidv4(),
         expirationDate: add(new Date(), {
-		  hours: 1,
+          hours: 1,
           minutes: 10,
         }),
         isConfirmed: false,
@@ -34,10 +34,13 @@ export const userService = {
 
     const user: DBUserType = await userRepositories.createUser(newUser);
     try {
-      await emailManager.sendEamilConfirmationMessage(user.accountData.email, user.emailConfirmation.confirmationCode);
+      await emailManager.sendEamilConfirmationMessage(
+        user.accountData.email,
+        user.emailConfirmation.confirmationCode
+      );
     } catch (error) {
       console.log(error);
-    //   return null;
+      //   return null;
     }
 
     return {
@@ -47,7 +50,10 @@ export const userService = {
       createdAt: user.accountData.createdAt,
     };
   },
-  async checkCridential(loginOrEmail: string, password: string): Promise<DBUserType | null> {
+  async checkCridential(
+    loginOrEmail: string,
+    password: string
+  ): Promise<DBUserType | null> {
     const user: DBUserType | null = await userRepositories.findByLoginOrEmail(
       loginOrEmail
     );
@@ -77,31 +83,43 @@ export const userService = {
   async findUserByConfirmationCode(code: string): Promise<boolean> {
     const user = await userRepositories.findUserByConfirmation(code);
     const result = await userRepositories.updateConfirmation(user!._id);
-    return result
+    return result;
   },
   async confirmEmail(email: string): Promise<DBUserType | null> {
-	return await userRepositories.findByLoginOrEmail(email)
+    return await userRepositories.findByLoginOrEmail(email);
   },
   async confirmEmailResendCode(email: string): Promise<boolean | null> {
-	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
-	if(!user) return null
-	if(user.emailConfirmation.isConfirmed) {
-		return null
-	}
-	const newConfirmationCode = uuidv4()
-	const newExpirationDate = add(new Date(), {
-		hours: 1,
-		minutes: 10,
-	  })
-	await userRepositories.updateUserConfirmation(user!._id, newConfirmationCode, newExpirationDate)
-	try {
-		await emailManager.sendEamilConfirmationMessage(user.accountData.email, newConfirmationCode)
-	} catch(error) {
-		return null
-	}
-	return true
+    const user: DBUserType | null = await userRepositories.findByLoginOrEmail(
+      email
+    );
+    if (!user) return null;
+    if (user.emailConfirmation.isConfirmed) {
+      return null;
+    }
+    const newConfirmationCode = uuidv4();
+    const newExpirationDate = add(new Date(), {
+      hours: 1,
+      minutes: 10,
+    });
+    await userRepositories.updateUserConfirmation(
+      user!._id,
+      newConfirmationCode,
+      newExpirationDate
+    );
+    try {
+      await emailManager.sendEamilConfirmationMessage(
+        user.accountData.email,
+        newConfirmationCode
+      );
+    } catch (error) {
+      return null;
+    }
+    return true;
   },
   async updateUserByNewToken(currentUserId: ObjectId, refreshToken: string) {
-	return await userRepositories.updateUserByToken(currentUserId, refreshToken)
-  }
+    return await userRepositories.updateUserByToken(
+      currentUserId,
+      refreshToken
+    );
+  },
 };

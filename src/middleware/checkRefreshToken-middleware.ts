@@ -15,7 +15,6 @@ export const checkRefreshTokenMiddleware = async function(req: Request, res: Res
 		return
 	}
 	try {
-		// console.log('secret in validation:', process.env.REFRESH_JWT_SECRET!)
 		const result: any = await jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET!)
 		console.log('after verify', result)
 		if(result.userId){
