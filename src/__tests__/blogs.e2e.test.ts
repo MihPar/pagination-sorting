@@ -8,6 +8,17 @@ dotenv.config();
 
 const mongoURL = process.env.MONGO_URL || "mongodb://0.0.0.0:27017";
 
+export function createErrorsMessageTest(fields: string[]) {
+	const errorsMessages: any = [];
+	for (const field of fields) {
+	  errorsMessages.push({
+		message: expect.any(String),
+		field: field ?? expect.any(String),
+	  });
+	}
+	return { errorsMessages: errorsMessages };
+  }
+
 describe("/blogs", () => {
   beforeAll(async () => {
     await runDb();
@@ -43,14 +54,7 @@ describe("/blogs", () => {
   };
 
   describe("create blog tests", async () => {
-    // const wipeAllRes = await request(app).delete("/testing/all-data").send();
-
-    // expect(wipeAllRes.status).toBe(HTTP_STATUS.NO_CONTENT_204);
-
-    // const getBlogs = await request(app).get("/blogs").send();
-    // expect(getBlogs.status).toBe(HTTP_STATUS.OK_200);
-    // expect(getBlogs.body.items).toHaveLength(0);
-
+    
     it("create blog without auth => should return 401 status code", async () => {
       const createBlogWithoutHeaders = await request(app)
         .post("/blogs")
@@ -88,7 +92,7 @@ describe("/blogs", () => {
         .send({});
 
       expect(createBlogWithEmptyBody.status).toBe(HTTP_STATUS.BAD_REQUEST_400);
-      expect(createBlogWithEmptyBody.body).toStrictEqual(blogsValidationErrRes);
+      expect(createBlogWithEmptyBody.body).toStrictEqual(createErrorsMessageTest(["name", "description", "websiteUrl"]));
     });
 
     it("create blog with incorrect body => should return 400 status code and errorsMessages", async () => {

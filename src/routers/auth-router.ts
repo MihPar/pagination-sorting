@@ -90,22 +90,7 @@ authRouter.get(
     req: Request,
     res: Response<ResAuthModel>
   ): Promise<Response<ResAuthModel>> {
-    //     if (!req.headers.authorization) {
-    //       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
-    //     }
-    //     const token: string = req.headers.authorization!.split(" ")[1];
-    //     const userId: ObjectId | null = await jwtService.getUserIdByToken(token);
-    //     if (!userId) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
-    //     const currentUser: DBUserType | null = await userService.findUserById(
-    //       userId
-    //     );
-    //     if (!currentUser) return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
-    //     return res.status(HTTP_STATUS.OK_200).send({
-    //       userId: currentUser._id.toString(),
-    //       email: currentUser.accountData.email,
-    //       login: currentUser.accountData.userName,
-    //     });
-    //   }
+    
     if (!req.headers.authorization) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     }
