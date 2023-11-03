@@ -40,7 +40,6 @@ export const userService = {
       );
     } catch (error) {
       console.log(error);
-      //   return null;
     }
 
     return {

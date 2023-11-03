@@ -1,8 +1,8 @@
-import { app } from "./../settings";
+import { app } from "../../settings";
 import request from "supertest";
 import dotenv from "dotenv";
-import { HTTP_STATUS } from "../utils";
-import { runDb, stopDb } from "../db/db";
+import { HTTP_STATUS } from "../../utils";
+import { runDb, stopDb } from "../../db/db";
 import { randomUUID } from "crypto";
 dotenv.config();
 
