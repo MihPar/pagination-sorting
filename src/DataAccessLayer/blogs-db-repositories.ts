@@ -1,6 +1,6 @@
-import { BlogsType } from "../routers/types/blogsType";
-import { PaginationType } from "../routers/types/types";
-import { blogsCollection } from "./../db/db";
+import { BlogsType } from "../UIRepresentation/types/blogsType";
+import { PaginationType } from "../UIRepresentation/types/types";
+import { blogsCollection } from "../db/db";
 import { Filter } from "mongodb";
 
 export const blogsRepositories = {

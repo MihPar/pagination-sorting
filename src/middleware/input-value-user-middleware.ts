@@ -1,5 +1,5 @@
-import { DBUserType } from '../routers/types/usersType';
-import { userRepositories } from './../repositories/user-db-repositories';
+import { DBUserType } from '../UIRepresentation/types/usersType';
+import { userRepositories } from '../DataAccessLayer/user-db-repositories';
 import {body} from 'express-validator'
 
 export const inputValueUserEmailValidatioin = body('email')

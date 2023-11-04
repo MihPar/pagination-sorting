@@ -1,5 +1,5 @@
-import { userRepositories } from "./../repositories/user-db-repositories";
-import { DBUserType, UserType } from "./../routers/types/usersType";
+import { userRepositories } from "../DataAccessLayer/user-db-repositories";
+import { DBUserType, UserType } from "../UIRepresentation/types/usersType";
 import bcrypt from "bcrypt";
 import { ObjectId } from "mongodb";
 import { emailManager } from "../manager/email-manager";

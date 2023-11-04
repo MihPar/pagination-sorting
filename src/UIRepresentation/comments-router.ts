@@ -1,7 +1,7 @@
-import { paramsCommentMode } from "./../model/modelComment/paramsCommentModel";
+import { paramsCommentMode } from "../model/modelComment/paramsCommentModel";
 import { CommentTypeView } from "./types/commentType";
-import { commentRepositories } from "./../repositories/comment-db-repositories";
-import { commentAuthorization } from "./../middleware/commentAuthorization";
+import { commentRepositories } from "../DataAccessLayer/comment-db-repositories";
+import { commentAuthorization } from "../middleware/commentAuthorization";
 import { Router, Response } from "express";
 import { inputCommentValidator } from "../middleware/input-value-comment-middleware";
 import { ValueMiddleware } from "../middleware/validatorMiddleware";

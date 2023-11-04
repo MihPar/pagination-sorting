@@ -1,7 +1,7 @@
-import { CommentTypeView } from './../routers/types/commentType';
-import { PaginationType } from "./../routers/types/types";
-import { CommentType } from "../routers/types/commentType";
-import { commentCollection } from "./../db/db";
+import { CommentTypeView } from '../UIRepresentation/types/commentType';
+import { PaginationType } from "../UIRepresentation/types/types";
+import { CommentType } from "../UIRepresentation/types/commentType";
+import { commentCollection } from "../db/db";
 import { Filter, ObjectId } from "mongodb";
 
 const commentDBToView = (item: CommentType): CommentTypeView => {

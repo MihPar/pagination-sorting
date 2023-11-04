@@ -1,6 +1,6 @@
-import { PaginationType } from "../routers/types/types";
-import { DBUserType, UserType } from "../routers/types/usersType";
-import { userCollection } from "./../db/db";
+import { PaginationType } from "../UIRepresentation/types/types";
+import { DBUserType, UserType } from "../UIRepresentation/types/usersType";
+import { userCollection } from "../db/db";
 import { Filter, ObjectId } from "mongodb";
 
 export const userRepositories = {

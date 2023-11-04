@@ -1,13 +1,13 @@
-import { ParamsUserMode } from "./../model/modelUser/paramsUserModel";
-import { ValueMiddleware } from "./../middleware/validatorMiddleware";
+import { ParamsUserMode } from "../model/modelUser/paramsUserModel";
+import { ValueMiddleware } from "../middleware/validatorMiddleware";
 import {
   inputValueLoginValidation,
   inputValuePasswordValidation,
   inputValueUserEmailValidatioin,
-} from "./../middleware/input-value-user-middleware";
+} from "../middleware/input-value-user-middleware";
 import { userService } from "../Bisnes-logic-layer/userService";
-import { authorization } from "./../middleware/authorizatin";
-import { QueryUserModel } from "./../model/modelUser/queryUserModel";
+import { authorization } from "../middleware/authorizatin";
+import { QueryUserModel } from "../model/modelUser/queryUserModel";
 import {
   PaginationType,
   RequestWithQuery,
@@ -15,7 +15,7 @@ import {
   RequestWithParams,
 } from "./types/types";
 import { HTTP_STATUS } from "../utils";
-import { userRepositories } from "./../repositories/user-db-repositories";
+import { userRepositories } from "../DataAccessLayer/user-db-repositories";
 import { Router, Response } from "express";
 import { bodyUserModel } from "../model/modelUser/bodyUserModel";
 import { checkId } from "../middleware/input-value-delete-middleware";

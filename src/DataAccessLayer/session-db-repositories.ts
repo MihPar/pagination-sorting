@@ -1,6 +1,6 @@
-import { BlackList } from './../routers/types/sessionTypes';
+import { BlackList } from '../UIRepresentation/types/sessionTypes';
 import { ObjectId } from "mongodb";
-import { sessionCollection } from "./../db/db";
+import { sessionCollection } from "../db/db";
 
 export const sessionRepositories = {
   async findRefreshToken(refreshToken: string) {

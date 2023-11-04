@@ -1,7 +1,7 @@
-import { postsRepositories } from './../repositories/posts-db-repositories';
-import { paramsBlogsModel } from "./../model/modelBlogs/paramsBlogsModel";
-import { bodyPostsModel } from "./../model/modelPosts/bodyPostsMode";
-import { queryPostsModel } from "./../model/modelPosts/queryPostsModel";
+import { postsRepositories } from '../DataAccessLayer/posts-db-repositories';
+import { paramsBlogsModel } from "../model/modelBlogs/paramsBlogsModel";
+import { bodyPostsModel } from "../model/modelPosts/bodyPostsMode";
+import { queryPostsModel } from "../model/modelPosts/queryPostsModel";
 import {
   RequestWithParamsAndQuery,
   RequestWithParamsAndBody,
@@ -13,9 +13,9 @@ import {
   inputBlogNameValidator,
   inputBlogDescription,
   inputBlogWebsiteUrl,
-} from "./../middleware/input-value-blogs-middleware";
-import { authorization } from "./../middleware/authorizatin";
-import { ValueMiddleware } from "./../middleware/validatorMiddleware";
+} from "../middleware/input-value-blogs-middleware";
+import { authorization } from "../middleware/authorizatin";
+import { ValueMiddleware } from "../middleware/validatorMiddleware";
 import { blogsService } from "../Bisnes-logic-layer/blogsService";
 import { Router, Response } from "express";
 import { HTTP_STATUS } from "../utils";
@@ -28,7 +28,7 @@ import {
 import { paramsPostsModelBlogId } from "../model/modelPosts/paramsPostsModeBlogId";
 import { QueryBlogsModel } from "../model/modelBlogs/QueryBlogsModel";
 import { bodyBlogsModel } from "../model/modelBlogs/bodyBlogsModel";
-import { blogsRepositories } from "../repositories/blogs-db-repositories";
+import { blogsRepositories } from "../DataAccessLayer/blogs-db-repositories";
 import { BlogsType } from './types/blogsType';
 import { PostsType } from './types/postsType';
 

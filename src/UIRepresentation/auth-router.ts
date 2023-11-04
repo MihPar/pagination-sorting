@@ -1,5 +1,5 @@
-import { authValidationInfoMiddleware } from "./../middleware/authValidationInfoMiddleware";
-import { checkRefreshTokenMiddleware } from "./../middleware/checkRefreshToken-middleware";
+import { authValidationInfoMiddleware } from "../middleware/authValidationInfoMiddleware";
+import { checkRefreshTokenMiddleware } from "../middleware/checkRefreshToken-middleware";
 import {
   inputValueEmailAuth,
   inputValueCodeAuth,
@@ -7,14 +7,14 @@ import {
   inputValuePasswordAuth,
   inputValueLoginAuth,
   inputValueLoginOrEamilAuth,
-} from "./../middleware/input-value-auth-middleware";
-import { BodyRegistrationEmailResendigModel } from "./../model/modelAuth/bodyRegistrationEamilResendingMidel";
-import { BodyRegistrationConfirmationModel } from "./../model/modelAuth/bodyRegistrationConfirmationModel";
-import { BodyRegistrationModel } from "./../model/modelAuth/bodyRegistrationMode";
-import { ResAuthModel } from "./../model/modelAuth/resAuthMode";
-import { jwtService } from "./../Bisnes-logic-layer/jwtService";
-import { ValueMiddleware } from "./../middleware/validatorMiddleware";
-import { bodyAuthModel } from "./../model/modelAuth/bodyAuthModel";
+} from "../middleware/input-value-auth-middleware";
+import { BodyRegistrationEmailResendigModel } from "../model/modelAuth/bodyRegistrationEamilResendingMidel";
+import { BodyRegistrationConfirmationModel } from "../model/modelAuth/bodyRegistrationConfirmationModel";
+import { BodyRegistrationModel } from "../model/modelAuth/bodyRegistrationMode";
+import { ResAuthModel } from "../model/modelAuth/resAuthMode";
+import { jwtService } from "../Bisnes-logic-layer/jwtService";
+import { ValueMiddleware } from "../middleware/validatorMiddleware";
+import { bodyAuthModel } from "../model/modelAuth/bodyAuthModel";
 import { RequestWithBody } from "./types/types";
 import { Router, Response, Request } from "express";
 import { HTTP_STATUS } from "../utils";

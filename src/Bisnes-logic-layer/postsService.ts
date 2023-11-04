@@ -1,8 +1,8 @@
-import { PostsType } from './../routers/types/postsType';
-import { postsRepositories } from "../repositories/posts-db-repositories";
+import { PostsType } from '../UIRepresentation/types/postsType';
+import { postsRepositories } from "../DataAccessLayer/posts-db-repositories";
 import { blogsCollection } from "../db/db";
 import { randomUUID } from "crypto";
-import { BlogsType } from '../routers/types/blogsType';
+import { BlogsType } from '../UIRepresentation/types/blogsType';
 
 export const postsService = {
   async createPost(

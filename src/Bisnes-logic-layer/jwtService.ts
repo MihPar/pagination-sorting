@@ -1,4 +1,4 @@
-import { DBUserType } from './../routers/types/usersType';
+import { DBUserType } from '../UIRepresentation/types/usersType';
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import { ObjectId } from 'mongodb';

@@ -1,8 +1,8 @@
-import { paramsIdModel } from "./../model/modelPosts/paramsIdModel";
-import { paramsPostIdMode } from "./../model/modelPosts/paramsPostIdMode";
-import { postsRepositories } from "./../repositories/posts-db-repositories";
-import { bodyPostsModel } from "./../model/modelPosts/bodyPostsMode";
-import { queryPostsModel } from "./../model/modelPosts/queryPostsModel";
+import { paramsIdModel } from "../model/modelPosts/paramsIdModel";
+import { paramsPostIdMode } from "../model/modelPosts/paramsPostIdMode";
+import { postsRepositories } from "../DataAccessLayer/posts-db-repositories";
+import { bodyPostsModel } from "../model/modelPosts/bodyPostsMode";
+import { queryPostsModel } from "../model/modelPosts/queryPostsModel";
 import {
   RequestWithParams,
   RequestWithBody,
@@ -15,16 +15,16 @@ import {
   inputPostContentValidator,
   inputPostShortDescriptionValidator,
   inputPostTitleValidator,
-} from "./../middleware/input-value-posts-middleware copy";
-import { ValueMiddleware } from "./../middleware/validatorMiddleware";
-import { authorization } from "./../middleware/authorizatin";
+} from "../middleware/input-value-posts-middleware copy";
+import { ValueMiddleware } from "../middleware/validatorMiddleware";
+import { authorization } from "../middleware/authorizatin";
 import { Router, Response } from "express";
 import { HTTP_STATUS } from "../utils";
 import { postsService } from "../Bisnes-logic-layer/postsService";
 import { PostsType } from "./types/postsType";
 import { commentService } from "../Bisnes-logic-layer/commentService";
 import { CommentType, CommentTypeView } from "./types/commentType";
-import { commentRepositories } from "../repositories/comment-db-repositories";
+import { commentRepositories } from "../DataAccessLayer/comment-db-repositories";
 import { bodyPostModelContent } from "../model/modelPosts/bodyPostModeContent";
 import { commentAuthorization } from "../middleware/commentAuthorization";
 import { inputCommentValidator } from "../middleware/input-value-comment-middleware";

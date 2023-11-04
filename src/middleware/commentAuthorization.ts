@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { HTTP_STATUS } from "../utils";
 import { jwtService } from "../Bisnes-logic-layer/jwtService";
 import { userService } from "../Bisnes-logic-layer/userService";
-import { commentRepositories } from "../repositories/comment-db-repositories";
+import { commentRepositories } from "../DataAccessLayer/comment-db-repositories";
 
 export const commentAuthorization = async function(req: Request, res: Response, next: NextFunction) {
 	if(!req.headers.authorization) {

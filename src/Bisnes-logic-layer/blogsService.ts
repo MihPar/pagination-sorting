@@ -1,5 +1,5 @@
-import { BlogsType } from './../routers/types/blogsType';
-import { blogsRepositories } from "../repositories/blogs-db-repositories";
+import { BlogsType } from '../UIRepresentation/types/blogsType';
+import { blogsRepositories } from "../DataAccessLayer/blogs-db-repositories";
 import { randomUUID } from "crypto";
 
 

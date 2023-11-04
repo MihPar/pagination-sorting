@@ -1,10 +1,11 @@
-import { usersRouter } from './routers/user-router';
+import { securityDeviceRouter } from './UIRepresentation/securityDevice';
+import { usersRouter } from './UIRepresentation/user-router';
 import express from 'express'
-import { blogsRouter } from './routers/blogs-router'
-import { postsRouter } from './routers/posts-router'
-import { deleteAllRouter } from './routers/deleteAll-router'
-import { authRouter} from './routers/auth-router'
-import { commentsRouter } from './routers/comments-router';
+import { blogsRouter } from './UIRepresentation/blogs-router'
+import { postsRouter } from './UIRepresentation/posts-router'
+import { deleteAllRouter } from './UIRepresentation/deleteAll-router'
+import { authRouter} from './UIRepresentation/auth-router'
+import { commentsRouter } from './UIRepresentation/comments-router';
 import cookieParser from 'cookie-parser'
 
 
@@ -19,6 +20,7 @@ import cookieParser from 'cookie-parser'
 	app.use('/auth', authRouter)
 	app.use('/users', usersRouter)
 	app.use('/comments', commentsRouter)
+	app.use('/api', securityDeviceRouter)
 
 	app.get('/test', (req, res) => {
 		res.json({ message: 'This is a test endpoint!' });

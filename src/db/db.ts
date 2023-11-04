@@ -1,10 +1,11 @@
 import dotenv from 'dotenv'
-import { BlogsType } from '../routers/types/blogsType';
-import { PostsType } from '../routers/types/postsType';
-import { DBUserType } from '../routers/types/usersType';
-import { CommentType } from '../routers/types/commentType';
+import { BlogsType } from '../UIRepresentation/types/blogsType';
+import { PostsType } from '../UIRepresentation/types/postsType';
+import { DBUserType } from '../UIRepresentation/types/usersType';
+import { CommentType } from '../UIRepresentation/types/commentType';
 import { MongoClient } from 'mongodb';
-import { BlackList } from './../routers/types/sessionTypes';
+import { BlackList } from '../UIRepresentation/types/sessionTypes';
+import {DeviceAuthSession} from '../UIRepresentation/types/deviceAuthSession'
 	 
 
 dotenv.config()
@@ -34,3 +35,4 @@ export const postsCollection = db.collection<PostsType>('posts')
 export const userCollection = db.collection<DBUserType>('user')
 export const commentCollection = db.collection<CommentType>('comment')
 export const sessionCollection = db.collection<BlackList>('session')
+export const deviceAuthSessionCollection = db.collection<DeviceAuthSession>('diviceSession')
