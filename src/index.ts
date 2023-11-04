@@ -10,7 +10,6 @@ const starting = async () => {
 	app.listen(port, function() {
 		console.log(`Server was started at port ${port}`)
 	})
-	// console.log(jwt.sign({userId: 'custom user id'}, process.env.JWT_SECRET!, {expiresIn: '1h'}))
 }
 
 starting()

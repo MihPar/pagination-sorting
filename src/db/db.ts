@@ -1,3 +1,4 @@
+import { DeviceModel, CollectionIP } from './../UIRepresentation/types/deviceAuthSession';
 import dotenv from 'dotenv'
 import { BlogsType } from '../UIRepresentation/types/blogsType';
 import { PostsType } from '../UIRepresentation/types/postsType';
@@ -5,7 +6,6 @@ import { DBUserType } from '../UIRepresentation/types/usersType';
 import { CommentType } from '../UIRepresentation/types/commentType';
 import { MongoClient } from 'mongodb';
 import { BlackList } from '../UIRepresentation/types/sessionTypes';
-import {DeviceAuthSession} from '../UIRepresentation/types/deviceAuthSession'
 	 
 
 dotenv.config()
@@ -35,4 +35,5 @@ export const postsCollection = db.collection<PostsType>('posts')
 export const userCollection = db.collection<DBUserType>('user')
 export const commentCollection = db.collection<CommentType>('comment')
 export const sessionCollection = db.collection<BlackList>('session')
-export const deviceAuthSessionCollection = db.collection<DeviceAuthSession>('diviceSession')
+export const deviceAuthSessionCollection = db.collection<DeviceModel>('diviceSession')
+export const IPAuthSessionCollection = db.collection<CollectionIP>('diviceSession')

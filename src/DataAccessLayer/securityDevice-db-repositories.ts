@@ -1,18 +1,19 @@
-import { CurrentUser } from './../UIRepresentation/types/deviceAuthSession';
+import { DeviceModel } from './../UIRepresentation/types/deviceAuthSession';
 import { deviceAuthSessionCollection } from './../db/db';
+
 export const securityDeviceRepositories = {
-	async getDevicesAllUsers(): Promise<CurrentUser | null> {
-	 	const getAllUsers = await deviceAuthSessionCollection.findOne()
-		if(!getAllUsers) return null
-		// const users = getAllUsers.map(function(item) {
-		// 	return {
-		// 		ip: item.IP,
-		// 		title: item.title,
-		// 		lastActiveDate: item.lastActiveDate,
-		// 		deviceId: item.deviceId
-		// 	}
-		// })
-		// return users
-		
-	}
-}
+  async getDevicesAllUsers(userId: string): Promise<DeviceModel | null> {
+    const getAllDevices: DeviceModel | null =
+      await deviceAuthSessionCollection.findOne({ userId: userId });
+    if (!getAllDevices) return null;
+    return getAllDevices;
+  },
+  async deleteAllDevice(): Promise<boolean> {
+    const deleteAllDevice = await deviceAuthSessionCollection.deleteMany({});
+    return deleteAllDevice.deletedCount === 1;
+  },
+  async deleteDeviceById(deviceId: string) {
+	const deleteOne = await deviceAuthSessionCollection.deleteOne({deviceId})
+	return deleteOne.deletedCount === 1
+  }
+};
