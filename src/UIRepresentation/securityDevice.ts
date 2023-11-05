@@ -1,5 +1,5 @@
+import { Device } from './types/deviceAuthSession';
 import { deviceService } from "./../Bisnes-logic-layer/deviceService";
-import { DeviceModel } from "./types/deviceAuthSession";
 import { checkRefreshTokenMiddleware } from "../middleware/checkRefreshToken-middleware";
 import { Router, Request, Response } from "express";
 import { securityDeviceRepositories } from "../DataAccessLayer/securityDevice-db-repositories";
@@ -12,10 +12,10 @@ securityDeviceRouter.get(
   checkRefreshTokenMiddleware,
   async function (
     req: Request,
-    res: Response<DeviceModel | null>
-  ): Promise<Response<DeviceModel | null>> {
+    res: Response<Device | null>
+  ): Promise<Response<Device | null>> {
 	const userId = req.user.userId
-    const getDevicesAllUsers: DeviceModel | null =
+    const getDevicesAllUsers: Device | null =
       await securityDeviceRepositories.getDevicesAllUsers(userId);
     if (!getDevicesAllUsers) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
