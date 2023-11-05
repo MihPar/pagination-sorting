@@ -1,3 +1,5 @@
+import { deviceService } from './../Bisnes-logic-layer/deviceService';
+import { securityDeviceRepositories } from './../DataAccessLayer/securityDevice-db-repositories';
 import { authValidationInfoMiddleware } from "../middleware/authValidationInfoMiddleware";
 import { checkRefreshTokenMiddleware } from "../middleware/checkRefreshToken-middleware";
 import {
@@ -44,6 +46,17 @@ authRouter.post(
     } else {
       const token: string = await jwtService.createJWT(user);
       const refreshToken: string = await jwtService.createRefreshJWT(user);
+
+      const ip = req.socket.remoteAddress || "unknown";
+      const title = req.headers["user-agent"] || "unknown";
+      const deviceId = req.user.userid;
+
+      const createDevice = await deviceService.createDevice(
+        ip,
+        title,
+        refreshToken
+      );
+
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
@@ -61,10 +74,11 @@ authRouter.post(
     res: Response<{ accessToken: string }>
   ): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
+	const payload = await jwtService.getPayloadByRefreshToken(refreshToken)
     const toAddRefreshTokenInBlackList: boolean =
       await sessionService.addRefreshToken(refreshToken);
     const newToken: string = await jwtService.createJWT(req.user);
-    const newRefreshToken: string = await jwtService.createRefreshJWT(req.user);
+    const newRefreshToken: string = await jwtService.createRefreshJWT(req.user, payload.deviceId);
     res
       .cookie("refreshToken", newRefreshToken, {
         httpOnly: true,

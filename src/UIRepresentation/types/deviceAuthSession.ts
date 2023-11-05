@@ -4,7 +4,7 @@ export type CollectionIP = {
 	date: Date
 }
 
-// export type ViewDeviceMode = {
+// export type DeviceModel = {
 // 	ip: string
 //     title: string
 //     lastActiveDate: string
@@ -12,12 +12,9 @@ export type CollectionIP = {
 // 	userId: string
 // }
 
-export type DeviceModel = {
-	ip: string
+export type Device =  {
+    ip: string
     title: string
-    lastActiveDate: string
-    deviceId: string
-	userId: string
+    deviceId: any
+    userId: any
 }
-
-

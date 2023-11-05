@@ -9,9 +9,10 @@ export const jwtService = {
 		const token: string = await jwt.sign({userId: user._id}, process.env.JWT_SECRET!, {expiresIn: '10s'})
 		return token
 	},
-	async createRefreshJWT(user: DBUserType) {
+	async createRefreshJWT(user: DBUserType, existDeviceId?: ObjectId) {
 		console.log('secret in login:', process.env.REFRESH_JWT_SECRET!)
-		const refreshToken: string = await jwt.sign({deviceId: user.deviceId, userId: user._id}, process.env.REFRESH_JWT_SECRET as string, {expiresIn: '20s'})
+		const deviceId: ObjectId = new ObjectId()
+		const refreshToken: string = await jwt.sign({deviceId: existDeviceId ?? deviceId, userId: user._id}, process.env.REFRESH_JWT_SECRET as string, {expiresIn: '20s'})
 		return refreshToken
 	},
 	async getUserIdByToken(token: string) {
@@ -29,5 +30,13 @@ export const jwtService = {
 		} catch(err) {
 			return null
 		}
-	}
+	},
+	async getPayloadByRefreshToken(refreshToken: string) {
+		try {
+			 const result: any = await jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET!)
+			 return result
+		} catch(err) {
+			return null
+		}
+	},
 }

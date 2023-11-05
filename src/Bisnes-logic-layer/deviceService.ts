@@ -1,8 +1,12 @@
+import { Device} from './../UIRepresentation/types/deviceAuthSession';
+import { ObjectId } from 'mongodb';
+import { jwtService } from './jwtService';
+import { strict } from 'assert';
 import { securityDeviceRepositories } from './../DataAccessLayer/securityDevice-db-repositories';
 
 export const deviceService = {
-	async deleteDeviceId(deviceId: string, userId: string) {
-		const findSessions = await securityDeviceRepositories.getDevicesAllUsers(deviceId)
+	async deleteDeviceId(deviceId: ObjectId, userId: string) {
+		const findSessions = await securityDeviceRepositories.getDevicesAllUsers(userId)
 		if(!findSessions) {
 			return false
 		}
@@ -27,5 +31,16 @@ export const deviceService = {
 			return true
 		}
 		return true
+	},
+	async createDevice(ip: string, title: string, refreshToken: string) {
+		const payload = await jwtService.getPayloadByRefreshToken(refreshToken)
+		const device: Device = {
+			ip: ip,
+    		title: title,
+    		deviceId: payload.deviceId,
+    		userId: payload.userId,
+		}
+		const createDevice = await securityDeviceRepositories.createDevice(device)
+		return createDevice
 	}
 }
