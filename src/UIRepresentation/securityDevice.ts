@@ -1,7 +1,5 @@
 import { deviceService } from "./../Bisnes-logic-layer/deviceService";
-import { deviceAuthSessionCollection } from "./../db/db";
 import { DeviceModel } from "./types/deviceAuthSession";
-import { ValueMiddleware } from "../middleware/validatorMiddleware";
 import { checkRefreshTokenMiddleware } from "../middleware/checkRefreshToken-middleware";
 import { Router, Request, Response } from "express";
 import { securityDeviceRepositories } from "../DataAccessLayer/securityDevice-db-repositories";
@@ -12,13 +10,13 @@ export const securityDeviceRouter = Router({});
 securityDeviceRouter.get(
   "/",
   checkRefreshTokenMiddleware,
-  ValueMiddleware,
   async function (
     req: Request,
     res: Response<DeviceModel | null>
   ): Promise<Response<DeviceModel | null>> {
+	const userId = req.user.userId
     const getDevicesAllUsers: DeviceModel | null =
-      await securityDeviceRepositories.getDevicesAllUsers(req.user);
+      await securityDeviceRepositories.getDevicesAllUsers(userId);
     if (!getDevicesAllUsers) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
@@ -29,11 +27,14 @@ securityDeviceRouter.get(
 
 securityDeviceRouter.delete(
   "/",
+  checkRefreshTokenMiddleware,
   async function (
     req: Request,
     res: Response<boolean>
   ): Promise<Response<boolean>> {
-    const deleteAllDevice = await securityDeviceRepositories.deleteAllDevice();
+	const userId = req.user.userId
+	const deviceId = req.user.deviceId
+    const deleteAllDevice = await deviceService.deleteAllDevice(userId, deviceId);
     if (!deleteAllDevice) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
@@ -44,12 +45,14 @@ securityDeviceRouter.delete(
 
 securityDeviceRouter.delete(
   "/:deviceId",
+  checkRefreshTokenMiddleware,
   async function (
     req: Request,
     res: Response<boolean>
   ): Promise<Response<boolean>> {
     const { deviceId } = req.params;
-    const deleteDeviceById = await deviceService.deleteDeviceId(deviceId);
+	const {userId} = req.user.userId
+    const deleteDeviceById = await deviceService.deleteDeviceId(deviceId, userId);
     if (!deleteDeviceById) {
       return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
     } else {

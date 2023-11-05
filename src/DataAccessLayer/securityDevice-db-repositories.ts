@@ -8,12 +8,12 @@ export const securityDeviceRepositories = {
     if (!getAllDevices) return null;
     return getAllDevices;
   },
-  async deleteAllDevice(): Promise<boolean> {
-    const deleteAllDevice = await deviceAuthSessionCollection.deleteMany({});
-    return deleteAllDevice.deletedCount === 1;
-  },
   async deleteDeviceById(deviceId: string) {
 	const deleteOne = await deviceAuthSessionCollection.deleteOne({deviceId})
 	return deleteOne.deletedCount === 1
+  },
+  async terminateSession(deviceId: string) {
+	const resultDelete = await deviceAuthSessionCollection.deleteOne({deviceId: deviceId})
+        return resultDelete.deletedCount === 1
   }
 };

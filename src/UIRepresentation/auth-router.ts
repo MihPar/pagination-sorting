@@ -56,9 +56,13 @@ authRouter.post(
 authRouter.post(
   "/refresh-token",
   checkRefreshTokenMiddleware,
-  async function (req: Request, res: Response<{ accessToken: string }>): Promise<void> {
+  async function (
+    req: Request,
+    res: Response<{ accessToken: string }>
+  ): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
-	const toAddRefreshTokenInBlackList: boolean = await sessionService.addRefreshToken(refreshToken)
+    const toAddRefreshTokenInBlackList: boolean =
+      await sessionService.addRefreshToken(refreshToken);
     const newToken: string = await jwtService.createJWT(req.user);
     const newRefreshToken: string = await jwtService.createRefreshJWT(req.user);
     res
@@ -76,10 +80,9 @@ authRouter.post(
   checkRefreshTokenMiddleware,
   async function (req: Request, res: Response<void>): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
-	const toAddRefreshTokenInBlackList: boolean = await sessionService.addRefreshToken(refreshToken)
-    res
-      .clearCookie("refreshToken")
-      .sendStatus(HTTP_STATUS.NO_CONTENT_204);
+    const toAddRefreshTokenInBlackList: boolean =
+      await sessionService.addRefreshToken(refreshToken);
+    res.clearCookie("refreshToken").sendStatus(HTTP_STATUS.NO_CONTENT_204);
   }
 );
 
@@ -90,7 +93,6 @@ authRouter.get(
     req: Request,
     res: Response<ResAuthModel>
   ): Promise<Response<ResAuthModel>> {
-    
     if (!req.headers.authorization) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     }

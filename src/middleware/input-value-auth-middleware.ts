@@ -25,11 +25,8 @@ export const inputValuePasswordAuth = body('password')
 
 export const inputValueEmailRegistrationAuth = body('email')
 .isString()
-.withMessage('1')
 .trim()
-.withMessage('2')
 .isEmail()
-.withMessage('3')
 .custom(async(email) => {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
 	if(user) {
@@ -41,11 +38,8 @@ export const inputValueEmailRegistrationAuth = body('email')
 
 export const inputValueEmailAuth = body('email')
 .isString()
-.withMessage('1')
 .trim()
-.withMessage('2')
 .isEmail()
-.withMessage('3')
 .custom(async(email): Promise<boolean> => {
 	const user: DBUserType | null = await userRepositories.findByLoginOrEmail(email)
 	if(!user) {

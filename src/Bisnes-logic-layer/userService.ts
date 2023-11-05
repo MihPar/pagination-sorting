@@ -16,6 +16,7 @@ export const userService = {
 
     const newUser: DBUserType = {
       _id: new ObjectId(),
+	  deviceId: new ObjectId(),
       accountData: {
         userName: login,
         email,
