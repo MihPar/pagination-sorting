@@ -1,19 +1,20 @@
 import { ObjectId } from 'mongodb';
-import { Device } from './../UIRepresentation/types/deviceAuthSession';
+import { DeviceModel, DeviceViewModel } from './../UIRepresentation/types/deviceAuthSession';
 import { deviceAuthSessionCollection } from './../db/db';
 
 export const securityDeviceRepositories = {
-  async getDevicesAllUsers(userId: string): Promise<Device | null> {
-    const getAllDevices: Device | null =
-      await deviceAuthSessionCollection.findOne({ userId: userId });
-    if (!getAllDevices) return null;
-    return {
-		ip: getAllDevices.ip,
-		title: getAllDevices.title,
-		lastActiveDate: getAllDevices.lastActiveDate,
-		deviceId: getAllDevices.deviceId,
-		userId: getAllDevices.userId
-	}
+  async getDevicesAllUsers(userId: string): Promise<DeviceViewModel[]> {
+    const getAllDevices: DeviceModel[] =
+      await deviceAuthSessionCollection.find({ userId: userId }).toArray();
+    
+    return getAllDevices.map(function(item) {
+			return {
+				ip: item.ip,
+				title: item.title,
+				lastActiveDate: item.lastActiveDate,
+				deviceId: item.deviceId,
+		}
+	})
   },
   async deleteDeviceById(deviceId: ObjectId) {
 	const deleteOne = await deviceAuthSessionCollection.deleteOne({...deviceId})

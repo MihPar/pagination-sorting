@@ -6,10 +6,33 @@ export type CollectionIP = {
 	date: Date
 }
 
-export type Device =  {
+// const apiAccessSchema = new mongoose.Schema({
+// 	IP: {
+// 	type: String,
+// 	required: true
+// 	},
+// 	URL: {
+// 	type: String,
+// 	required: true
+// 	},
+// 	date: {
+// 	type: Date,
+// 	required: true
+// 	}
+// 	});
+
+export type DeviceModel =  {
     ip: string
     title: string
     deviceId: ObjectId
     userId: string
 	lastActiveDate: string
 }
+
+export type DeviceViewModel =  {
+    ip: string
+    title: string
+    deviceId: ObjectId
+	lastActiveDate: string
+}
+

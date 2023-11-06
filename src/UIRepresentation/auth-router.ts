@@ -73,7 +73,7 @@ authRouter.post(
     res: Response<{ accessToken: string }>
   ): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
-	const payload = await jwtService.getPayloadByRefreshToken(refreshToken)
+	const payload = await jwtService.decodeRefreshToken(refreshToken)
     const toAddRefreshTokenInBlackList: boolean =
       await sessionService.addRefreshToken(refreshToken);
 	if(!toAddRefreshTokenInBlackList) {

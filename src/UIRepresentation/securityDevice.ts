@@ -1,4 +1,4 @@
-import { Device } from './types/deviceAuthSession';
+import { DeviceViewModel } from './types/deviceAuthSession';
 import { deviceService } from "./../Bisnes-logic-layer/deviceService";
 import { checkRefreshTokenMiddleware } from "../middleware/checkRefreshToken-middleware";
 import { Router, Request, Response } from "express";
@@ -13,10 +13,10 @@ securityDeviceRouter.get(
   checkRefreshTokenMiddleware,
   async function (
     req: Request,
-    res: Response<Device | null>
-  ): Promise<Response<Device | null>> {
+    res: Response<DeviceViewModel[]>
+  ): Promise<Response<DeviceViewModel[]>> {
 	const userId = req.user.userId
-    const getDevicesAllUsers: Device | null =
+    const getDevicesAllUsers: DeviceViewModel[] =
       await securityDeviceRepositories.getDevicesAllUsers(userId);
     if (!getDevicesAllUsers) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
@@ -53,7 +53,7 @@ securityDeviceRouter.delete(
   ): Promise<Response<boolean>> {
     const { deviceId } = req.params;
 	const {userId} = req.user.userId
-    const deleteDeviceById = await deviceService.deleteDeviceId(deviceId, userId);
+    const deleteDeviceById = await deviceService.deleteDeviceId(new ObjectId(deviceId), userId);
     if (!deleteDeviceById) {
       return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
     } else {

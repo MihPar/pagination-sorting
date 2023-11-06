@@ -10,7 +10,7 @@ export const jwtService = {
 		return token
 	},
 	async createRefreshJWT(user: DBUserType, existDeviceId?: ObjectId) {
-		console.log('secret in login:', process.env.REFRESH_JWT_SECRET!)
+		// console.log('secret in login:', process.env.REFRESH_JWT_SECRET!)
 		const deviceId: ObjectId = new ObjectId()
 		const refreshToken: string = await jwt.sign({deviceId: existDeviceId ?? deviceId, userId: user._id}, process.env.REFRESH_JWT_SECRET as string, {expiresIn: '20s'})
 		return refreshToken
@@ -31,9 +31,10 @@ export const jwtService = {
 			return null
 		}
 	},
-	async getPayloadByRefreshToken(refreshToken: string) {
+	async decodeRefreshToken(refreshToken: string) {
 		try {
-			 const result: any = await jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET!)
+			 const result: any = jwt.decode(refreshToken)
+			 console.log('decoded token:',result)
 			 return result
 		} catch(err) {
 			return null

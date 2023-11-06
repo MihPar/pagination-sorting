@@ -32,13 +32,14 @@ export const deviceService = {
 		return true
 	},
 	async createDevice(ip: string, title: string, refreshToken: string): Promise<Device> {
-		const payload = await jwtService.getPayloadByRefreshToken(refreshToken)
+		const payload = await jwtService.decodeRefreshToken(refreshToken)
 		const device: Device = {
 			ip: ip,
     		title: title,
     		deviceId: payload.deviceId,
     		userId: payload.userId,
-			lastActiveDate: payload.lastActiveDate
+			lastActiveDate: payload.lastActiveDate,
+			expiresDate: payload.expiresDate
 		}
 		const createDevice: Device = await securityDeviceRepositories.createDevice(device)
 		return createDevice
