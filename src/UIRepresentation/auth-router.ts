@@ -1,5 +1,4 @@
 import { deviceService } from './../Bisnes-logic-layer/deviceService';
-import { securityDeviceRepositories } from './../DataAccessLayer/securityDevice-db-repositories';
 import { authValidationInfoMiddleware } from "../middleware/authValidationInfoMiddleware";
 import { checkRefreshTokenMiddleware } from "../middleware/checkRefreshToken-middleware";
 import {
@@ -77,16 +76,20 @@ authRouter.post(
 	const payload = await jwtService.getPayloadByRefreshToken(refreshToken)
     const toAddRefreshTokenInBlackList: boolean =
       await sessionService.addRefreshToken(refreshToken);
-    const newToken: string = await jwtService.createJWT(req.user);
-    const newRefreshToken: string = await jwtService.createRefreshJWT(req.user, payload.deviceId);
-    res
-      .cookie("refreshToken", newRefreshToken, {
-        httpOnly: true,
-        secure: true,
-      })
-      .status(HTTP_STATUS.OK_200)
-      .send({ accessToken: newToken });
-  }
+	if(!toAddRefreshTokenInBlackList) {
+		const newToken: string = await jwtService.createJWT(req.user);
+		const newRefreshToken: string = await jwtService.createRefreshJWT(req.user, payload.deviceId);
+		res
+		  .cookie("refreshToken", newRefreshToken, {
+			httpOnly: true,
+			secure: true,
+		  })
+		  .status(HTTP_STATUS.OK_200)
+		  .send({ accessToken: newToken });
+	  } else {
+		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+	  }
+	} 
 );
 
 authRouter.post(

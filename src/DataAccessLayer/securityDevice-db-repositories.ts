@@ -7,17 +7,23 @@ export const securityDeviceRepositories = {
     const getAllDevices: Device | null =
       await deviceAuthSessionCollection.findOne({ userId: userId });
     if (!getAllDevices) return null;
-    return getAllDevices;
+    return {
+		ip: getAllDevices.ip,
+		title: getAllDevices.title,
+		lastActiveDate: getAllDevices.lastActiveDate,
+		deviceId: getAllDevices.deviceId,
+		userId: getAllDevices.userId
+	}
   },
-  async deleteDeviceById(deviceId: string) {
-	const deleteOne = await deviceAuthSessionCollection.deleteOne({deviceId})
+  async deleteDeviceById(deviceId: ObjectId) {
+	const deleteOne = await deviceAuthSessionCollection.deleteOne({...deviceId})
 	return deleteOne.deletedCount === 1
   },
   async terminateSession(deviceId: ObjectId) {
 	const resultDelete = await deviceAuthSessionCollection.deleteOne({deviceId: deviceId})
         return resultDelete.deletedCount === 1
   },
-  async createDevice(device: Device) {
+  async createDevice(device: Device): Promise<Device> {
 	const resultDevice = await deviceAuthSessionCollection.insertOne({...device})
 	return device
   }

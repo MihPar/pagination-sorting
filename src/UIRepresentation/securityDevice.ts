@@ -4,6 +4,7 @@ import { checkRefreshTokenMiddleware } from "../middleware/checkRefreshToken-mid
 import { Router, Request, Response } from "express";
 import { securityDeviceRepositories } from "../DataAccessLayer/securityDevice-db-repositories";
 import { HTTP_STATUS } from "../utils";
+import { ObjectId } from 'mongodb';
 
 export const securityDeviceRouter = Router({});
 
