@@ -15,7 +15,7 @@ import {
   inputPostContentValidator,
   inputPostShortDescriptionValidator,
   inputPostTitleValidator,
-} from "../middleware/input-value-posts-middleware copy";
+} from "../middleware/input-value-posts-middleware";
 import { ValueMiddleware } from "../middleware/validatorMiddleware";
 import { authorization } from "../middleware/authorizatin";
 import { Router, Response } from "express";
@@ -23,7 +23,7 @@ import { HTTP_STATUS } from "../utils";
 import { postsService } from "../Bisnes-logic-layer/postsService";
 import { PostsType } from "./types/postsType";
 import { commentService } from "../Bisnes-logic-layer/commentService";
-import { CommentType, CommentTypeView } from "./types/commentType";
+import { CommentTypeView } from "./types/commentType";
 import { commentRepositories } from "../DataAccessLayer/comment-db-repositories";
 import { bodyPostModelContent } from "../model/modelPosts/bodyPostModeContent";
 import { commentAuthorization } from "../middleware/commentAuthorization";

@@ -2,7 +2,6 @@ import { checkForbiddenSevurityDevice } from './../middleware/checkForbiddenSecu
 import { checkRefreshTokenSecurityDeviceMiddleware } from './../middleware/checkRefreshTokenSevurityDevice-middleware';
 import { DeviceViewModel } from './types/deviceAuthSession';
 import { deviceService } from "./../Bisnes-logic-layer/deviceService";
-import { checkRefreshTokenMiddleware } from "../middleware/checkRefreshToken-middleware";
 import { Router, Request, Response } from "express";
 import { securityDeviceRepositories } from "../DataAccessLayer/securityDevice-db-repositories";
 import { HTTP_STATUS } from "../utils";

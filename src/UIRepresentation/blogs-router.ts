@@ -24,7 +24,7 @@ import {
   inputPostContentValidator,
   inputPostShortDescriptionValidator,
   inputPostTitleValidator,
-} from "../middleware/input-value-posts-middleware copy";
+} from "../middleware/input-value-posts-middleware";
 import { paramsPostsModelBlogId } from "../model/modelPosts/paramsPostsModeBlogId";
 import { QueryBlogsModel } from "../model/modelBlogs/QueryBlogsModel";
 import { bodyBlogsModel } from "../model/modelBlogs/bodyBlogsModel";
