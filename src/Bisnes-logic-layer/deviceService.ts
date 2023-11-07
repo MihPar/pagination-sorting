@@ -4,21 +4,19 @@ import { jwtService } from './jwtService';
 import { securityDeviceRepositories } from './../DataAccessLayer/securityDevice-db-repositories';
 
 export const deviceService = {
-	// async deleteDeviceId(deviceId: ObjectId) {
-	// 	const findSessions = await securityDeviceRepositories.findDeviceByDeviceId(deviceId)
-	// 	if(!findSessions) {
-	// 		return false
-	// 	}
-	// 	if(findSessions.userId !== userId) {
-	// 		return false
-	// 	}
-	// 	const deleteById = await securityDeviceRepositories.terminateSession(deviceId)
-	// 	if(!deleteById) {
-	// 		return false
-	// 	}
-	// 	return true
-	// },
-	async deleteAllDevice(userId: string, deviceId: string) {
+	async terminateAllCurrentSessions(userId: string, deviceId: ObjectId) {
+		const findSession = await securityDeviceRepositories.getDevicesAllUsers(userId)
+		if(!findSession) {
+			return false
+		}
+		for(let session of findSession) {
+			if(session.deviceId !== deviceId) {
+				await securityDeviceRepositories.terminateSession(session.deviceId)
+			}
+		}
+		return true
+	},
+	async deleteAllDevice(userId: string, deviceId: ObjectId) {
 		const findSessions = await securityDeviceRepositories.getDevicesAllUsers(userId)
 		if(!findSessions) {
 			return false
@@ -43,5 +41,7 @@ export const deviceService = {
 		const createDevice: DeviceModel = await securityDeviceRepositories.createDevice(device)
 		return createDevice
 	},
-	
+	async allCurrentUsers(userId: string) {
+		const allUser = await securityDeviceRepositories.getDevicesAllUsers(userId)
+	}
 }

@@ -37,8 +37,11 @@ securityDeviceRouter.delete(
   ): Promise<Response<boolean>> {
 	const userId = req.user.userId
 	const deviceId = req.user.deviceId
-    const deleteAllDevice = await deviceService.deleteAllDevice(userId, deviceId);
-    if (!deleteAllDevice) {
+
+	const findAllCurrentDevices = await deviceService.terminateAllCurrentSessions(userId, deviceId)
+
+    const deleteOtherSessionOfDevice = await deviceService.deleteAllDevice(userId, deviceId);
+    if (!deleteOtherSessionOfDevice) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
       return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
@@ -55,8 +58,7 @@ securityDeviceRouter.delete(
     res: Response<boolean>
   ): Promise<Response<boolean>> {
     const { deviceId } = req.params;
-	
-    const deleteDeviceById = await securityDeviceRepositories.deleteDeviceById(new ObjectId(deviceId));
+    const deleteDeviceById = await securityDeviceRepositories.terminateSession(new ObjectId(deviceId));
     if (!deleteDeviceById) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {

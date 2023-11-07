@@ -9,21 +9,13 @@ export const checkForbiddenSevurityDevice = async function(req: Request, res: Re
 	const {refreshToken} = req.cookies
 	const {deviceId} = req.params
 	const {userId} = req.user.userId
-
-	const decodeRefreshToken = await jwtService.decodeRefreshToken(refreshToken)
-	if(!decodeRefreshToken) {
-		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
-	}
-
 	const findSession = await securityDeviceRepositories.findDeviceByDeviceId(new ObjectId(deviceId))
 	if(!findSession) {
 		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
 	}
-
 	if(findSession.userId !== userId) {
 		return res.sendStatus(HTTP_STATUS.FORBIDEN_403)
 	}
-	
 	next()
 	return 
 }
