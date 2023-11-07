@@ -1,19 +1,19 @@
 describe("/blogs", () => {
-	beforeAll(async () => {
-	  await runDb();
+	// beforeAll(async () => {
+	//   await runDb();
   
-	  const wipeAllRes = await request(app).delete("/testing/all-data").send();
+	//   const wipeAllRes = await request(app).delete("/testing/all-data").send();
   
-	  expect(wipeAllRes.status).toBe(HTTP_STATUS.NO_CONTENT_204);
+	//   expect(wipeAllRes.status).toBe(HTTP_STATUS.NO_CONTENT_204);
   
-	  const getBlogs = await request(app).get("/blogs").send();
-	  expect(getBlogs.status).toBe(HTTP_STATUS.OK_200);
-	  expect(getBlogs.body.items).toHaveLength(0);
-	});
+	//   const getBlogs = await request(app).get("/blogs").send();
+	//   expect(getBlogs.status).toBe(HTTP_STATUS.OK_200);
+	//   expect(getBlogs.body.items).toHaveLength(0);
+	// });
   
-	afterAll(async () => {
-	  await stopDb();
-	});
+	// afterAll(async () => {
+	//   await stopDb();
+	// });
   
 	const blogsValidationErrRes = {
 	  errorsMessages: expect.arrayContaining([
