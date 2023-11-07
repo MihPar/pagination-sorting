@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { DeviceModel, DeviceViewModel } from './../UIRepresentation/types/deviceAuthSession';
-import { deviceAuthSessionCollection } from './../db/db';
+import { deviceAuthSessionCollection, IPAuthSessionCollection } from './../db/db';
 
 export const securityDeviceRepositories = {
   async getDevicesAllUsers(userId: string): Promise<DeviceViewModel[]> {
@@ -27,4 +27,12 @@ export const securityDeviceRepositories = {
   async findDeviceByDeviceId(deviceId: ObjectId) {
 	return await deviceAuthSessionCollection.findOne({deviceId: deviceId})
   },
+  async createCollectionIP(reqData: any) {
+	await IPAuthSessionCollection.insertOne({...reqData})
+	return reqData
+  },
+  async countDocs(filter: any) {
+	await IPAuthSessionCollection.countDocuments({...filter})
+	return filter
+  }
 };

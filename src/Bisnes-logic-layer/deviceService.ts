@@ -16,19 +16,6 @@ export const deviceService = {
 		}
 		return true
 	},
-	async deleteAllDevice(userId: string, deviceId: ObjectId) {
-		const findSessions = await securityDeviceRepositories.getDevicesAllUsers(userId)
-		if(!findSessions) {
-			return false
-		}
-		// for(let session of findSessions) {
-		// 	if(session.deviceId === deviceId) {
-		// 		await securityDeviceRepositories.terminateSession(session.deviceId)
-		// 	}
-		// 	return true
-		// }
-		return true
-	},
 	async createDevice(ip: string, title: string, refreshToken: string): Promise<DeviceModel> {
 		const payload = await jwtService.decodeRefreshToken(refreshToken)
 		const device: DeviceModel = {
@@ -37,6 +24,7 @@ export const deviceService = {
     		deviceId: payload.deviceId,
     		userId: payload.userId,
 			lastActiveDate: payload.lastActiveDate,
+			issuedAt: payload.issuedAt
 		}
 		const createDevice: DeviceModel = await securityDeviceRepositories.createDevice(device)
 		return createDevice

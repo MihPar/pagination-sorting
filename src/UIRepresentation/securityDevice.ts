@@ -39,13 +39,10 @@ securityDeviceRouter.delete(
 	const deviceId = req.user.deviceId
 
 	const findAllCurrentDevices = await deviceService.terminateAllCurrentSessions(userId, deviceId)
-
-    const deleteOtherSessionOfDevice = await deviceService.deleteAllDevice(userId, deviceId);
-    if (!deleteOtherSessionOfDevice) {
-      return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
-    } else {
-      return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
-    }
+	if (!findAllCurrentDevices) {
+		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
+	  } 
+	return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
   }
 );
 

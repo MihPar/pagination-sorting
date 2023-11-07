@@ -3,7 +3,8 @@ import { ObjectId } from "mongodb"
 export type CollectionIP = {
 	IP: string
 	URL: string
-	date: Date
+	createAt: Date
+	method: string
 }
 
 // const apiAccessSchema = new mongoose.Schema({
@@ -27,6 +28,7 @@ export type DeviceModel =  {
     deviceId: ObjectId
     userId: string
 	lastActiveDate: string
+	issuedAt: string
 }
 
 export type DeviceViewModel =  {

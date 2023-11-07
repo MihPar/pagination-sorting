@@ -6,7 +6,6 @@ import { jwtService } from './../Bisnes-logic-layer/jwtService';
 import { NextFunction, Request, Response } from 'express';
 
 export const checkForbiddenSevurityDevice = async function(req: Request, res: Response, next: NextFunction) {
-	const {refreshToken} = req.cookies
 	const {deviceId} = req.params
 	const {userId} = req.user.userId
 	const findSession = await securityDeviceRepositories.findDeviceByDeviceId(new ObjectId(deviceId))
