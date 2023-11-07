@@ -1,3 +1,4 @@
+import { limitRequestMiddleware } from './../middleware/limitRequest';
 import { deviceService } from './../Bisnes-logic-layer/deviceService';
 import { authValidationInfoMiddleware } from "../middleware/authValidationInfoMiddleware";
 import { checkRefreshTokenMiddleware } from "../middleware/checkRefreshToken-middleware";
@@ -30,6 +31,7 @@ authRouter.post(
   "/login",
   inputValueLoginOrEamilAuth,
   inputValuePasswordAuth,
+  limitRequestMiddleware,
   ValueMiddleware,
   async function (
     req: RequestWithBody<bodyAuthModel>,
@@ -133,6 +135,7 @@ authRouter.post(
   inputValueLoginAuth,
   inputValuePasswordAuth,
   inputValueEmailRegistrationAuth,
+  limitRequestMiddleware,
   ValueMiddleware,
   async function (
     req: RequestWithBody<BodyRegistrationModel>,
@@ -154,6 +157,7 @@ authRouter.post(
 authRouter.post(
   "/registration-confirmation",
   inputValueCodeAuth,
+  limitRequestMiddleware,
   ValueMiddleware,
   async function (
     req: RequestWithBody<BodyRegistrationConfirmationModel>,
@@ -167,6 +171,7 @@ authRouter.post(
 authRouter.post(
   "/registration-email-resending",
   inputValueEmailAuth,
+  limitRequestMiddleware,
   ValueMiddleware,
   async function (
     req: RequestWithBody<BodyRegistrationEmailResendigModel>,
