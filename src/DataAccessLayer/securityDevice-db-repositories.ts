@@ -31,8 +31,7 @@ export const securityDeviceRepositories = {
 	await IPAuthSessionCollection.insertOne({...reqData})
 	return reqData
   },
-  async countDocs(filter: any) {
-	await IPAuthSessionCollection.countDocuments({...filter})
-	return filter
+  async countDocs(filter: any):Promise<number> {
+	return await IPAuthSessionCollection.countDocuments({filter});	
   }
 };

@@ -1,5 +1,5 @@
-import { limitRequestMiddleware } from './../middleware/limitRequest';
-import { deviceService } from './../Bisnes-logic-layer/deviceService';
+import { limitRequestMiddleware } from "./../middleware/limitRequest";
+import { deviceService } from "./../Bisnes-logic-layer/deviceService";
 import { authValidationInfoMiddleware } from "../middleware/authValidationInfoMiddleware";
 import { checkRefreshTokenMiddleware } from "../middleware/checkRefreshToken-middleware";
 import {
@@ -24,6 +24,7 @@ import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
 import { DBUserType } from "./types/usersType";
 import { sessionService } from "../Bisnes-logic-layer/sessionService";
+import { randomUUID } from "crypto";
 
 export const authRouter = Router({});
 
@@ -46,23 +47,23 @@ authRouter.post(
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
       const token: string = await jwtService.createJWT(user);
-      const refreshToken: string = await jwtService.createRefreshJWT(user);
 
       const ip = req.socket.remoteAddress || "unknown";
       const title = req.headers["user-agent"] || "unknown";
-      const deviceId = req.user.userid;
 
-      const createDevice = await deviceService.createDevice(
-        ip,
-        title,
-        refreshToken
+      const refreshToken = await jwtService.createRefreshJWT(
+        user._id.toString()
       );
 
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        secure: true,
-      });
-      return res.status(HTTP_STATUS.OK_200).send({ accessToken: token });
+      await deviceService.createDevice(ip, title, refreshToken);
+
+      return res
+        .cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: true,
+        })
+        .status(HTTP_STATUS.OK_200)
+        .send({ accessToken: token });
     }
   }
 );
@@ -75,23 +76,26 @@ authRouter.post(
     res: Response<{ accessToken: string }>
   ): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
-	const payload = await jwtService.decodeRefreshToken(refreshToken)
+    const payload = await jwtService.decodeRefreshToken(refreshToken);
     const toAddRefreshTokenInBlackList: boolean =
       await sessionService.addRefreshToken(refreshToken);
-	if(!toAddRefreshTokenInBlackList) {
-		const newToken: string = await jwtService.createJWT(req.user);
-		const newRefreshToken: string = await jwtService.createRefreshJWT(req.user, payload.deviceId);
-		res
-		  .cookie("refreshToken", newRefreshToken, {
-			httpOnly: true,
-			secure: true,
-		  })
-		  .status(HTTP_STATUS.OK_200)
-		  .send({ accessToken: newToken });
-	  } else {
-		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
-	  }
-	} 
+    if (!toAddRefreshTokenInBlackList) {
+      const newToken: string = await jwtService.createJWT(req.user);
+      const newRefreshToken: string = await jwtService.createRefreshJWT(
+        req.user,
+        payload.deviceId
+      );
+      res
+        .cookie("refreshToken", newRefreshToken, {
+          httpOnly: true,
+          secure: true,
+        })
+        .status(HTTP_STATUS.OK_200)
+        .send({ accessToken: newToken });
+    } else {
+      res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
+    }
+  }
 );
 
 authRouter.post(
