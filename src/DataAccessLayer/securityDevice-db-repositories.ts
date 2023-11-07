@@ -17,15 +17,14 @@ export const securityDeviceRepositories = {
 	})
   },
   async deleteDeviceById(deviceId: ObjectId) {
-	const deleteOne = await deviceAuthSessionCollection.deleteOne({...deviceId})
+	const deleteOne = await deviceAuthSessionCollection.deleteOne({deviceId: deviceId})
 	return deleteOne.deletedCount === 1
   },
-  async terminateSession(deviceId: ObjectId) {
-	const resultDelete = await deviceAuthSessionCollection.deleteOne({deviceId: deviceId})
-        return resultDelete.deletedCount === 1
-  },
-  async createDevice(device: Device): Promise<Device> {
+  async createDevice(device: DeviceModel): Promise<DeviceModel> {
 	const resultDevice = await deviceAuthSessionCollection.insertOne({...device})
 	return device
-  }
+  },
+  async findDeviceByDeviceId(deviceId: ObjectId) {
+	return await deviceAuthSessionCollection.findOne({deviceId: deviceId})
+  },
 };
