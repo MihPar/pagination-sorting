@@ -8,6 +8,9 @@ import { NextFunction, Request, Response } from 'express';
 export const checkForbiddenSevurityDevice = async function(req: Request, res: Response, next: NextFunction) {
 	const {deviceId} = req.params
 	const {userId} = req.user.userId
+	if(!deviceId) {
+		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+	}
 	const findSession = await securityDeviceRepositories.findDeviceByDeviceId(new ObjectId(deviceId))
 	if(!findSession) {
 		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)

@@ -34,7 +34,7 @@ export const jwtService = {
 	async decodeRefreshToken(refreshToken: string) {
 		try {
 			 const result: any = jwt.decode(refreshToken)
-			 console.log('decoded token:',result)
+			//  console.log('decoded token:',result)
 			 return result
 		} catch(err) {
 			return null

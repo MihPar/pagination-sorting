@@ -24,9 +24,7 @@ export const securityDeviceRepositories = {
     });
   },
   async terminateSession(deviceId: ObjectId) {
-    const deleteOne = await deviceAuthSessionCollection.deleteOne({
-      deviceId: deviceId,
-    });
+    const deleteOne = await deviceAuthSessionCollection.deleteOne({deviceId});
     return deleteOne.deletedCount === 1;
   },
   async createDevice(device: DeviceModel): Promise<DeviceModel> {
