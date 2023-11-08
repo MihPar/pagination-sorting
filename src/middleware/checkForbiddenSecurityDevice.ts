@@ -1,23 +1,39 @@
-import { securityDeviceRepositories } from './../DataAccessLayer/securityDevice-db-repositories';
-import { ObjectId } from 'mongodb';
-import { deviceService } from './../Bisnes-logic-layer/deviceService';
-import { HTTP_STATUS } from '../utils';
-import { jwtService } from './../Bisnes-logic-layer/jwtService';
-import { NextFunction, Request, Response } from 'express';
+import { securityDeviceRepositories } from "./../DataAccessLayer/securityDevice-db-repositories";
+import { HTTP_STATUS } from "../utils";
+import { NextFunction, Request, Response } from "express";
 
-export const checkForbiddenSecurityDevice = async function(req: Request, res: Response, next: NextFunction) {
-	const {deviceId} = req.params
-	const {userId} = req.user._id.toString()
-	if(!deviceId) {
-		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-	}
-	const findSession = await securityDeviceRepositories.findDeviceByDeviceId(new ObjectId(deviceId))
-	if(!findSession) {
-		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-	}
-	if(findSession.userId !== userId) {
-		return res.sendStatus(HTTP_STATUS.FORBIDEN_403)
-	}
-	next()
-	return 
-}
+export const checkForbiddenSecurityDevice = async function (
+  req: Request<{deviceId: string}>,
+  res: Response,
+  next: NextFunction
+) {
+  const deviceId = req.params.deviceId;
+
+  if (!deviceId) {
+    return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+  }
+
+  if (!/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i.test(deviceId)) {
+    return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+  }
+
+console.log(deviceId, 'deviceId')
+
+  const findSession = await securityDeviceRepositories.findDeviceByDeviceId(deviceId);
+
+  console.log(findSession, 'findSession')
+
+  if (!findSession) {
+    return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+  }
+
+  const userId = req.user._id.toString();
+
+  console.log(userId, 'userId')
+
+  if (findSession.userId !== userId) {
+    return res.sendStatus(HTTP_STATUS.FORBIDEN_403);
+  }
+
+  return next();
+};

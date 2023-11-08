@@ -3,6 +3,7 @@ import { postsService } from '../Bisnes-logic-layer/postsService';
 import { Router, Request, Response } from "express";
 import { HTTP_STATUS } from "../utils";
 import { userService } from '../Bisnes-logic-layer/userService';
+import { IPAuthSessionCollection, commentCollection, deviceAuthSessionCollection, sessionCollection } from '../db/db';
 
 export const deleteAllRouter = Router({});
 
@@ -12,6 +13,10 @@ deleteAllRouter.delete(
     await postsService.deleteAllPosts();
     await blogsService.deleteAllBlogs();
 	await userService.deleteAllUsers()
+	await commentCollection.deleteMany({});
+	await sessionCollection.deleteMany({});
+	await deviceAuthSessionCollection.deleteMany({});
+	await IPAuthSessionCollection.deleteMany({});
     return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
   }
 );

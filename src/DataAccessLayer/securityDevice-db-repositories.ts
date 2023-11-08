@@ -23,7 +23,7 @@ export const securityDeviceRepositories = {
       };
     });
   },
-  async terminateSession(deviceId: ObjectId) {
+  async terminateSession(deviceId: string) {
     const deleteOne = await deviceAuthSessionCollection.deleteOne({deviceId});
     return deleteOne.deletedCount === 1;
   },
@@ -33,7 +33,8 @@ export const securityDeviceRepositories = {
     );	
     return device;
   },
-  async findDeviceByDeviceId(deviceId: ObjectId) {
+  async findDeviceByDeviceId(deviceId: string) {
+	console.log('deviceId find', deviceId)
     return await deviceAuthSessionCollection.findOne({ deviceId: deviceId });
   },
   async createCollectionIP(reqData: any) {

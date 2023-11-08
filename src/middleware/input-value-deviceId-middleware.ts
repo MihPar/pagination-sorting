@@ -1,6 +1,5 @@
 import { ParamsSecurityDeviceModel } from './../model/modelSecurityDevide/modelSecurityDevice';
 import { NextFunction, Response } from "express";
-import { ParamsUserMode } from "../model/modelUser/paramsUserModel";
 import { RequestWithParams } from "../UIRepresentation/types/types";
 import { HTTP_STATUS } from "../utils";
 

@@ -21,8 +21,7 @@ export const checkRefreshTokenSecurityDeviceMiddleware = async function(req: Req
 			}
 			
 			req.user = user
-			next()
-			return
+			return next()
 		}
 		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401) 
 	} catch(err) {

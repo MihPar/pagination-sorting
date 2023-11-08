@@ -6,7 +6,7 @@ import { fromUnixTime } from 'date-fns';
 import {format} from "date-fns-tz";
 
 export const deviceService = {
-	async terminateAllCurrentSessions(userId: string, deviceId: ObjectId) {
+	async terminateAllCurrentSessions(userId: string, deviceId: string) {
 		const findSession = await securityDeviceRepositories.getDevicesAllUsers(userId)
 		if(!findSession) {
 			return false
@@ -35,7 +35,6 @@ export const deviceService = {
 		
 		
 		const createDevice: DeviceModel = await securityDeviceRepositories.createDevice(device)
-		console.log('service create device:', createDevice)
 		return createDevice
 	},
 	async allCurrentUsers(userId: string) {

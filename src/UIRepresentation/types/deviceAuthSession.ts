@@ -25,7 +25,7 @@ export type CollectionIP = {
 export type DeviceModel =  {
     ip: string
     title: string
-    deviceId: ObjectId
+    deviceId: string
     userId: string
 	lastActiveDate: string
 	issuedAt: string
@@ -34,7 +34,7 @@ export type DeviceModel =  {
 export type DeviceViewModel =  {
     ip: string
     title: string
-    deviceId: ObjectId
+    deviceId: string
 	lastActiveDate: string
 }
 

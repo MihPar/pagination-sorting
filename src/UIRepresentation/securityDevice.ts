@@ -32,7 +32,6 @@ securityDeviceRouter.get(
 securityDeviceRouter.delete(
   "/",
   checkRefreshTokenSecurityDeviceMiddleware,
-//   checkDeviceId,
   async function (
     req: Request,
     res: Response<boolean>
@@ -54,20 +53,14 @@ securityDeviceRouter.delete(
 securityDeviceRouter.delete(
   "/:deviceId",
   checkRefreshTokenSecurityDeviceMiddleware,
-  checkDeviceId,
   checkForbiddenSecurityDevice,
   async function (
-    req: Request,
+    req: Request<{deviceId: string}>,
     res: Response<boolean>
   ): Promise<Response<boolean>> {
-	const {deviceId} = req.params
-	// console.log('deviceId:', deviceId)
-	// if(!deviceId) {
-	// 	return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-	// }
-	// const refreshToken = req.cookies.refreshToken
-    // const payload = await jwtService.decodeRefreshToken(refreshToken)
-    const deleteDeviceById = await securityDeviceRepositories.terminateSession(new ObjectId(deviceId));
+	const deviceId = req.params.deviceId
+	
+    const deleteDeviceById = await securityDeviceRepositories.terminateSession(deviceId);
     if (!deleteDeviceById) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } 
