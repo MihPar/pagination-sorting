@@ -78,7 +78,7 @@ authRouter.post(
     const payload = await jwtService.decodeRefreshToken(refreshToken);
     const toAddRefreshTokenInBlackList: boolean =
       await sessionService.addRefreshToken(refreshToken);
-    if (!toAddRefreshTokenInBlackList) {
+    // if (!toAddRefreshTokenInBlackList) {
       const newToken: string = await jwtService.createJWT(req.user);
       const newRefreshToken: string = await jwtService.createRefreshJWT(
         req.user,
@@ -91,9 +91,9 @@ authRouter.post(
         })
         .status(HTTP_STATUS.OK_200)
         .send({ accessToken: newToken });
-    } else {
-      res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
-    }
+    // } else {
+    //   res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
+    // }
   }
 );
 
