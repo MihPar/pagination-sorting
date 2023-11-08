@@ -1,5 +1,4 @@
 import { checkForbiddenSecurityDevice } from './../middleware/checkForbiddenSecurityDevice';
-import { checkDeviceId } from './../middleware/input-value-deviceId-middleware';
 import { jwtService } from './../Bisnes-logic-layer/jwtService';
 import { checkRefreshTokenSecurityDeviceMiddleware } from './../middleware/checkRefreshTokenSevurityDevice-middleware';
 import { DeviceViewModel } from './types/deviceAuthSession';
@@ -7,7 +6,6 @@ import { deviceService } from "./../Bisnes-logic-layer/deviceService";
 import { Router, Request, Response } from "express";
 import { securityDeviceRepositories } from "../DataAccessLayer/securityDevice-db-repositories";
 import { HTTP_STATUS } from "../utils";
-import { ObjectId } from 'mongodb';
 
 export const securityDeviceRouter = Router({});
 
@@ -18,9 +16,10 @@ securityDeviceRouter.get(
     req: Request,
     res: Response<DeviceViewModel[]>
   ): Promise<Response<DeviceViewModel[]>> {
+	const refreshToken = req.user.refreshToken
 	const userId = req.user._id.toString()	
     const getDevicesAllUsers: DeviceViewModel[] =
-      await securityDeviceRepositories.getDevicesAllUsers(userId);
+      await securityDeviceRepositories.getDevicesAllUsers(userId, refreshToken);
     if (!getDevicesAllUsers) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
@@ -42,7 +41,7 @@ securityDeviceRouter.delete(
 	if (!/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i.test(payload.deviceId)) {
 		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
 	  }
-	const findAllCurrentDevices = await deviceService.terminateAllCurrentSessions(userId, payload.deviceId)
+	const findAllCurrentDevices = await deviceService.terminateAllCurrentSessions(userId, payload.deviceId, payload.refreshToken)
 	if (!findAllCurrentDevices) {
 		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
 	  } 

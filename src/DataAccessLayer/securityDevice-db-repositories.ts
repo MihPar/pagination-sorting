@@ -1,3 +1,4 @@
+import { jwtService } from './../Bisnes-logic-layer/jwtService';
 import { ObjectId } from "mongodb";
 import {
   DeviceModel,
@@ -7,18 +8,25 @@ import {
   deviceAuthSessionCollection,
   IPAuthSessionCollection,
 } from "./../db/db";
+import { fromUnixTime } from "date-fns";
+import {format} from "date-fns-tz";
+
 
 export const securityDeviceRepositories = {
-  async getDevicesAllUsers(userId: string): Promise<DeviceViewModel[]> {
+  async getDevicesAllUsers(userId: string, refreshToken: string): Promise<DeviceViewModel[]> {
     const getAllDevices: DeviceModel[] = await deviceAuthSessionCollection
       .find({ userId })
       .toArray();
+
+	  const payload = await jwtService.decodeRefreshToken(refreshToken)
+	  const unixTime = fromUnixTime(payload.exp)
+	  const activeDate = format(new Date(unixTime), 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX', {timeZone: 'UTC'})
 
     return getAllDevices.map(function (item) {
       return {
         ip: item.ip,
         title: item.title,
-        lastActiveDate: item.lastActiveDate,
+        lastActiveDate: activeDate,
         deviceId: item.deviceId,
       };
     });
