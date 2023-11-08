@@ -6,8 +6,8 @@ import { fromUnixTime } from 'date-fns';
 import {format} from "date-fns-tz";
 
 export const deviceService = {
-	async terminateAllCurrentSessions(userId: string, deviceId: string, refreshToken: string) {
-		const findSession = await securityDeviceRepositories.getDevicesAllUsers(userId, refreshToken)
+	async terminateAllCurrentSessions(userId: string, deviceId: string) {
+		const findSession = await securityDeviceRepositories.getDevicesAllUsers(userId)
 		if(!findSession) {
 			return false
 		}

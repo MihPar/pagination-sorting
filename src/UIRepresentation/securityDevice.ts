@@ -16,10 +16,9 @@ securityDeviceRouter.get(
     req: Request,
     res: Response<DeviceViewModel[]>
   ): Promise<Response<DeviceViewModel[]>> {
-	const refreshToken = req.user.refreshToken
 	const userId = req.user._id.toString()	
     const getDevicesAllUsers: DeviceViewModel[] =
-      await securityDeviceRepositories.getDevicesAllUsers(userId, refreshToken);
+      await securityDeviceRepositories.getDevicesAllUsers(userId);
     if (!getDevicesAllUsers) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
@@ -41,7 +40,7 @@ securityDeviceRouter.delete(
 	if (!/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i.test(payload.deviceId)) {
 		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
 	  }
-	const findAllCurrentDevices = await deviceService.terminateAllCurrentSessions(userId, payload.deviceId, payload.refreshToken)
+	const findAllCurrentDevices = await deviceService.terminateAllCurrentSessions(userId, payload.deviceId)
 	if (!findAllCurrentDevices) {
 		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
 	  } 
