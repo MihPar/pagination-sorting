@@ -5,7 +5,7 @@ import { HTTP_STATUS } from '../utils';
 import { jwtService } from './../Bisnes-logic-layer/jwtService';
 import { NextFunction, Request, Response } from 'express';
 
-export const checkForbiddenSevurityDevice = async function(req: Request, res: Response, next: NextFunction) {
+export const checkForbiddenSecurityDevice = async function(req: Request, res: Response, next: NextFunction) {
 	const {deviceId} = req.params
 	const {userId} = req.user._id.toString()
 	if(!deviceId) {

@@ -1,5 +1,6 @@
+import { checkForbiddenSecurityDevice } from './../middleware/checkForbiddenSecurityDevice';
+import { checkDeviceId } from './../middleware/input-value-deviceId-middleware';
 import { jwtService } from './../Bisnes-logic-layer/jwtService';
-import { checkForbiddenSevurityDevice } from './../middleware/checkForbiddenSecurityDevice';
 import { checkRefreshTokenSecurityDeviceMiddleware } from './../middleware/checkRefreshTokenSevurityDevice-middleware';
 import { DeviceViewModel } from './types/deviceAuthSession';
 import { deviceService } from "./../Bisnes-logic-layer/deviceService";
@@ -31,6 +32,7 @@ securityDeviceRouter.get(
 securityDeviceRouter.delete(
   "/",
   checkRefreshTokenSecurityDeviceMiddleware,
+//   checkDeviceId,
   async function (
     req: Request,
     res: Response<boolean>
@@ -38,6 +40,9 @@ securityDeviceRouter.delete(
 	const userId = req.user._id.toString()
 	const refreshToken = req.cookies.refreshToken
 	const payload = await jwtService.decodeRefreshToken(refreshToken)
+	if (!/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i.test(payload.deviceId)) {
+		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
+	  }
 	const findAllCurrentDevices = await deviceService.terminateAllCurrentSessions(userId, payload.deviceId)
 	if (!findAllCurrentDevices) {
 		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
@@ -49,7 +54,8 @@ securityDeviceRouter.delete(
 securityDeviceRouter.delete(
   "/:deviceId",
   checkRefreshTokenSecurityDeviceMiddleware,
-  checkForbiddenSevurityDevice,
+  checkDeviceId,
+  checkForbiddenSecurityDevice,
   async function (
     req: Request,
     res: Response<boolean>
