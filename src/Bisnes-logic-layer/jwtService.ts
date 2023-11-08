@@ -12,7 +12,7 @@ export const jwtService = {
 	async createRefreshJWT(userId: string, existDeviceId?: ObjectId) {
 		// console.log('secret in login:', process.env.REFRESH_JWT_SECRET!)
 		const deviceId: ObjectId = new ObjectId()
-		const refreshToken: string = await jwt.sign({deviceId: existDeviceId ?? deviceId, userId}, process.env.REFRESH_JWT_SECRET as string, {expiresIn: '20s'})
+		const refreshToken: string = await jwt.sign({deviceId: existDeviceId ?? deviceId, userId}, process.env.REFRESH_JWT_SECRET as string, {expiresIn: '200s'})
 		return refreshToken
 	},
 	async getUserIdByToken(token: string) {

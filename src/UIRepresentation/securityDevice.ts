@@ -16,7 +16,7 @@ securityDeviceRouter.get(
     req: Request,
     res: Response<DeviceViewModel[]>
   ): Promise<Response<DeviceViewModel[]>> {
-	const userId = req.user.userId
+	const userId = req.user._id.toString()	
     const getDevicesAllUsers: DeviceViewModel[] =
       await securityDeviceRepositories.getDevicesAllUsers(userId);
     if (!getDevicesAllUsers) {

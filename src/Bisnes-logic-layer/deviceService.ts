@@ -23,10 +23,12 @@ export const deviceService = {
     		title: title,
     		deviceId: payload.deviceId,
     		userId: payload.userId,
-			lastActiveDate: payload.lastActiveDate,
-			issuedAt: payload.issuedAt
+			lastActiveDate: payload.iat.toLocaleString(),
+			issuedAt: payload.exp.toLocaleString()
 		}
+		
 		const createDevice: DeviceModel = await securityDeviceRepositories.createDevice(device)
+		console.log('service create device:', createDevice)
 		return createDevice
 	},
 	async allCurrentUsers(userId: string) {
