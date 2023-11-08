@@ -24,7 +24,6 @@ import { userService } from "../Bisnes-logic-layer/userService";
 import { ObjectId } from "mongodb";
 import { DBUserType } from "./types/usersType";
 import { sessionService } from "../Bisnes-logic-layer/sessionService";
-import { randomUUID } from "crypto";
 
 export const authRouter = Router({});
 
