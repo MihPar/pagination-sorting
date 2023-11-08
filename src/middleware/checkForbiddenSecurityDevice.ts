@@ -7,7 +7,7 @@ import { NextFunction, Request, Response } from 'express';
 
 export const checkForbiddenSevurityDevice = async function(req: Request, res: Response, next: NextFunction) {
 	const {deviceId} = req.params
-	const {userId} = req.user.userId
+	const {userId} = req.user._id.toString()
 	if(!deviceId) {
 		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
 	}
