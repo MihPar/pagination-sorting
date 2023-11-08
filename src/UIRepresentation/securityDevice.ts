@@ -57,11 +57,11 @@ securityDeviceRouter.delete(
     req: Request,
     res: Response<boolean>
   ): Promise<Response<boolean>> {
-	const deviceId = req.params.deviceId
-	console.log('deviceId:', deviceId)
-	if(!deviceId) {
-		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-	}
+	const {deviceId} = req.params
+	// console.log('deviceId:', deviceId)
+	// if(!deviceId) {
+	// 	return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+	// }
 	// const refreshToken = req.cookies.refreshToken
     // const payload = await jwtService.decodeRefreshToken(refreshToken)
     const deleteDeviceById = await securityDeviceRepositories.terminateSession(new ObjectId(deviceId));
