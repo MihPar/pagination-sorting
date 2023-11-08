@@ -30,7 +30,7 @@ export const deviceService = {
     		deviceId: payload.deviceId,
     		userId: payload.userId,
 			lastActiveDate: activeDate,
-			issuedAt: payload.exp
+			issuedAt: payload.exp.toString()
 		}
 		
 		

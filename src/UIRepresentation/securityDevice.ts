@@ -1,3 +1,4 @@
+import { jwtService } from './../Bisnes-logic-layer/jwtService';
 import { checkForbiddenSevurityDevice } from './../middleware/checkForbiddenSecurityDevice';
 import { checkRefreshTokenSecurityDeviceMiddleware } from './../middleware/checkRefreshTokenSevurityDevice-middleware';
 import { DeviceViewModel } from './types/deviceAuthSession';
@@ -34,10 +35,13 @@ securityDeviceRouter.delete(
     req: Request,
     res: Response<boolean>
   ): Promise<Response<boolean>> {
-	const userId = req.user.userId
-	const deviceId = req.user.deviceId
 
-	const findAllCurrentDevices = await deviceService.terminateAllCurrentSessions(userId, deviceId)
+	const userId = req.user._id.toString()
+
+	const refreshToken = req.cookies.refreshToken
+	const payload = await jwtService.decodeRefreshToken(refreshToken)
+
+	const findAllCurrentDevices = await deviceService.terminateAllCurrentSessions(userId, payload.deviceId)
 	if (!findAllCurrentDevices) {
 		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
 	  } 
