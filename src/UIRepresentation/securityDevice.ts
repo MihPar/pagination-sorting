@@ -37,6 +37,11 @@ securityDeviceRouter.delete(
 	const userId = req.user._id.toString()
 	const refreshToken = req.cookies.refreshToken
 	const payload = await jwtService.decodeRefreshToken(refreshToken)
+
+	if(!payload){
+		return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+	}
+
 	if (!/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i.test(payload.deviceId)) {
 		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
 	  }

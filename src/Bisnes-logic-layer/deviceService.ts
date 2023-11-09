@@ -18,10 +18,14 @@ export const deviceService = {
 		}
 		return true
 	},
-	async createDevice(ip: string, title: string, refreshToken: string): Promise<DeviceModel> {
+	async createDevice(ip: string, title: string, refreshToken: string): Promise<DeviceModel | null> {
 		const payload = await jwtService.decodeRefreshToken(refreshToken)
 
-		const unixTime = fromUnixTime(payload.exp)
+		if(!payload){
+			return null
+		}
+
+		const unixTime = fromUnixTime(payload.iat!)
 		const activeDate = format(new Date(unixTime), 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX', {timeZone: 'UTC'})
 
 		const device: DeviceModel = {
@@ -29,10 +33,8 @@ export const deviceService = {
     		title: title,
     		deviceId: payload.deviceId,
     		userId: payload.userId,
-			lastActiveDate: activeDate,
-			issuedAt: payload.exp.toString()
+			lastActiveDate: new Date(payload.iat!).toISOString(),
 		}
-		
 		
 		const createDevice: DeviceModel = await securityDeviceRepositories.createDevice(device)
 		return createDevice

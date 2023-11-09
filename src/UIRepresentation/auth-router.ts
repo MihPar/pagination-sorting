@@ -82,6 +82,12 @@ authRouter.post(
       const newToken: string = await jwtService.createJWT(req.user);
 
 	  const userId = req.user._id.toString()
+
+	  if(!payload){
+		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+		return
+	  }
+
       const newRefreshToken: string = await jwtService.createRefreshJWT(
         userId,
         payload.deviceId

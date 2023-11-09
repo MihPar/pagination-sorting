@@ -28,7 +28,6 @@ export type DeviceModel =  {
     deviceId: string
     userId: string
 	lastActiveDate: string
-	issuedAt: string
 }
 
 export type DeviceViewModel =  {

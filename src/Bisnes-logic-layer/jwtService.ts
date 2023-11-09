@@ -31,11 +31,11 @@ export const jwtService = {
 			return null
 		}
 	},
-	async decodeRefreshToken(refreshToken: string) {
+	async decodeRefreshToken(refreshToken: string): Promise<jwt.JwtPayload | null> {
 		try {
-			 const result: any = jwt.decode(refreshToken)
+			 const result = jwt.decode(refreshToken)
 			//  console.log('decoded token:',result)
-			 return result
+			 return result as jwt.JwtPayload
 		} catch(err) {
 			return null
 		}
