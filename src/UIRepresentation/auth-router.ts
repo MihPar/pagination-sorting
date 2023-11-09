@@ -111,9 +111,14 @@ authRouter.post(
   checkRefreshTokenMiddleware,
   async function (req: Request, res: Response<void>): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
+	if(!refreshToken) {
+		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+		return
+	}
     const toAddRefreshTokenInBlackList: boolean =
       await sessionService.addRefreshToken(refreshToken);
     res.clearCookie("refreshToken").sendStatus(HTTP_STATUS.NO_CONTENT_204);
+	return
   }
 );
 
