@@ -75,6 +75,10 @@ authRouter.post(
     res: Response<{ accessToken: string }>
   ): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
+	if(!refreshToken) {
+		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+		return 
+	}
     const payload = await jwtService.decodeRefreshToken(refreshToken);
     const toAddRefreshTokenInBlackList: boolean =
       await sessionService.addRefreshToken(refreshToken);
