@@ -75,10 +75,10 @@ authRouter.post(
     res: Response<{ accessToken: string }>
   ): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
-	if(!refreshToken) {
-		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
-		return 
-	}
+	// if(!refreshToken) {
+	// 	res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+	// 	return 
+	// }
     const payload = await jwtService.decodeRefreshToken(refreshToken);
     const toAddRefreshTokenInBlackList: boolean =
       await sessionService.addRefreshToken(refreshToken);
@@ -87,20 +87,20 @@ authRouter.post(
 
 	  const userId = req.user._id.toString()
 
-	  if(!payload){
+	  if(!payload!.deviceId){
 		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 		return
 	  }
 
       const newRefreshToken: string = await jwtService.createRefreshJWT(
         userId,
-        payload.deviceId
+        payload!.deviceId
       );
 	  const updateDeviceUser = await deviceService.updateDevice(userId)
-	  if(!newRefreshToken) {
-		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
-		return
-	  }
+	//   if(!newRefreshToken) {
+	// 	res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+	// 	return
+	//   }
       res
         .cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
@@ -116,10 +116,10 @@ authRouter.post(
   checkRefreshTokenMiddleware,
   async function (req: Request, res: Response<void>): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
-	if(!refreshToken) {
-		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
-		return
-	}
+	// if(!refreshToken) {
+	// 	res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+	// 	return
+	// }
     const toAddRefreshTokenInBlackList: boolean =
       await sessionService.addRefreshToken(refreshToken);
     res.clearCookie("refreshToken").sendStatus(HTTP_STATUS.NO_CONTENT_204);
