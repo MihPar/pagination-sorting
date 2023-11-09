@@ -1,3 +1,4 @@
+import { checkRefreshTokenMiddleware } from './../middleware/checkRefreshToken-middleware';
 import { sessionService } from './../Bisnes-logic-layer/sessionService';
 import { checkForbiddenSecurityDevice } from './../middleware/checkForbiddenSecurityDevice';
 import { jwtService } from './../Bisnes-logic-layer/jwtService';
@@ -61,7 +62,8 @@ securityDeviceRouter.delete(
 
 securityDeviceRouter.delete(
   "/:deviceId",
-  checkRefreshTokenSecurityDeviceMiddleware,
+  checkRefreshTokenMiddleware,
+//   checkRefreshTokenSecurityDeviceMiddleware,
   checkForbiddenSecurityDevice,
   async function (
     req: Request<{deviceId: string}>,
