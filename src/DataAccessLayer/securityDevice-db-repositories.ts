@@ -52,4 +52,8 @@ export const securityDeviceRepositories = {
   async countDocs(filter: any): Promise<number> {
     return await IPAuthSessionCollection.countDocuments({ filter });
   },
+  async updateDeviceUser(userId: string) {
+	const NewlastActiveDate = new Date().toISOString();
+	await IPAuthSessionCollection.updateOne({userId: userId}, {$set: {lastActiveDate: NewlastActiveDate}})
+  }
 };

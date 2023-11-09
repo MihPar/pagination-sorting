@@ -92,6 +92,10 @@ authRouter.post(
         userId,
         payload.deviceId
       );
+	  const updateDeviceUser = await deviceService.updateDevice(userId)
+	//   if(!updateDeviceUser) {
+	// 	return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+	//   }
       res
         .cookie("refreshToken", newRefreshToken, {
           httpOnly: true,
