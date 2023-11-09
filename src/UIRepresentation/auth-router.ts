@@ -87,7 +87,7 @@ authRouter.post(
 
 	  const userId = req.user._id.toString()
 
-	  if(!payload!.deviceId){
+	  if(!payload!.payload){
 		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 		return
 	  }
