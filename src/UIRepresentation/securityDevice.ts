@@ -70,15 +70,15 @@ securityDeviceRouter.delete(
     res: Response<boolean>
   ): Promise<Response<boolean>> {
     const deviceId = req.params.deviceId;
-    const refreshToken: string = req.cookies.refreshToken;
+    // const refreshToken: string = req.cookies.refreshToken;
     const deleteDeviceById = await securityDeviceRepositories.terminateSession(
       deviceId
     );
     if (!deleteDeviceById) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     }
-    const toAddRefreshTokenInBlackList: boolean =
-      await sessionService.addRefreshToken(refreshToken);
+    // const toAddRefreshTokenInBlackList: boolean =
+    //   await sessionService.addRefreshToken(refreshToken);
     return res
       .clearCookie("refreshToken")
       .sendStatus(HTTP_STATUS.NO_CONTENT_204);
