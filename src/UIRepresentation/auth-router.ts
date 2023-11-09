@@ -80,8 +80,10 @@ authRouter.post(
       await sessionService.addRefreshToken(refreshToken);
 
       const newToken: string = await jwtService.createJWT(req.user);
+
+	  const userId = req.user._id.toString()
       const newRefreshToken: string = await jwtService.createRefreshJWT(
-        req.user,
+        userId,
         payload.deviceId
       );
       res
