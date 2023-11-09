@@ -4,6 +4,7 @@ import { jwtService } from './jwtService';
 import { securityDeviceRepositories } from './../DataAccessLayer/securityDevice-db-repositories';
 import { fromUnixTime } from 'date-fns';
 import {format} from "date-fns-tz";
+import { log } from 'console';
 
 export const deviceService = {
 	async terminateAllCurrentSessions(userId: string, deviceId: string) {
@@ -25,6 +26,9 @@ export const deviceService = {
 			return null
 		}
 
+		const lastActiveDate = new Date().toISOString();
+		console.log(payload, 'payload')
+
 		const unixTime = fromUnixTime(payload.iat!)
 		const activeDate = format(new Date(unixTime), 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX', {timeZone: 'UTC'})
 
@@ -33,7 +37,7 @@ export const deviceService = {
     		title: title,
     		deviceId: payload.deviceId,
     		userId: payload.userId,
-			lastActiveDate: new Date(payload.iat!).toISOString(),
+			lastActiveDate: lastActiveDate,
 		}
 		
 		const createDevice: DeviceModel = await securityDeviceRepositories.createDevice(device)
