@@ -63,7 +63,7 @@ securityDeviceRouter.delete(
 securityDeviceRouter.delete(
   "/:deviceId",
   checkRefreshTokenMiddleware,
-  //   checkRefreshTokenSecurityDeviceMiddleware,
+    checkRefreshTokenSecurityDeviceMiddleware,
   checkForbiddenSecurityDevice,
   async function (
     req: Request<{ deviceId: string }>,
