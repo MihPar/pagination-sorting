@@ -54,6 +54,6 @@ export const securityDeviceRepositories = {
   },
   async updateDeviceUser(userId: string) {
 	const NewlastActiveDate = new Date().toISOString();
-	await IPAuthSessionCollection.updateOne({userId: userId}, {$set: {lastActiveDate: NewlastActiveDate}})
+	await deviceAuthSessionCollection.updateOne({userId: userId}, {$set: {lastActiveDate: NewlastActiveDate}})
   }
 };
