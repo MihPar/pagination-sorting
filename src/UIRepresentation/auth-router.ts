@@ -1,3 +1,4 @@
+import { checkRefreshTokenSecurityDeviceMiddleware } from './../middleware/checkRefreshTokenSevurityDevice-middleware';
 import { limitRequestMiddleware } from "./../middleware/limitRequest";
 import { deviceService } from "./../Bisnes-logic-layer/deviceService";
 import { authValidationInfoMiddleware } from "../middleware/authValidationInfoMiddleware";
@@ -69,7 +70,8 @@ authRouter.post(
 
 authRouter.post(
   "/refresh-token",
-  checkRefreshTokenMiddleware,
+//   checkRefreshTokenMiddleware,
+  checkRefreshTokenSecurityDeviceMiddleware,
   async function (
     req: Request,
     res: Response<{ accessToken: string }>
@@ -113,7 +115,8 @@ authRouter.post(
 
 authRouter.post(
   "/logout",
-  checkRefreshTokenMiddleware,
+//   checkRefreshTokenMiddleware,
+checkRefreshTokenSecurityDeviceMiddleware,
   async function (req: Request, res: Response<void>): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
 	// if(!refreshToken) {
