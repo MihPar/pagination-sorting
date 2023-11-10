@@ -42,7 +42,7 @@ export const securityDeviceRepositories = {
     return device;
   },
   async findDeviceByDeviceId(deviceId: string) {
-	console.log('deviceId find', deviceId)
+	// console.log('deviceId find', deviceId)
     return await deviceAuthSessionCollection.findOne({ deviceId: deviceId });
   },
   async createCollectionIP(reqData: any) {
