@@ -30,7 +30,7 @@
   "scripts": {
     "dev": "nodemon dist/index.js",
     "watch": "tsc -w",
-    "serveo": "ssh -R 80:localhost:3000 serveo.net",
+    "serveo": "ssh -R 80:localhost:4000 serveo.net",
     "test": "jest -i "
   },
   "devDependencies": {

@@ -25,11 +25,10 @@ export const deviceService = {
 			return null
 		}
 
-		const lastActiveDate = new Date().toISOString();
+		const lastActiveDate = jwtService.getLastActiveDate(refreshToken)
+		// const lastActiveDate = new Date(payload.iat * 1000).toISOString()
 		console.log(payload, 'payload')
 
-		// const unixTime = fromUnixTime(payload.iat!)
-		// const activeDate = format(new Date(unixTime), 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX', {timeZone: 'UTC'})
 
 		const device: DeviceModel = {
 			ip: ip,
@@ -45,7 +44,16 @@ export const deviceService = {
 	// async allCurrentUsers(userId: string) {
 	// 	const allUser = await securityDeviceRepositories.getDevicesAllUsers(userId)
 	// }
-	async updateDevice(userId: string) {
-		await securityDeviceRepositories.updateDeviceUser(userId)
+	async updateDevice(userId: string, refreshToken: string) {
+		const payload = await jwtService.decodeRefreshToken(refreshToken)
+
+		if(!payload){
+			return null
+		}
+
+		const lastActiveDate = jwtService.getLastActiveDate(refreshToken)
+
+		await securityDeviceRepositories.updateDeviceUser(userId, payload.deviceId, lastActiveDate)
+		return
 	}
 }

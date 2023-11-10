@@ -24,7 +24,7 @@ export const jwtService = {
 	},
 	async getUserIdByRefreshToken(refreshToken: string) {
 		try {
-			 const result: any = await jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET!)
+			 const result: any = jwt.verify(refreshToken, process.env.REFRESH_JWT_SECRET!)
 			 return new ObjectId(result.userId)
 		} catch(err) {
 			return null
@@ -38,4 +38,8 @@ export const jwtService = {
 			return null
 		}
 	},
+	getLastActiveDate(token: string) {
+		const result: any = jwt.decode(token)
+		return new Date(result.iat * 1000).toISOString()
+	}
 }

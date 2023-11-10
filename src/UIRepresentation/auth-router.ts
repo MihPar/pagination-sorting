@@ -77,25 +77,21 @@ authRouter.post(
     res: Response<{ accessToken: string }>
   ): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
-	
+	const userId = req.user._id.toString()
     const payload = await jwtService.decodeRefreshToken(refreshToken);
-    const toAddRefreshTokenInBlackList: boolean =
-      await sessionService.addRefreshToken(refreshToken);
-
-      const newToken: string = await jwtService.createJWT(req.user);
-
-	  const userId = req.user._id.toString()
-
-	  if(!payload){
+    //const toAddRefreshTokenInBlackList: boolean =
+    //  await sessionService.addRefreshToken(refreshToken);
+if(!payload){
 		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 		return
 	  }
 
+      const newToken: string = await jwtService.createJWT(req.user);
       const newRefreshToken: string = await jwtService.createRefreshJWT(
         userId,
         payload.deviceId
       );
-	  const updateDeviceUser = await deviceService.updateDevice(userId)
+	  const updateDeviceUser = await deviceService.updateDevice(userId, newRefreshToken)
 	//   if(!newRefreshToken) {
 	// 	res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
 	// 	return
