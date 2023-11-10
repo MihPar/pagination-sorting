@@ -4,7 +4,6 @@ export type CollectionIP = {
 	IP: string
 	URL: string
 	createAt: Date
-	// method: string
 }
 
 // const apiAccessSchema = new mongoose.Schema({
