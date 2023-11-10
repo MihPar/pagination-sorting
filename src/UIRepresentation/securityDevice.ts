@@ -27,7 +27,7 @@ securityDeviceRouter.get(
     const getDevicesAllUsers: DeviceViewModel[] =
       await securityDeviceRepositories.getDevicesAllUsers(userId);
     if (!getDevicesAllUsers) {
-      return res.sendStatus(506);
+      return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
       return res.status(HTTP_STATUS.OK_200).send(getDevicesAllUsers);
     }
