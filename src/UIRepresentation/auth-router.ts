@@ -31,9 +31,9 @@ export const authRouter = Router({});
 
 authRouter.post(
   "/login",
+  limitRequestMiddleware,
   inputValueLoginOrEamilAuth,
   inputValuePasswordAuth,
-  limitRequestMiddleware,
   ValueMiddleware,
   async function (
     req: RequestWithBody<bodyAuthModel>,
@@ -143,10 +143,10 @@ authRouter.get(
 
 authRouter.post(
   "/registration",
+  limitRequestMiddleware,
   inputValueLoginAuth,
   inputValuePasswordAuth,
   inputValueEmailRegistrationAuth,
-  limitRequestMiddleware,
   ValueMiddleware,
   async function (
     req: RequestWithBody<BodyRegistrationModel>,
@@ -167,8 +167,8 @@ authRouter.post(
 
 authRouter.post(
   "/registration-confirmation",
-  inputValueCodeAuth,
   limitRequestMiddleware,
+  inputValueCodeAuth,
   ValueMiddleware,
   async function (
     req: RequestWithBody<BodyRegistrationConfirmationModel>,
@@ -181,8 +181,8 @@ authRouter.post(
 
 authRouter.post(
   "/registration-email-resending",
-  inputValueEmailAuth,
   limitRequestMiddleware,
+  inputValueEmailAuth,
   ValueMiddleware,
   async function (
     req: RequestWithBody<BodyRegistrationEmailResendigModel>,
