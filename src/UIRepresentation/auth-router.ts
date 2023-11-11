@@ -1,3 +1,4 @@
+import { deviceAuthSessionCollection } from './../db/db';
 import { checkRefreshTokenSecurityDeviceMiddleware } from './../middleware/checkRefreshTokenSevurityDevice-middleware';
 import { limitRequestMiddleware } from "./../middleware/limitRequest";
 import { deviceService } from "./../Bisnes-logic-layer/deviceService";
@@ -111,13 +112,13 @@ authRouter.post(
 //   checkRefreshTokenMiddleware,
 checkRefreshTokenSecurityDeviceMiddleware,
   async function (req: Request, res: Response<void>): Promise<void> {
+
     const refreshToken: string = req.cookies.refreshToken;
-	// if(!refreshToken) {
-	// 	res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
-	// 	return
-	// }
-    const toAddRefreshTokenInBlackList: boolean =
-      await sessionService.addRefreshToken(refreshToken);
+	
+    const toAddRefreshTokenInBlackList: boolean = await sessionService.addRefreshToken(refreshToken)
+	
+	await deviceService.logoutUser(refreshToken)
+
     res.clearCookie("refreshToken").sendStatus(HTTP_STATUS.NO_CONTENT_204);
 	return
   }
