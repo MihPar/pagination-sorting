@@ -1,3 +1,4 @@
+import { CollectionIP } from './../UIRepresentation/types/deviceAuthSession';
 // import { sessionService } from './../Bisnes-logic-layer/sessionService';
 import { jwtService } from './../Bisnes-logic-layer/jwtService';
 import { ObjectId } from "mongodb";

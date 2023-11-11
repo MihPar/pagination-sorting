@@ -48,10 +48,10 @@ export const limitRequestMiddleware = async (req: Request, res: Response, next: 
     const count = await securityDeviceRepositories.countDocs(filter)
 	console.log('count devices: ', count)
     if (count > 5) {
-        return res.sendStatus(HTTP_STATUS.HTTP_STATUS_429)
+        res.sendStatus(HTTP_STATUS.HTTP_STATUS_429)
+		return
     } 
 	next()
-	return 
 }
 
 // middlewate вывести в console.log(params, query, body)????
