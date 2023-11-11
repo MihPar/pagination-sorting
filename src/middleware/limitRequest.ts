@@ -4,6 +4,7 @@ import { securityDeviceRepositories } from './../DataAccessLayer/securityDevice-
 import { CollectionIP } from './../UIRepresentation/types/deviceAuthSession';
 import { NextFunction, Request, Response } from 'express';
 import { HTTP_STATUS } from '../utils';
+import subSeconds from "date-fns/subSeconds";
 
 
 export const limitRequestMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -27,7 +28,7 @@ export const limitRequestMiddleware = async (req: Request, res: Response, next: 
 	// }
 
 	// const reqData: CollectionIP = new RequestCounter(req.ip, req.originalUrl, req.method)
-	const tenSeconds = new Date(Date.now() - 10000)
+	// const tenSeconds = new Date(Date.now() - 10000)
 
 	const reqData: CollectionIP = {
 		IP: req.ip,
@@ -41,7 +42,7 @@ export const limitRequestMiddleware = async (req: Request, res: Response, next: 
     // await RequestCountsModel.create(reqData)
 
     // const tenSecondsAgo = new Date(Date.now() - 100000
-    const filter: Filter<CollectionIP> = {IP: reqData.IP, URL: reqData.URL, date: {$gte: tenSeconds}}
+    const filter: Filter<CollectionIP> = {IP: reqData.IP, URL: reqData.URL, date: {$gt: subSeconds(new Date(), 10)}}
 
     const count = await securityDeviceRepositories.countDocs(filter)
     if (count > 5) {
