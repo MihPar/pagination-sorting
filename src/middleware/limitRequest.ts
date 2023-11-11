@@ -1,3 +1,4 @@
+import { Filter } from 'mongodb';
 import { IPAuthSessionCollection } from './../db/db';
 import { securityDeviceRepositories } from './../DataAccessLayer/securityDevice-db-repositories';
 import { CollectionIP } from './../UIRepresentation/types/deviceAuthSession';
@@ -30,8 +31,8 @@ export const limitRequestMiddleware = async (req: Request, res: Response, next: 
 
 	const reqData: CollectionIP = {
 		IP: req.ip,
-		URL: req.baseUrl,
-		date: new Date(Date.now()),
+		URL: req. baseUrl + req. url || req. originalUrl,
+		date: new Date(),
 	}
 
 	console.log('url/endpoit: ', reqData.URL)
@@ -40,9 +41,9 @@ export const limitRequestMiddleware = async (req: Request, res: Response, next: 
     // await RequestCountsModel.create(reqData)
 
     // const tenSecondsAgo = new Date(Date.now() - 100000
-    const filter = {IP: reqData.IP, URL: reqData.URL, date: {$gte: tenSeconds}}
+    const filter: Filter<CollectionIP> = {IP: reqData.IP, URL: reqData.URL, date: {$gte: tenSeconds}}
 
-    const count: number = await securityDeviceRepositories.countDocs(filter)
+    const count = await securityDeviceRepositories.countDocs(filter)
     if (count > 5) {
         return res.sendStatus(HTTP_STATUS.HTTP_STATUS_429)
     } 

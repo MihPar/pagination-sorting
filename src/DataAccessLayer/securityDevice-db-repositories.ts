@@ -47,11 +47,11 @@ export const securityDeviceRepositories = {
     return await deviceAuthSessionCollection.findOne({ deviceId: deviceId });
   },
   async createCollectionIP(reqData: any) {
-    await IPAuthSessionCollection.insertOne({ ...reqData });
+    await IPAuthSessionCollection.insertOne(reqData);
     return reqData;
   },
-  async countDocs(filter: any): Promise<number> {
-    return await IPAuthSessionCollection.countDocuments({ filter });
+  async countDocs(filter: any) {
+    return await IPAuthSessionCollection.countDocuments({filter});
   },
   async updateDeviceUser(userId: string, deviceId: string, newLastActiveDate: string) {
 	
