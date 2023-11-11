@@ -29,8 +29,7 @@ export const limitRequestMiddleware = async (req: Request, res: Response, next: 
 	const reqData: CollectionIP = {
 		IP: req.ip,
 		URL: req.method + ' ' +  req.originalUrl,
-		date: new Date(),
-		// method: req.method
+		date: new Date(Date.now()),
 	}
 
 	console.log('url/endpoit: ', reqData.URL)
@@ -38,8 +37,9 @@ export const limitRequestMiddleware = async (req: Request, res: Response, next: 
 	await securityDeviceRepositories.createCollectionIP(reqData)
     // await RequestCountsModel.create(reqData)
 
-    // const tenSecondsAgo = new Date(Date.now() - 10000)
-    const filter: any = {IP: reqData.IP, URL: reqData.URL, date: {$gte: new Date(Date.now() - 10000)}}
+    // const tenSecondsAgo = new Date(Date.now() - 100000
+	const tenSeconds = new Date(Date.now() - 10000)
+    const filter: any = {IP: reqData.IP, URL: reqData.URL, date: {$gte: tenSeconds}}
 
     const count: number = await securityDeviceRepositories.countDocs(filter)
     if (count > 5) {
