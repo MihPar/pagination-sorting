@@ -51,7 +51,8 @@ export const securityDeviceRepositories = {
     return reqData;
   },
   async countDocs(filter: any) {
-    return await IPAuthSessionCollection.countDocuments({filter});
+    const result = await IPAuthSessionCollection.countDocuments({filter});
+	return result
   },
   async updateDeviceUser(userId: string, deviceId: string, newLastActiveDate: string) {
 	
