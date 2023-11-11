@@ -56,7 +56,7 @@ export const deviceService = {
 		await securityDeviceRepositories.updateDeviceUser(userId, payload.deviceId, lastActiveDate)
 		return
 	},
-	async logoutUser(refreshToken: string) {
+	async logoutDevice(refreshToken: string) {
 		const payload = await jwtService.decodeRefreshToken(refreshToken)
 		if(!payload){
 			return null

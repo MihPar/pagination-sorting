@@ -50,11 +50,9 @@ securityDeviceRouter.delete(
     const userId = req.user._id.toString();
     const refreshToken = req.cookies.refreshToken;
     const payload = await jwtService.decodeRefreshToken(refreshToken);
-
     if (!payload) {
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     }
-
     if (!/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i.test(payload.deviceId)) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     }
@@ -69,7 +67,6 @@ securityDeviceRouter.delete(
 
 securityDeviceRouter.delete(
   "/:deviceId",
-//   checkRefreshTokenMiddleware,
   checkRefreshTokenSecurityDeviceMiddleware,
   checkForbiddenSecurityDevice,
   async function (
@@ -77,17 +74,12 @@ securityDeviceRouter.delete(
     res: Response<boolean>
   ): Promise<Response<boolean>> {
     const deviceId = req.params.deviceId;
-
-    // const refreshToken: string = req.cookies.refreshToken;
-
     const deleteDeviceById = await securityDeviceRepositories.terminateSession(
       deviceId
     );
     if (!deleteDeviceById) {
       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     }
-    // const toAddRefreshTokenInBlackList: boolean =
-    //   await sessionService.addRefreshToken(refreshToken);
     return res.sendStatus(HTTP_STATUS.NO_CONTENT_204);
   }
 );

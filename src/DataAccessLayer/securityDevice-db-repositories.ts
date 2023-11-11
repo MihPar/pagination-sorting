@@ -58,7 +58,7 @@ export const securityDeviceRepositories = {
 	await deviceAuthSessionCollection.updateOne({userId, deviceId}, {$set: {lastActiveDate: newLastActiveDate}})
   },
   async logoutDevice(deviceId: string) {
-	const decayResult = await deviceAuthSessionCollection.deleteOne({deviceId: deviceId})
+	const decayResult = await deviceAuthSessionCollection.deleteOne({deviceId})
     return decayResult.deletedCount === 1
   }
 };

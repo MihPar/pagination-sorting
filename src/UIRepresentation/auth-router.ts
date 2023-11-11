@@ -1,5 +1,5 @@
-import { deviceAuthSessionCollection } from './../db/db';
-import { checkRefreshTokenSecurityDeviceMiddleware } from './../middleware/checkRefreshTokenSevurityDevice-middleware';
+import { deviceAuthSessionCollection } from "./../db/db";
+import { checkRefreshTokenSecurityDeviceMiddleware } from "./../middleware/checkRefreshTokenSevurityDevice-middleware";
 import { limitRequestMiddleware } from "./../middleware/limitRequest";
 import { deviceService } from "./../Bisnes-logic-layer/deviceService";
 import { authValidationInfoMiddleware } from "../middleware/authValidationInfoMiddleware";
@@ -48,16 +48,12 @@ authRouter.post(
       return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
     } else {
       const token: string = await jwtService.createJWT(user);
-
       const ip = req.socket.remoteAddress || "unknown";
       const title = req.headers["user-agent"] || "unknown";
-
       const refreshToken = await jwtService.createRefreshJWT(
         user._id.toString()
       );
-
       await deviceService.createDevice(ip, title, refreshToken);
-
       return res
         .cookie("refreshToken", refreshToken, {
           httpOnly: true,
@@ -71,56 +67,54 @@ authRouter.post(
 
 authRouter.post(
   "/refresh-token",
-//   checkRefreshTokenMiddleware,
+  //   checkRefreshTokenMiddleware,
   checkRefreshTokenSecurityDeviceMiddleware,
   async function (
     req: Request,
     res: Response<{ accessToken: string }>
   ): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
-	const userId = req.user._id.toString()
+    const userId = req.user._id.toString();
     const payload = await jwtService.decodeRefreshToken(refreshToken);
-    //const toAddRefreshTokenInBlackList: boolean =
-    //  await sessionService.addRefreshToken(refreshToken);
-if(!payload){
-		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
-		return
-	  }
-
-      const newToken: string = await jwtService.createJWT(req.user);
-      const newRefreshToken: string = await jwtService.createRefreshJWT(
-        userId,
-        payload.deviceId
-      );
-	  const updateDeviceUser = await deviceService.updateDevice(userId, newRefreshToken)
-	//   if(!newRefreshToken) {
-	// 	res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
-	// 	return
-	//   }
-      res
-        .cookie("refreshToken", newRefreshToken, {
-          httpOnly: true,
-          secure: true,
-        })
-        .status(HTTP_STATUS.OK_200)
-        .send({ accessToken: newToken });
+    if (!payload) {
+      res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
+      return;
+    }
+    const newToken: string = await jwtService.createJWT(req.user);
+    const newRefreshToken: string = await jwtService.createRefreshJWT(
+      userId,
+      payload.deviceId
+    );
+    const updateDeviceUser = await deviceService.updateDevice(
+      userId,
+      newRefreshToken
+    );
+    res
+      .cookie("refreshToken", newRefreshToken, {
+        httpOnly: true,
+        secure: true,
+      })
+      .status(HTTP_STATUS.OK_200)
+      .send({ accessToken: newToken });
   }
 );
 
 authRouter.post(
   "/logout",
-//   checkRefreshTokenMiddleware,
-checkRefreshTokenSecurityDeviceMiddleware,
+  checkRefreshTokenSecurityDeviceMiddleware,
   async function (req: Request, res: Response<void>): Promise<void> {
-
     const refreshToken: string = req.cookies.refreshToken;
-	
-    const toAddRefreshTokenInBlackList: boolean = await sessionService.addRefreshToken(refreshToken)
-	
-	await deviceService.logoutUser(refreshToken)
+
+    const isDeleteUser = await deviceService.logoutDevice(refreshToken);
+    if (!isDeleteUser) {
+      res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
+      return;
+    }
+	const toAddRefreshTokenInBlackList: boolean =
+	await sessionService.addRefreshToken(refreshToken);
 
     res.clearCookie("refreshToken").sendStatus(HTTP_STATUS.NO_CONTENT_204);
-	return
+    return;
   }
 );
 
@@ -206,7 +200,3 @@ authRouter.post(
     }
   }
 );
-
-// 1). Регистрация в системе - отправить письмо в кодом;
-// 2). Подтвердить регистрацию при помощи кода отправленного внутри ссылки на почту.
-// 3). Переотправка письма с кодом регистрации, сгенерировать заново код сохранить в БД и отправить код на почту.
