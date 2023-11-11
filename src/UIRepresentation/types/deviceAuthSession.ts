@@ -3,7 +3,8 @@ import { ObjectId } from "mongodb"
 export type CollectionIP = {
 	IP: string
 	URL: string
-	createAt: Date
+	date: Date
+	// method: string
 }
 
 // const apiAccessSchema = new mongoose.Schema({

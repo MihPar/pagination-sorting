@@ -104,15 +104,13 @@ authRouter.post(
   checkRefreshTokenSecurityDeviceMiddleware,
   async function (req: Request, res: Response<void>): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
-
-    // const isDeleteDevice = await deviceService.logoutDevice(refreshToken);
-    
-	// const toAddRefreshTokenInBlackList: boolean =
-	// await sessionService.addRefreshToken(refreshToken);
-	// if (!isDeleteUser) {
-	// 	res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
-	// 	return;
-	//   }
+    const isDeleteDevice = await deviceService.logoutDevice(refreshToken);
+	const toAddRefreshTokenInBlackList: boolean =
+	await sessionService.addRefreshToken(refreshToken);
+	if (!isDeleteDevice) {
+		res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401);
+		return;
+	  }
     res.clearCookie("refreshToken").sendStatus(HTTP_STATUS.NO_CONTENT_204);
     return;
   }
