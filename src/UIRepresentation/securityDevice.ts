@@ -18,12 +18,18 @@ securityDeviceRouter.get(
     req: Request,
     res: Response<DeviceViewModel[]>
   ): Promise<Response<DeviceViewModel[]>> {
-    
+    // const refreshToken = req.cookies.refreshToken
     const userId = req.user._id.toString();
     // const isInBlackList = await sessionService.findRefreshToken(refreshToken)
     // if(isInBlackList) {
     // 	return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
     // }
+
+	// const isInBlackList = await sessionService.findRefreshToken(refreshToken)
+	// if(isInBlackList) {
+	// 	return res.sendStatus(HTTP_STATUS.NOT_AUTHORIZATION_401)
+	// }
+	
     const getDevicesAllUsers: DeviceViewModel[] =
       await securityDeviceRepositories.getDevicesAllUsers(userId);
     if (!getDevicesAllUsers) {
