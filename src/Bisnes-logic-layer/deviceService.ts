@@ -61,10 +61,10 @@ export const deviceService = {
 		if(!payload){
 			return null
 		}
-		const user = await securityDeviceRepositories.findDeviceByDeviceId(payload.userId)
-        if(!user) {
-            return null
-        }
+		// const user = await securityDeviceRepositories.findDeviceByDeviceId(payload.userId)
+        // if(!user) {
+        //     return null
+        // }
 		const logoutDevice = await securityDeviceRepositories.logoutDevice(payload.deviceId)
         if(!logoutDevice) {
             return null

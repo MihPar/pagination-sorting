@@ -105,7 +105,7 @@ authRouter.post(
   async function (req: Request, res: Response<void>): Promise<void> {
     const refreshToken: string = req.cookies.refreshToken;
 
-    const isDeleteUser = await deviceService.logoutDevice(refreshToken);
+    const isDeleteDevice = await deviceService.logoutDevice(refreshToken);
     
 	const toAddRefreshTokenInBlackList: boolean =
 	await sessionService.addRefreshToken(refreshToken);
