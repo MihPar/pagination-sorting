@@ -21,7 +21,6 @@ import cookieParser from 'cookie-parser'
 	app.use('/users', usersRouter)
 	app.use('/comments', commentsRouter)
 	app.use('/security/devices', securityDeviceRouter)
-	app.set('trust proxy', true)
 
 	app.get('/test', (req, res) => {
 		res.json({ message: 'This is a test endpoint!' });

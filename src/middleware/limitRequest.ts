@@ -43,11 +43,11 @@ export const limitRequestMiddleware = async (req: Request, res: Response, next: 
     // await RequestCountsModel.create(reqData)
 
     // const tenSecondsAgo = new Date(Date.now() - 100000
-    const filter: Filter<CollectionIP> = {IP: reqData.IP, URL: reqData.URL, date: {$gt: subSeconds(new Date(), 20)}}
+    const filter: Filter<CollectionIP> = {IP: reqData.IP, URL: reqData.URL, date: {$gt: subSeconds(new Date(), 10)}}
 
     const count = await securityDeviceRepositories.countDocs(filter)
 	console.log('count devices: ', count)
-    if (count > 6) {
+    if (count > 5) {
         res.sendStatus(HTTP_STATUS.HTTP_STATUS_429)
 		return
     } 
