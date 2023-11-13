@@ -12,6 +12,8 @@ import {
 } from "./../db/db";
 // import { fromUnixTime } from "date-fns";
 // import {format} from "date-fns-tz";
+import { Filter } from 'mongodb';
+
 
 
 export const securityDeviceRepositories = {
@@ -51,8 +53,10 @@ export const securityDeviceRepositories = {
     await IPAuthSessionCollection.insertOne(reqData);
     return reqData;
   },
-  async countDocs(filter: any) {
-    const result = await IPAuthSessionCollection.countDocuments({filter});
+  
+  async countDocs(filter: Filter<CollectionIP>) {
+	console.log(filter)
+    const result = await IPAuthSessionCollection.countDocuments(filter);
 	return result
   },
   async updateDeviceUser(userId: string, deviceId: string, newLastActiveDate: string) {
