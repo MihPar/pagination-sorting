@@ -1,9 +1,6 @@
 import { DeviceModel} from './../UIRepresentation/types/deviceAuthSession';
-import { ObjectId } from 'mongodb';
 import { jwtService } from './jwtService';
 import { securityDeviceRepositories } from './../DataAccessLayer/securityDevice-db-repositories';
-import { fromUnixTime } from 'date-fns';
-import {format} from "date-fns-tz";
 
 export const deviceService = {
 	async terminateAllCurrentSessions(userId: string, deviceId: string) {
@@ -20,16 +17,10 @@ export const deviceService = {
 	},
 	async createDevice(ip: string, title: string, refreshToken: string): Promise<DeviceModel | null> {
 		const payload = await jwtService.decodeRefreshToken(refreshToken)
-
 		if(!payload){
 			return null
 		}
-
 		const lastActiveDate = jwtService.getLastActiveDate(refreshToken)
-		// const lastActiveDate = new Date(payload.iat * 1000).toISOString()
-		console.log(payload, 'payload')
-
-
 		const device: DeviceModel = {
 			ip: ip,
     		title: title,
@@ -41,9 +32,6 @@ export const deviceService = {
 		const createDevice: DeviceModel = await securityDeviceRepositories.createDevice(device)
 		return createDevice
 	},
-	// async allCurrentUsers(userId: string) {
-	// 	const allUser = await securityDeviceRepositories.getDevicesAllUsers(userId)
-	// }
 	async updateDevice(userId: string, refreshToken: string) {
 		const payload = await jwtService.decodeRefreshToken(refreshToken)
 
