@@ -13,10 +13,8 @@ export const userService = {
     email: string
   ): Promise<UserType | null> {
     const passwordHash = await this._generateHash(password);
-
     const newUser: DBUserType = {
       _id: new ObjectId(),
-	//   deviceId: new ObjectId(),
       accountData: {
         userName: login,
         email,
@@ -32,7 +30,6 @@ export const userService = {
         isConfirmed: false,
       },
     };
-
     const user: DBUserType = await userRepositories.createUser(newUser);
     try {
       await emailManager.sendEamilConfirmationMessage(
@@ -42,7 +39,6 @@ export const userService = {
     } catch (error) {
       console.log(error);
     }
-
     return {
       id: user._id.toString(),
       login: user.accountData.userName,
@@ -69,7 +65,6 @@ export const userService = {
     const hash: string = await bcrypt.hash(password, 3);
     return hash;
   },
-
   async deleteUserId(id: string): Promise<boolean> {
     const deleteId: boolean = await userRepositories.deleteById(id);
     return deleteId;

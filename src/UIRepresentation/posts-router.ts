@@ -46,12 +46,10 @@ postsRouter.get(
       sortBy = "createdAt",
       sortDirection = "desc",
     } = req.query;
-
 	const isExistPots = await postsRepositories.findPostById(postId)
 	if(!isExistPots) {
 		return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
 	}
-	
     const commentByPostsId: PaginationType<CommentTypeView> | null = await commentRepositories.findCommentByPostId(
       postId,
       pageNumber,
@@ -59,7 +57,6 @@ postsRouter.get(
       sortBy,
       sortDirection
     );
-
     if (!commentByPostsId) {
     	return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {
@@ -82,16 +79,13 @@ postsRouter.post(
     const { postId } = req.params;
     const { content } = req.body;
 	const user = req.user;
-	
     const post: PostsType | null =
       await postsRepositories.findPostById(postId);
 
     if (!post) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
 	console.log(user)
-
     const createNewCommentByPostId: CommentTypeView| null =
       await commentService.createNewCommentByPostId(postId, content, user._id.toString(), user.accountData.userName);
-
     if (!createNewCommentByPostId) {
     	return res.sendStatus(HTTP_STATUS.NOT_FOUND_404);
     } else {

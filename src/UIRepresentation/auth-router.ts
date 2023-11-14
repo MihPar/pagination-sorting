@@ -67,7 +67,6 @@ authRouter.post(
 
 authRouter.post(
   "/refresh-token",
-  //   checkRefreshTokenMiddleware,
   checkRefreshTokenSecurityDeviceMiddleware,
   async function (
     req: Request,

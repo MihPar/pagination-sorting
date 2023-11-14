@@ -1,26 +1,8 @@
-import { ObjectId } from "mongodb"
-
 export type CollectionIP = {
 	IP: string
 	URL: string
 	date: Date
-	// method: string
 }
-
-// const apiAccessSchema = new mongoose.Schema({
-// 	IP: {
-// 	type: String,
-// 	required: true
-// 	},
-// 	URL: {
-// 	type: String,
-// 	required: true
-// 	},
-// 	date: {
-// 	type: Date,
-// 	required: true
-// 	}
-// 	});
 
 export type DeviceModel =  {
     ip: string

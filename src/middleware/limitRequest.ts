@@ -13,19 +13,12 @@ export const limitRequestMiddleware = async (req: Request, res: Response, next: 
 		URL: req.originalUrl,
 		date: new Date(),
 	}
-
 	console.log('url/endpoit: ', reqData.URL)
-	// console.log('IP: ', reqData.IP)
-
 	await securityDeviceRepositories.createCollectionIP(reqData)
-    // await RequestCountsModel.create(reqData)
-
     const tenSecondsAgo = new Date(Date.now() - 10000)
     const filter: Filter<CollectionIP> = {IP: reqData.IP, URL: reqData.URL, date: {$gt: tenSecondsAgo}}
 
     const count = await securityDeviceRepositories.countDocs(filter)
-	// console.log('count devices: ', count)
-	// console.log('IP: ', reqData.IP)
     if (count > 5) {
 		console.log("count: ", count)
         res.sendStatus(HTTP_STATUS.HTTP_STATUS_429)
@@ -33,5 +26,3 @@ export const limitRequestMiddleware = async (req: Request, res: Response, next: 
     } 
 	next()
 }
-
-// middlewate вывести в console.log(params, query, body)????

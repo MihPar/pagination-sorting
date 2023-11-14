@@ -14,7 +14,7 @@ dotenv.config()
 const mongoURI = process.env.MONGO_URL || 'mongodb://0.0.0.0:27017'
 
 export const client = new MongoClient(mongoURI)
-export const db = client.db('bd')
+export const db = client.db('dbMongoDb')
 export async function runDb() {
 	try {
 		await client.connect()

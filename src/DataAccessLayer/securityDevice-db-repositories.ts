@@ -1,7 +1,4 @@
 import { CollectionIP } from './../UIRepresentation/types/deviceAuthSession';
-// import { sessionService } from './../Bisnes-logic-layer/sessionService';
-import { jwtService } from './../Bisnes-logic-layer/jwtService';
-import { ObjectId } from "mongodb";
 import {
   DeviceModel,
   DeviceViewModel,
@@ -10,22 +7,13 @@ import {
   deviceAuthSessionCollection,
   IPAuthSessionCollection,
 } from "./../db/db";
-// import { fromUnixTime } from "date-fns";
-// import {format} from "date-fns-tz";
 import { Filter } from 'mongodb';
-
-
 
 export const securityDeviceRepositories = {
   async getDevicesAllUsers(userId: string): Promise<DeviceViewModel[]> {
     const getAllDevices: DeviceModel[] = await deviceAuthSessionCollection
       .find({ userId })
       .toArray();
-
-	//   const payload = await jwtService.decodeRefreshToken(refreshToken)
-	//   const unixTime = fromUnixTime(payload.exp)
-	//   const activeDate = format(new Date(unixTime), 'yyyy-MM-dd\'T\'HH:mm:ss.SSSXXX', {timeZone: 'UTC'})
-
     return getAllDevices.map(function (item) {
       return {
         ip: item.ip,
@@ -46,21 +34,18 @@ export const securityDeviceRepositories = {
     return device;
   },
   async findDeviceByDeviceId(deviceId: string) {
-	// console.log('deviceId find', deviceId)
     return await deviceAuthSessionCollection.findOne({ deviceId: deviceId });
   },
   async createCollectionIP(reqData: any) {
     await IPAuthSessionCollection.insertOne(reqData);
     return reqData;
   },
-  
   async countDocs(filter: Filter<CollectionIP>) {
 	console.log(filter)
     const result = await IPAuthSessionCollection.countDocuments(filter);
 	return result
   },
   async updateDeviceUser(userId: string, deviceId: string, newLastActiveDate: string) {
-	
 	await deviceAuthSessionCollection.updateOne({userId, deviceId}, {$set: {lastActiveDate: newLastActiveDate}})
   },
   async logoutDevice(deviceId: string) {

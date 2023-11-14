@@ -2,7 +2,6 @@ import { ObjectId } from "mongodb";
 
 export type DBUserType = {
 	_id: ObjectId;
-	// deviceId: string;
   } & UserGeneralType;
 
   export type UserGeneralType = {
